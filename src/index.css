@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-blue: #3b82f6;
+  --header-height: 80px;
+}
+
+:root {
+  --color-background: #000000;
+  --color-foreground: #FFFFFF;
+  --color-muted: rgba(255, 255, 255, 0.5);
+  --color-faint: rgba(255, 255, 255, 0.15);
+  --color-ghost: rgba(255, 255, 255, 0.07);
+  --color-brand-glow: rgba(59, 130, 246, 0.4);
+  --color-glass-bg: rgba(255, 255, 255, 0.02);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  overflow-x: hidden;
+}
+
+:root.light {
+  --color-background: #FFFFFF;
+  --color-foreground: #000000;
+  --color-muted: rgba(0, 0, 0, 0.95);
+  --color-faint: rgba(0, 0, 0, 0.2);
+  --color-ghost: rgba(0, 0, 0, 0.08);
+  --color-brand-glow: rgba(37, 99, 235, 0.15);
+  --color-glass-bg: rgba(0, 0, 0, 0.04);
+  --color-glass-border: rgba(0, 0, 0, 0.35);
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+/* Custom smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+.glass {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px var(--color-brand-glow);
+}
+
+.mesh-gradient {
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+}

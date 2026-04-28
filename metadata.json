@@ -1,0 +1,6 @@
+{
+  "name": "Remix: Hopper | The Offline Communication System",
+  "description": "A decentralized, offline-first communication system that works without internet or cellular networks using Bluetooth and Wi-Fi Direct.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
