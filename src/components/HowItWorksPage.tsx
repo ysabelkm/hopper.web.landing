@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { TopScrollProgress } from './TopScrollProgress';
 import { Sun, Moon, Menu, X, Zap, Download, ArrowRight } from 'lucide-react';
 import { HowItWorks } from './HowItWorks';
 
@@ -37,7 +38,7 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
 
       {/* Right: secondary nav + theme + download */}
       <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-        <a href="/how-it-works" className="text-[var(--color-foreground)] transition-colors">How It Works</a>
+      <a href="/#how-it-works" className="text-[var(--color-foreground)] transition-colors">How It Works</a>
         <a href="/pricing" className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
         <a href="/customers" className="hover:text-[var(--color-foreground)] transition-colors">Customers</a>
 
@@ -77,7 +78,7 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
           >
             <a href="/#mission" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</a>
             <a href="/#segments" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Impact</a>
-            <a href="/how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-bold tracking-tight">How It Works</a>
+            <a href="/#how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-bold tracking-tight">How It Works</a>
             <a href="/pricing" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</a>
             <a href="/customers" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</a>
             <motion.button
@@ -128,6 +129,7 @@ export const HowItWorksPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark
 
   return (
     <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] selection:bg-blue-500 selection:text-white transition-colors duration-500 ease-in-out">
+      <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <HowItWorks />
       <Footer />

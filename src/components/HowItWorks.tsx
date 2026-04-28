@@ -553,10 +553,20 @@ export const HowItWorks = () => {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-8 block">How It Works</span>
-            <h2 className="text-6xl md:text-[100px] font-bold tracking-tighter leading-[0.92] mb-10">
+              <h2 className="text-6xl md:text-[100px] font-bold tracking-tighter leading-[0.92] mb-10">
               No towers.<br />
               No servers.<br />
-              <span className="text-[var(--color-faint)]">Just physics.</span>
+              <span className="text-[var(--color-faint)]">
+                {"Just physics.".split(" ").map((word, i) => (
+                  <motion.span
+                    key={i}
+                    whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
+                    className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
             </h2>
             <p className="text-[var(--color-muted)] text-xl font-light leading-relaxed max-w-xl">
               Hopper builds a live encrypted mesh from the radio chips already inside your iPhone or Android.

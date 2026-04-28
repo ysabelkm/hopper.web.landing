@@ -1,4 +1,4 @@
-// File: /Users/yepc/Desktop/hopper.web.lanidng/src/app/layout.tsx
+// File: /Users/yepc/Desktop/hopper.web.landing/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

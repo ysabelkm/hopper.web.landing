@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { TopScrollProgress } from './TopScrollProgress';
 import { Sun, Moon, Menu, X, Download, ArrowRight, Quote, Users, Radio, Shield, Zap, MapPin, Building, GraduationCap, Heart, Music } from 'lucide-react';
 import { cn } from '../lib/utils';
 
@@ -31,7 +32,7 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
         <span className="text-xl font-bold tracking-tighter uppercase">Hopper</span>
       </a>
       <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-        <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
+      <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
         <a href="/pricing" className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
         <a href="/customers" className="text-[var(--color-foreground)]">Customers</a>
         <button onClick={toggleTheme} className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors" aria-label="Toggle theme">
@@ -329,6 +330,7 @@ export const CustomersPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark'
 
   return (
     <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] selection:bg-blue-500 selection:text-white transition-colors duration-500">
+      <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       {/* ── Hero ── */}

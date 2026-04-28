@@ -116,10 +116,10 @@ const Hero = () => {
             Stay connected.<br />
             <span className="flex flex-wrap">
               {"Even when the world disconnects.".split(" ").map((word, i) => (
-                <motion.span 
+                <motion.span
                   key={i}
-                  whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
-                  className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
+                  whileHover={{ scale: 1.05 }}
+                  className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
                 >
                   {word}
                 </motion.span>
@@ -282,17 +282,17 @@ const Segments = () => {
 
 const Demo = () => {
   return (
-    <Section className="py-48 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent">
+    <Section id="how-it-works" className="py-48 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent">
       <div className="max-w-7xl mx-auto px-10 md:px-20 mb-32">
         <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-8 block text-[var(--color-faint)]">Operational Scenarios</span>
         <h2 className="text-5xl md:text-[110px] leading-[0.9] font-bold tracking-tighter mb-10 py-2">
           Experience the<br />
           <span className="flex flex-wrap">
             {"signal path.".split(" ").map((word, i) => (
-              <motion.span 
+              <motion.span
                 key={i}
-                whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
-                className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
+                whileHover={{ scale: 1.05 }}
+                className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
               >
                 {word}
               </motion.span>
@@ -528,10 +528,10 @@ const Mission = () => {
             Built for the moments<br />
             <span className="flex flex-wrap">
               {"where everything else fails.".split(" ").map((word, i) => (
-                <motion.span 
+                <motion.span
                   key={i}
-                  whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
-                  className="text-[var(--color-faint)] dark:text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
+                  whileHover={{ scale: 1.05 }}
+                  className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
                 >
                   {word}
                 </motion.span>
