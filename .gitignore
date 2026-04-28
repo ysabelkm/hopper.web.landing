@@ -1,19 +1,52 @@
 # Node
 node_modules/
+.pnp
+.pnp.js
+
 # Build outputs
 dist/
 build/
+.next/
+out/
 /.vite
+*.tsbuildinfo
+
 # Local env files
 .env
 .env.local
 .env.*.local
+
+# Dependencies
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
 # Editor
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS
+Thumbs.db
+
+# IDE
+*.iml
+
+# Cache
+.eslintcache
+.stylelintcache
