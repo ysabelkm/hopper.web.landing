@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TopScrollProgress } from './TopScrollProgress';
+import { HopperLogo } from './HopperLogo';
 import { Sun, Moon, Menu, X, Zap, Download, ArrowRight } from 'lucide-react';
 import { HowItWorks } from './HowItWorks';
 
@@ -15,12 +16,9 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
 
       {/* Left: Logo + primary nav */}
       <div className="hidden md:flex items-center gap-10">
-        <a href="/" className="flex items-center gap-3">
-          <div className="w-6 h-6 border-2 border-current rotate-45 flex items-center justify-center">
-            <div className="w-2 h-2 bg-current" />
-          </div>
-          <span className="text-xl font-bold tracking-tighter uppercase">Hopper</span>
-        </a>
+          <a href="/" aria-label="Hopper home">
+            <HopperLogo theme={theme} className="h-8 w-auto" />
+          </a>
         <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
           <a href="/#mission" className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
           <a href="/#segments" className="hover:text-[var(--color-foreground)] transition-colors">Impact</a>
@@ -29,11 +27,8 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
       </div>
 
       {/* Mobile: Logo */}
-      <a href="/" className="flex md:hidden items-center gap-3">
-        <div className="w-6 h-6 border-2 border-current rotate-45 flex items-center justify-center">
-          <div className="w-2 h-2 bg-current" />
-        </div>
-        <span className="text-xl font-bold tracking-tighter uppercase">Hopper</span>
+      <a href="/" className="flex md:hidden items-center gap-3" aria-label="Hopper home">
+        <HopperLogo theme={theme} className="h-8 w-auto" />
       </a>
 
       {/* Right: secondary nav + theme + download */}
@@ -95,14 +90,11 @@ const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: 
   );
 };
 
-const Footer = () => (
+const Footer = ({ theme }: { theme: 'dark' | 'light' }) => (
   <footer className="pt-24 pb-16 px-10 md:px-20 border-t border-current/10 bg-[var(--color-background)]">
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <a href="/" className="flex items-center gap-3">
-        <div className="w-6 h-6 border-2 border-current rotate-45 flex items-center justify-center">
-          <div className="w-2 h-2 bg-current" />
-        </div>
-        <span className="text-xl font-bold tracking-tighter uppercase">Hopper</span>
+      <a href="/" className="flex items-center gap-3" aria-label="Hopper home">
+        <HopperLogo theme={theme} className="h-8 w-auto" />
       </a>
       <div className="flex gap-10 text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-faint)]">
         <a href="/#mission" className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
@@ -132,7 +124,7 @@ export const HowItWorksPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark
       <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <HowItWorks />
-      <Footer />
+      <Footer theme={theme} />
     </main>
   );
 };

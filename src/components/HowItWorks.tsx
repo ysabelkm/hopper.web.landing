@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 import { Download, Radio, GitBranch, Shield, ArrowRight, Bluetooth, Wifi, Lock, CheckCircle, MessageCircle, Users, Signal } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { HopperLogo } from './HopperLogo';
 
 // ── Phone shell ──────────────────────────────────────────────────────────────
 const Phone = ({ children, className }: { children: React.ReactNode; className?: string }) => (
@@ -61,11 +62,8 @@ const InstallScreen = ({ active }: { active: boolean }) => (
         className="flex flex-col items-center gap-3 mt-4"
       >
         <div className="w-16 h-16 rounded-[22px] bg-blue-600 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)]">
-          <div className="w-7 h-7 border-[2.5px] border-white rotate-45 flex items-center justify-center">
-            <div className="w-2 h-2 bg-white" />
-          </div>
+          <HopperLogo theme="dark" className="h-10 w-auto" />
         </div>
-        <span className="text-white font-bold tracking-tighter text-lg">Hopper</span>
         <span className="text-white/40 text-[10px] uppercase tracking-widest">Mesh Communication</span>
       </motion.div>
 
