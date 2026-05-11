@@ -3,67 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TopScrollProgress } from './TopScrollProgress';
-import { HopperLogo } from './HopperLogo';
-import { Sun, Moon, Menu, X, Download, ArrowRight, Check, Zap, Shield, Radio, Wifi, Users, Lock, MessageCircle, RefreshCw } from 'lucide-react';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
+import { Download, ArrowRight, Check, Zap, Shield, Radio, Wifi, Users, Lock, MessageCircle, RefreshCw } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-// ── Shared Navbar ─────────────────────────────────────────────────────────────
-const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: () => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center">
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-background)]/50 to-transparent backdrop-blur-[2px] -z-10" />
-      <div className="hidden md:flex items-center gap-10">
-        <a href="/" aria-label="Hopper home">
-          <HopperLogo theme={theme} className="h-8 w-auto" />
-        </a>
-        <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-          <a href="/#mission" className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-          <a href="/#segments" className="hover:text-[var(--color-foreground)] transition-colors">Impact</a>
-          <a href="/#how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">Technology</a>
-        </div>
-      </div>
-      <a href="/" className="flex md:hidden items-center gap-3" aria-label="Hopper home">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-      </a>
-      <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-      <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing" className="text-[var(--color-foreground)]">Pricing</a>
-        <a href="/customers" className="hover:text-[var(--color-foreground)] transition-colors">Customers</a>
-        <button onClick={toggleTheme} className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors" aria-label="Toggle theme">
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
-        <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-          className="px-6 py-2 border border-current/20 rounded-full text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-          Download
-        </motion.button>
-      </div>
-      <div className="flex items-center gap-4 md:hidden">
-        <button onClick={toggleTheme} className="p-2 opacity-60 hover:opacity-100 transition-opacity">
-          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
-        <button className="text-current" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-[var(--color-background)] backdrop-blur-xl p-10 flex flex-col gap-8 md:hidden border-b border-white/10">
-            <a href="/#mission" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</a>
-            <a href="/how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</a>
-            <a href="/pricing" onClick={() => setIsOpen(false)} className="text-3xl font-bold tracking-tight">Pricing</a>
-            <a href="/customers" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</a>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="w-full py-5 bg-current text-[var(--color-background)] rounded-lg font-bold uppercase tracking-widest text-xs">
-              Download Hopper
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
-  );
-};
 
 // ── Features list ─────────────────────────────────────────────────────────────
 const FEATURES = [
@@ -211,7 +154,7 @@ const PlanCard = ({ yearly }: { yearly: boolean }) => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm uppercase tracking-widest shadow-[0_0_40px_-10px_rgba(59,130,246,0.6)] hover:bg-blue-500 transition-colors flex items-center justify-center gap-3"
+            className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm uppercase tracking-widest shadow-[0_0_40px_-10px_rgba(1,113,227,0.6)] hover:bg-blue-500 transition-colors flex items-center justify-center gap-3"
           >
             <Download className="w-4 h-4" />
             Get Started — {yearly ? "Yearly" : "Monthly"}
@@ -274,19 +217,19 @@ const CompareTable = () => (
 const FAQS = [
   {
     q: "Can I cancel anytime?",
-    a: "Yes. Cancel from the app or your App Store / Google Play subscription settings at any time. You keep access until the end of your billing period.",
+    a: "Yes. You can cancel anytime from your account on our website. You keep full premium access until the end of your billing period.",
   },
   {
     q: "Does Hopper work without a subscription?",
-    a: "Yes — basic BLE mesh messaging is free. A subscription unlocks Wi-Fi Direct, priority routing, the full 1,024-node mesh, and early access to new features.",
+    a: "Yes. The core app is completely free — you can message anyone nearby without paying anything. A subscription unlocks faster file transfers, extended range, and early access to new features.",
   },
   {
     q: "Is my payment data stored by Hopper?",
-    a: "Never. Payments are processed entirely by Apple or Google through their respective stores. Hopper never sees your card details.",
+    a: "Never. Payments are handled securely by Paystack — we never see or store your card details.",
   },
   {
     q: "What happens if I let my subscription lapse?",
-    a: "Your account drops to the free tier. Your message history stays on your device — we don't hold any data on servers to delete.",
+    a: "Your account drops to the free tier. Your message history, contacts, and files stay on your device — we never delete your data, only your access changes.",
   },
   {
     q: "Do I need an internet connection to subscribe?",
@@ -337,22 +280,6 @@ const FAQ = () => {
 };
 
 // ── Footer ────────────────────────────────────────────────────────────────────
-const Footer = ({ theme }: { theme: 'dark' | 'light' }) => (
-  <footer className="pt-24 pb-16 px-10 md:px-20 border-t border-current/10 bg-[var(--color-background)]">
-    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <a href="/" className="flex items-center gap-3" aria-label="Hopper home">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-      </a>
-      <div className="flex gap-10 text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-faint)]">
-        <a href="/#mission"     className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-        <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing"      className="text-[var(--color-foreground)]">Pricing</a>
-        <a href="/#segments"    className="hover:text-[var(--color-foreground)] transition-colors">Customers</a>
-      </div>
-      <p className="text-[10px] text-[var(--color-faint)] uppercase tracking-[0.2em] font-bold">© 2026 Hopper Protocol Labs</p>
-    </div>
-  </footer>
-);
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' | 'light' }) => {
@@ -592,7 +519,7 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-10 py-5 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-[0_0_50px_-10px_rgba(59,130,246,0.5)] hover:bg-blue-500 transition-colors"
+                className="flex items-center gap-3 px-10 py-5 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-[0_0_50px_-10px_rgba(1,113,227,0.5)] hover:bg-blue-500 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 Download on iOS

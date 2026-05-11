@@ -1,96 +1,15 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { Bluetooth, Zap, Users, ArrowRight, Menu, X, Sun, Moon } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { Bluetooth, Zap, Users, ArrowRight } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { ParticleBackground } from './components/ParticleBackground';
-import { HopperLogo } from './components/HopperLogo';
 import { Section } from './components/Section';
 import { cn } from './lib/utils';
-
 import { PhoneMockup } from './components/PhoneMockup';
+import { Footer } from './components/Footer';
+import { Navbar } from './components/Navbar';
 
-const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light', toggleTheme: () => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-background)]/50 to-transparent backdrop-blur-[2px] -z-10" />
-
-      {/* Left: Logo + primary nav links */}
-      <div className="hidden md:flex items-center gap-10">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-        <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-          <a href="#mission" className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-          <a href="#segments" className="hover:text-[var(--color-foreground)] transition-colors">Impact</a>
-          <a href="#how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">Technology</a>
-        </div>
-      </div>
-
-      {/* Mobile: Logo only */}
-      <div className="flex md:hidden items-center gap-3">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-      </div>
-
-      {/* Right: secondary nav links + theme + download */}
-      <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-        <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing" className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
-        <a href="/customers" className="hover:text-[var(--color-foreground)] transition-colors">Customers</a>
-
-        <button
-          onClick={toggleTheme}
-          className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors"
-          aria-label="Toggle theme"
-        >
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
-
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.8 }}
-          className="px-6 py-2 border border-current/20 rounded-full text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
-        >
-          Download
-        </motion.button>
-      </div>
-
-      <div className="flex items-center gap-4 md:hidden">
-        <button onClick={toggleTheme} className="p-2 opacity-60 hover:opacity-100 transition-opacity">
-          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
-        <button className="text-current" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-[var(--color-background)] backdrop-blur-xl p-10 flex flex-col gap-8 md:hidden border-b border-white/10"
-          >
-            <a href="#mission" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</a>
-            <a href="#segments" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Impact</a>
-            <a href="#how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Technology</a>
-            <a href="/how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</a>
-            <a href="/pricing" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</a>
-            <a href="/customers" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</a>
-            <motion.button
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
-              className="w-full py-5 bg-current text-[var(--color-background)] rounded-lg font-bold uppercase tracking-widest text-xs"
-            >
-              Download Hopper
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
-  );
-};
 
 const Hero = () => {
   return (
@@ -200,14 +119,14 @@ const Segments = () => {
       title: "Rural and Under-served Communities", 
       desc: "People living in remote areas with poor or no mobile network coverage, especially in developing countries.",
       specs: "Low Coverage • Digital Inclusion",
-      image: "/ruralareas.jpg"
+      image: "/images/ruralareas.jpg"
     },
-    { 
-      id: "02", 
-      title: "Students and Schools", 
+    {
+      id: "02",
+      title: "Students and Schools",
       desc: "Educational institutions in low-infrastructure areas where internet access is unreliable or unaffordable.",
       specs: "Campus Mesh • Affordable Access",
-      image: "/campuses.jpg"
+      image: "/images/campuses.jpg"
     },
     { 
       id: "03", 
@@ -221,7 +140,7 @@ const Segments = () => {
       title: "Event Attendees", 
       desc: "Participants at festivals, conferences, or crowded venues where mobile networks often get congested.",
       specs: "Congestion Resilience • Crowd Connectivity",
-      image: "/festivals.jpg"
+      image: "/images/festivals.jpg"
     },
   ];
 
@@ -239,7 +158,7 @@ const Segments = () => {
             )}
           >
             <div className="w-full md:w-1/2">
-              <span className="text-[84px] font-bold text-[var(--color-ghost)] leading-none mb-6 block tracking-tighter">{s.id}</span>
+              <span className="text-[84px] font-bold text-[var(--color-faint)] leading-none mb-6 block tracking-tighter">{s.id}</span>
               <h3 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">{s.title}</h3>
               <p className="text-[var(--color-muted)] text-lg md:text-xl font-light leading-relaxed mb-10">
                 {s.desc}
@@ -360,9 +279,9 @@ const Demo = () => {
                    whileInView={{ x: 0, opacity: 1 }}
                    viewport={{ once: true }}
                    transition={{ delay: 0.4 }}
-                   className="bg-blue-100 dark:bg-blue-600/10 p-6 rounded-3xl rounded-tr-none border border-blue-300/50 dark:border-blue-500/20 ml-auto max-w-[90%] shadow-[0_8px_24px_-14px_rgba(59,130,246,0.2)]"
+                   className="bg-blue-100 dark:bg-blue-600/10 p-6 rounded-3xl rounded-tr-none border border-blue-300/50 dark:border-blue-500/20 ml-auto max-w-[90%] shadow-[0_8px_24px_-14px_rgba(1,113,227,0.2)]"
                 >
-                  <p className="text-sm leading-relaxed font-medium text-black dark:text-white">Secondary path established. Hops 01 and 02 validated. Relaying through Community Hub.</p>
+                  <p className="text-sm leading-relaxed font-light signal-bubble-text">Secondary path established. Hops 01 and 02 validated. Relaying through Community Hub.</p>
                 </motion.div>
                 
                 <div className="pt-16 flex flex-col items-center gap-8">
@@ -374,7 +293,7 @@ const Demo = () => {
                       <motion.div 
                         animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_30px_rgba(59,130,246,1)]" 
+                        className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_30px_rgba(1,113,227,1)]" 
                       />
                       <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-[0_15px_40px_rgba(255,255,255,0.2)]">
                         <ArrowRight className="w-6 h-6 text-black" />
@@ -387,7 +306,7 @@ const Demo = () => {
             <div className="absolute -bottom-8 -left-8 bg-[var(--color-background)] border border-current/10 p-8 rounded-[40px] shadow-2xl w-64 hidden md:block backdrop-blur-xl">
               <p className="text-[10px] uppercase tracking-[0.4em] text-[var(--color-muted)] mb-5 font-bold">Protocol Health</p>
               <div className="flex items-center gap-4">
-                <div className="w-3.5 h-3.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                <div className="w-3.5 h-3.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(1,113,227,0.5)]" />
                 <div className="h-px flex-1 bg-current/10" />
                 <div className="w-2.5 h-2.5 rounded-full bg-current/20" />
                 <div className="h-px flex-1 bg-current/10" />
@@ -574,71 +493,6 @@ const Mission = () => {
   );
 };
 
-const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
-  return (
-    <footer className="pt-48 pb-20 px-10 md:px-20 border-t border-white/5 bg-[var(--color-background)]">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-20 mb-48">
-          <div className="max-w-sm">
-            <HopperLogo theme={theme} className="h-8 w-auto mb-10" />
-            <p className="text-[var(--color-muted)] font-light leading-relaxed">
-              Democratizing communication infrastructure. Decentralized, offline-first, and built for a resilient future.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-20">
-            <div>
-              <h6 className="text-[10px] uppercase tracking-[0.2em] font-bold text mb-8">Navigation</h6>
-              <ul className="flex flex-col gap-5 text-[var(--color-muted)] text-sm font-light">
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Technology</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Impact</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Mission</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Roadmap</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h6 className="text-[10px] uppercase tracking-[0.2em] font-bold text mb-8">Company</h6>
-              <ul className="flex flex-col gap-5 text-[var(--color-muted)] text-sm font-light">
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Partners</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Newsroom</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Contact</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h6 className="text-[10px] uppercase tracking-[0.2em] font-bold text mb-8">Resources</h6>
-              <ul className="flex flex-col gap-5 text-[var(--color-muted)] text-sm font-light">
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Open Source</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Security</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10 pt-12 border-t border-white/5">
-          <div className="flex items-center gap-12">
-            <span className="text-[10px] items-center flex gap-1 uppercase tracking-widest font-bold text-[var(--color-muted)]">
-              <Zap className="w-3 h-3 fill-current" /> est. 2024
-            </span>
-            <span className="text-[10px] font-mono text-[var(--color-faint)] hidden md:block uppercase tracking-widest">Beyond Infrastructure Protocol</span>
-          </div>
-          
-          <div className="flex gap-12 text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-faint)]">
-            <a href="#" className="hover:text-[var(--color-foreground)] transition-colors">X (Twitter)</a>
-            <a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Github</a>
-            <a href="#" className="hover:text-[var(--color-foreground)] transition-colors">Discord</a>
-          </div>
-          
-          <p className="text-[10px] text-[var(--color-faint)] uppercase tracking-[0.2em] font-bold">© 2026 Hopper Protocol Labs</p>
-        </div>
-      </div>
-    </footer>
-  );
-};
 
 export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' | 'light' }) {
   const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
@@ -685,7 +539,7 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
              <motion.button 
                whileHover={{ scale: 1.2 }}
                whileTap={{ scale: 0.8 }}
-               className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold shadow-[0_0_50px_-10px_rgba(59,130,246,0.5)] transition-all text-white"
+               className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold shadow-[0_0_50px_-10px_rgba(1,113,227,0.5)] transition-all text-white"
              >
                Download Hopper
              </motion.button>

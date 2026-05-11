@@ -72,6 +72,69 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../src/app/privacy/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/privacy">> = Specific
+  const handler = {} as typeof import("../../src/app/privacy/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/support/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/support">> = Specific
+  const handler = {} as typeof import("../../src/app/support/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/terms/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/terms">> = Specific
+  const handler = {} as typeof import("../../src/app/terms/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/use-cases/campus-networks/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/use-cases/campus-networks">> = Specific
+  const handler = {} as typeof import("../../src/app/use-cases/campus-networks/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/use-cases/event-venues/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/use-cases/event-venues">> = Specific
+  const handler = {} as typeof import("../../src/app/use-cases/event-venues/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/use-cases/field-operations/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/use-cases/field-operations">> = Specific
+  const handler = {} as typeof import("../../src/app/use-cases/field-operations/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/use-cases/remote-communities/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/use-cases/remote-communities">> = Specific
+  const handler = {} as typeof import("../../src/app/use-cases/remote-communities/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 
 
 

@@ -1,5 +1,14 @@
 {
-  "/page": "app/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/how-it-works/page": "app/how-it-works/page.js"
+  "/page": "app/page.js",
+  "/how-it-works/page": "app/how-it-works/page.js",
+  "/customers/page": "app/customers/page.js",
+  "/pricing/page": "app/pricing/page.js",
+  "/support/page": "app/support/page.js",
+  "/terms/page": "app/terms/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/use-cases/event-venues/page": "app/use-cases/event-venues/page.js",
+  "/use-cases/field-operations/page": "app/use-cases/field-operations/page.js",
+  "/use-cases/campus-networks/page": "app/use-cases/campus-networks/page.js",
+  "/use-cases/remote-communities/page": "app/use-cases/remote-communities/page.js"
 }

@@ -3,67 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { TopScrollProgress } from './TopScrollProgress';
-import { HopperLogo } from './HopperLogo';
-import { Sun, Moon, Menu, X, Download, ArrowRight, Quote, Users, Radio, Shield, Zap, MapPin, Building, GraduationCap, Heart, Music } from 'lucide-react';
+import { Navbar } from './Navbar';
+import { Footer } from './Footer';
+import { Download, ArrowRight, Quote, Users, Radio, Shield, Zap, MapPin, Building, GraduationCap, Heart, Music } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-// ── Navbar ────────────────────────────────────────────────────────────────────
-const Navbar = ({ theme, toggleTheme }: { theme: 'dark' | 'light'; toggleTheme: () => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center">
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-background)]/50 to-transparent backdrop-blur-[2px] -z-10" />
-      <div className="hidden md:flex items-center gap-10">
-        <a href="/" aria-label="Hopper home">
-          <HopperLogo theme={theme} className="h-8 w-auto" />
-        </a>
-        <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-          <a href="/#mission" className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-          <a href="/#segments" className="hover:text-[var(--color-foreground)] transition-colors">Impact</a>
-          <a href="/#how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">Technology</a>
-        </div>
-      </div>
-      <a href="/" className="flex md:hidden items-center gap-3" aria-label="Hopper home">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-      </a>
-      <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-      <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing" className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
-        <a href="/customers" className="text-[var(--color-foreground)]">Customers</a>
-        <button onClick={toggleTheme} className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors" aria-label="Toggle theme">
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
-        <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
-          className="px-6 py-2 border border-current/20 rounded-full text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-          Download
-        </motion.button>
-      </div>
-      <div className="flex items-center gap-4 md:hidden">
-        <button onClick={toggleTheme} className="p-2 opacity-60 hover:opacity-100 transition-opacity">
-          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
-        <button className="text-current" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-[var(--color-background)] backdrop-blur-xl p-10 flex flex-col gap-8 md:hidden border-b border-white/10">
-            <a href="/#mission" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</a>
-            <a href="/how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</a>
-            <a href="/pricing" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</a>
-            <a href="/customers" onClick={() => setIsOpen(false)} className="text-3xl font-bold tracking-tight">Customers</a>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="w-full py-5 bg-current text-[var(--color-background)] rounded-lg font-bold uppercase tracking-widest text-xs">
-              Download Hopper
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
-  );
-};
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const SEGMENTS = [
@@ -78,7 +21,7 @@ const SEGMENTS = [
     quote: "We haven't had reliable signal in years. Hopper connected our whole village in one afternoon.",
     author: "Amara D.",
     role: "Community leader, Mali",
-    image: "/ruralareas.jpg",
+    image: "/images/ruralareas.jpg",
   },
   {
     id: "02",
@@ -91,7 +34,7 @@ const SEGMENTS = [
     quote: "Our students can collaborate on projects even when the school's internet goes down, which is often.",
     author: "Prof. Fatima K.",
     role: "IT Director, University of Nairobi",
-    image: "/campuses.jpg",
+    image: "/images/campuses.jpg",
   },
   {
     id: "03",
@@ -117,7 +60,7 @@ const SEGMENTS = [
     quote: "We ran staff comms for 40,000 attendees across a 3-day festival. Zero dropped messages. The carrier networks were completely saturated.",
     author: "Maya R.",
     role: "Operations Lead, SoundWave Festival",
-    image: "/festivals.jpg",
+    image: "/images/festivals.jpg",
   },
 ];
 
@@ -196,10 +139,10 @@ const HeaderMesh = () => {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 150) {
             ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(59,130,246,${0.12 * (1 - dist / 150)})`; ctx.lineWidth = 0.8; ctx.stroke();
+            ctx.strokeStyle = `rgba(1,113,227,${0.12 * (1 - dist / 150)})`; ctx.lineWidth = 0.8; ctx.stroke();
           }
         }
-      nodes.forEach(n => { ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(59,130,246,0.35)'; ctx.fill(); });
+      nodes.forEach(n => { ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(1,113,227,0.35)'; ctx.fill(); });
       raf = requestAnimationFrame(draw);
     };
     draw();
@@ -288,22 +231,6 @@ const SegmentCard = ({ seg, index }: { seg: typeof SEGMENTS[0]; index: number })
 };
 
 // ── Footer ────────────────────────────────────────────────────────────────────
-const Footer = ({ theme }: { theme: 'dark' | 'light' }) => (
-  <footer className="pt-24 pb-16 px-10 md:px-20 border-t border-current/10 bg-[var(--color-background)]">
-    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <a href="/" className="flex items-center gap-3" aria-label="Hopper home">
-        <HopperLogo theme={theme} className="h-8 w-auto" />
-      </a>
-      <div className="flex gap-10 text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-faint)]">
-        <a href="/#mission"     className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-        <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing"      className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
-        <a href="/customers"    className="text-[var(--color-foreground)]">Customers</a>
-      </div>
-      <p className="text-[10px] text-[var(--color-faint)] uppercase tracking-[0.2em] font-bold">© 2026 Hopper Protocol Labs</p>
-    </div>
-  </footer>
-);
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export const CustomersPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' | 'light' }) => {
@@ -510,7 +437,7 @@ export const CustomersPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark'
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center gap-3 px-10 py-5 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-[0_0_50px_-10px_rgba(59,130,246,0.5)] hover:bg-blue-500 transition-colors">
+                className="flex items-center justify-center gap-3 px-10 py-5 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-[0_0_50px_-10px_rgba(1,113,227,0.5)] hover:bg-blue-500 transition-colors">
                 <Download className="w-4 h-4" />
                 Download on iOS
               </motion.button>
