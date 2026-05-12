@@ -1,50 +1,51 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TopScrollProgress } from './TopScrollProgress';
 import { Footer } from './Footer';
 import { Navbar } from './Navbar';
 import {
-  Search, Bluetooth, Wifi, Shield,
-  Zap, ChevronDown,
-  AlertTriangle, Send, CheckCircle
+  Bluetooth, Wifi,
+  Zap, ArrowRight,
+  Send, CheckCircle, ArrowDown
 } from 'lucide-react';
 
 // ─── FAQ Item ──────────────────────────────────────────────────────────────────
 
-const FAQItem = ({ q, a, index }: { q: string; a: string; index: number }) => {
-  const [open, setOpen] = useState(false);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06 }}
-      className="border-b border-[var(--color-glass-border)]"
+const FAQItem = ({ q, a, index, open, onToggle }: { q: string; a: string; index: number; open: boolean; onToggle: () => void }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.06 }}
+    className="border border-current/10 rounded-2xl overflow-hidden"
+  >
+    <button
+      onClick={onToggle}
+      className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-current/[0.03] transition-colors"
     >
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center py-8 text-left gap-10 group"
-      >
-        <span className="text-base md:text-lg font-light group-hover:text-[var(--color-foreground)] text-[var(--color-muted)] transition-colors leading-snug">{q}</span>
-        <ChevronDown className={`w-4 h-4 shrink-0 text-[var(--color-muted)] transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.p
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="pb-8 text-[var(--color-muted)] font-light leading-relaxed overflow-hidden"
-          >
+      <span className="font-medium text-sm">{q}</span>
+      <motion.div animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.2 }}>
+        <ArrowRight className="w-4 h-4 text-[var(--color-muted)] shrink-0" />
+      </motion.div>
+    </button>
+    <AnimatePresence initial={false}>
+      {open && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="px-6 pb-5 text-sm text-[var(--color-muted)] font-light leading-relaxed border-t border-current/10 pt-4">
             {a}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
+          </p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </motion.div>
+);
 
 // ─── Mesh Hop Diagram ──────────────────────────────────────────────────────────
 
@@ -264,46 +265,6 @@ const ContactForm = () => {
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
-const categories = [
-  {
-    icon: <Zap className="w-6 h-6" />,
-    title: 'Getting Started',
-    desc: 'Install the app, set up your profile, and join your first mesh.',
-    color: 'blue',
-    articles: ['Download & install Hopper', 'Granting Bluetooth & Location permissions', 'Setting up your profile', 'Joining a mesh for the first time'],
-  },
-  {
-    icon: <Bluetooth className="w-6 h-6" />,
-    title: 'How Hopper Works',
-    desc: 'Bluetooth discovery, Wi-Fi Direct transfers, and mesh routing explained.',
-    color: 'indigo',
-    articles: ['What is mesh networking?', 'How messages "hop" between devices', 'Bluetooth vs. Wi-Fi Direct — when each is used', 'Understanding peer-to-peer encryption'],
-  },
-  {
-    icon: <AlertTriangle className="w-6 h-6" />,
-    title: 'Troubleshooting',
-    desc: 'Step-by-step fixes for discovery failures and connection drops.',
-    color: 'amber',
-    articles: ['Bluetooth device discovery fails', 'Wi-Fi Direct connection drops', 'Messages not arriving', 'App shows no nearby nodes'],
-  },
-  {
-    icon: <Shield className="w-6 h-6" />,
-    title: 'Privacy & Security',
-    desc: 'Decentralized storage, encryption, and what we never collect.',
-    color: 'emerald',
-    articles: ['End-to-end encryption explained', 'No central server — what that means for you', 'What data Hopper stores on-device', 'Reporting a security vulnerability'],
-  },
-];
-
-const colorMap: Record<string, string> = {
-  blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20 group-hover:border-blue-500/40',
-  indigo: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20 group-hover:border-indigo-500/40',
-  amber: 'text-amber-400 bg-amber-500/10 border-amber-500/20 group-hover:border-amber-500/40',
-  emerald: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/40',
-};
-
-const quickLinks = ['Set Up My Profile', 'Trouble Connecting', 'How Mesh Works', 'Battery Tips'];
-
 const faqs = [
   {
     q: 'Do I need an internet connection to use Hopper?',
@@ -351,8 +312,7 @@ const permissionSteps = [
 
 export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => {
   const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-  const [query, setQuery] = useState('');
-  const searchRef = useRef<HTMLInputElement>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
     document.cookie = `hopper-theme=${theme};path=/;max-age=31536000`;
@@ -361,15 +321,12 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
 
   const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'));
 
-  const filteredFaqs = query.length > 1
-    ? faqs.filter(f => f.q.toLowerCase().includes(query.toLowerCase()) || f.a.toLowerCase().includes(query.toLowerCase()))
-    : faqs;
-
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
       <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
+      {/* ── Hero ── */}
       {/* ── Hero ── */}
       <section className="relative pt-48 pb-32 px-10 md:px-20 overflow-hidden">
         <div className="absolute top-[-10%] left-[-5%] w-[50%] h-[60%] rounded-full bg-blue-900/10 blur-[120px] pointer-events-none" />
@@ -394,67 +351,45 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
               Step-by-step guides, troubleshooting, and answers — built for everyone from students to field teams operating without internet.
             </p>
 
-            {/* Search */}
-            <div className="relative max-w-xl mx-auto mb-10">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted)]" />
-              <input
-                ref={searchRef}
-                type="text"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                placeholder="Search articles, guides, and FAQs…"
-                className="w-full pl-14 pr-6 py-5 rounded-full border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] text-sm font-light placeholder:text-[var(--color-muted)] focus:outline-none focus:border-blue-500/50 transition-colors backdrop-blur-sm"
-              />
-            </div>
-
-            {/* Quick links */}
-            <div className="flex flex-wrap justify-center gap-3">
-              {quickLinks.map((link, i) => (
-                <motion.button
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + i * 0.08 }}
-                  onClick={() => setQuery(link)}
-                  className="px-5 py-2 rounded-full border border-[var(--color-glass-border)] text-[11px] uppercase tracking-[0.15em] font-bold text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:border-[var(--color-muted)] transition-all"
-                >
-                  {link}
-                </motion.button>
-              ))}
-            </div>
+            {/* Contact CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="flex justify-center"
+            >
+              <motion.a
+                href="#contact"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-full border border-[var(--color-glass-border)] text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:border-[var(--color-muted)] transition-all"
+              >
+                Contact us
+                <ArrowDown className="w-3.5 h-3.5" />
+              </motion.a>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Category Grid ── */}
-      <section className="pb-32 px-10 md:px-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {categories.map((cat, i) => (
-              <motion.div
+      {/* ── FAQ ── */}
+      <section className="py-24 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+        <div className="max-w-2xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
+            <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-4 block">FAQ</span>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter">Frequently asked questions</h2>
+          </motion.div>
+
+          <div className="flex flex-col gap-2">
+            {faqs.map((faq, i) => (
+              <FAQItem
                 key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="group flex flex-col gap-6 p-8 rounded-[28px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] hover:border-[var(--color-muted)]/30 transition-all duration-300 cursor-pointer"
-              >
-                <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center ${colorMap[cat.color]}`}>
-                  {cat.icon}
-                </div>
-                <div>
-                  <h3 className="text-base font-bold mb-2 tracking-tight">{cat.title}</h3>
-                  <p className="text-[var(--color-muted)] text-sm font-light leading-relaxed">{cat.desc}</p>
-                </div>
-                <ul className="flex flex-col gap-2 mt-auto">
-                  {cat.articles.map((a, j) => (
-                    <li key={j} className="flex items-center gap-2 text-[11px] text-[var(--color-muted)] font-light group-hover:text-[var(--color-muted)] transition-colors">
-                      <div className="w-1 h-1 rounded-full bg-[var(--color-muted)] shrink-0" />
-                      {a}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                q={faq.q}
+                a={faq.a}
+                index={i}
+                open={openFaq === i}
+                onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+              />
             ))}
           </div>
         </div>
@@ -552,10 +487,7 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
                   <div className="mb-3 flex-1 rounded-[20px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] p-7">
                     <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-[var(--color-muted)] mb-1">Step {i + 1}</p>
                     <h4 className="text-xl font-bold tracking-tight mb-3">{s.title}</h4>
-                    <p className="text-[var(--color-muted)] text-sm font-light leading-relaxed mb-4">{s.desc}</p>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] bg-blue-500/15 text-blue-400 border border-blue-500/20">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" /> In Progress
-                    </span>
+                    <p className="text-[var(--color-muted)] text-sm font-light leading-relaxed">{s.desc}</p>
                   </div>
                 </motion.div>
               );
@@ -564,29 +496,8 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
         </div>
       </section>
 
-      {/* ── FAQ ── */}
-      <section className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
-        <div className="max-w-3xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-16">
-            <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-8 block">FAQ</span>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mb-6">Frequently asked questions</h2>
-            <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed">
-              Plain-language answers to the questions we hear most.
-            </p>
-          </motion.div>
-
-          {query.length > 1 && filteredFaqs.length === 0 && (
-            <p className="text-[var(--color-muted)] font-light py-8">No results for "{query}" — try a different term or browse the categories above.</p>
-          )}
-
-          {filteredFaqs.map((faq, i) => (
-            <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
-          ))}
-        </div>
-      </section>
-
       {/* ── Contact Form ── */}
-      <section className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+      <section id="contact" className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
 
