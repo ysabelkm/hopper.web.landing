@@ -52,28 +52,6 @@ const columns: { heading: string; links: FooterLink[] }[] = [
   },
 ];
 
-const QRPlaceholder = () => (
-  <svg viewBox="0 0 120 120" className="w-full h-full" fill="none">
-    {/* Finder patterns */}
-    {/* Top-left */}
-    <rect x="4"  y="4"  width="28" height="28" rx="3" stroke="currentColor" strokeWidth="4" fill="none" />
-    <rect x="12" y="12" width="12" height="12" rx="1" fill="currentColor" />
-    {/* Top-right */}
-    <rect x="88" y="4"  width="28" height="28" rx="3" stroke="currentColor" strokeWidth="4" fill="none" />
-    <rect x="96" y="12" width="12" height="12" rx="1" fill="currentColor" />
-    {/* Bottom-left */}
-    <rect x="4"  y="88" width="28" height="28" rx="3" stroke="currentColor" strokeWidth="4" fill="none" />
-    <rect x="12" y="96" width="12" height="12" rx="1" fill="currentColor" />
-    {/* Data dots */}
-    {[40,48,56,64,72,80].map(x => [40,48,56,64,72,80].map(y =>
-      Math.sin(x * y) > 0.1 ? (
-        <rect key={`${x}-${y}`} x={x} y={y} width="5" height="5" rx="1" fill="currentColor" opacity="0.7" />
-      ) : null
-    ))}
-    {/* Center logo hint */}
-    <rect x="52" y="52" width="28" height="28" rx="3" fill="currentColor" opacity="0.9" />
-  </svg>
-);
 
 const NewsletterForm = ({ isDark }: { isDark: boolean }) => {
   const [email, setEmail] = useState('');
@@ -131,27 +109,27 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
         <div className={`flex-1 rounded-[28px] border ${cardBg} ${cardBorder} overflow-hidden`}>
 
           {/* Logo hero area */}
-          <div className="px-10 pt-10 pb-8">
-            <HopperLogo theme={theme} className="h-16 w-auto mb-6" />
+          <div className="px-8 pt-8 pb-5">
+            <HopperLogo theme={theme} className="h-10 w-auto mb-3" />
             <p className={`text-sm font-light leading-relaxed max-w-xs ${textMuted}`}>
               Decentralized, offline-first communication. Built for a resilient future.
             </p>
           </div>
 
           {/* Navigation section label embedded in dashed line */}
-          <div className={`mx-10 flex items-center gap-4`}>
+          <div className={`mx-8 flex items-center gap-4`}>
             <span className={`text-[11px] uppercase tracking-[0.25em] font-medium ${textFaint} shrink-0`}>Navigation</span>
             <div className={`flex-1 border-t border-dashed ${dashedLine}`} />
           </div>
 
           {/* Columns */}
-          <div className="px-10 py-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-10">
+          <div className="px-8 py-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-6">
             {columns.map((col) => (
               <div key={col.heading}>
-                <h6 className={`text-[12px] font-bold mb-4 ${textFaint} uppercase tracking-[0.1em]`}>
+                <h6 className={`text-[12px] font-bold mb-3 ${textFaint} uppercase tracking-[0.1em]`}>
                   {col.heading}
                 </h6>
-                <ul className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-2">
                   {col.links.map((link) => (
                     <li key={link.label}>
                       <a
@@ -171,19 +149,19 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
           </div>
 
           {/* Newsletter */}
-          <div className="px-10 pb-8">
-            <p className={`text-[11px] uppercase tracking-[0.25em] font-medium ${textFaint} mb-4`}>Join our newsletter</p>
+          <div className="px-8 pb-4">
+            <p className={`text-[11px] uppercase tracking-[0.25em] font-medium ${textFaint} mb-3`}>Join our newsletter</p>
             <NewsletterForm isDark={isDark} />
           </div>
 
           {/* Credit section label embedded in dashed line */}
-          <div className={`mx-10 flex items-center gap-4`}>
+          <div className={`mx-8 flex items-center gap-4`}>
             <span className={`text-[11px] uppercase tracking-[0.25em] font-medium ${textFaint} shrink-0`}>Credit</span>
             <div className={`flex-1 border-t border-dashed ${dashedLine}`} />
           </div>
 
           {/* Credit bar */}
-          <div className="px-10 py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div className="px-8 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
             <p className={`text-[11px] ${textFaint}`}>
               © 2026 Hopper Africa. All rights reserved.
             </p>
@@ -194,13 +172,11 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
         </div>
 
         {/* ── Right card — QR + download ── */}
-        <div className={`lg:w-[400px] rounded-[28px] border ${cardBg} ${cardBorder} flex flex-col p-10 gap-8`}>
+        <div className={`lg:w-[340px] rounded-[28px] border ${cardBg} ${cardBorder} flex flex-col p-8 gap-5`}>
 
           {/* QR code */}
           <div className="flex-1 flex items-center justify-center">
-            <div className={`w-44 h-44 ${textMuted} opacity-40`}>
-              <QRPlaceholder />
-            </div>
+            <img src="/hopperwebqr.svg" alt="Scan to download Hopper" className="w-80 h-80 object-contain" />
           </div>
 
           {/* Download buttons */}

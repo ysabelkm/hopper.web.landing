@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HopperLogo } from './HopperLogo';
@@ -10,8 +11,45 @@ type NavbarProps = {
   toggleTheme: () => void;
 };
 
+type NavLinkProps = {
+  href: string;
+  active?: boolean;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+};
+
+const NavLink = ({ href, active, children, className = '', onClick }: NavLinkProps) => {
+  const [hovered, setIsHovered] = useState(false);
+  const highlighted = active || hovered;
+
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative inline-flex flex-col items-start cursor-pointer ${className}`}
+    >
+      <span className="transition-colors duration-150" style={{ color: highlighted ? 'var(--color-foreground)' : undefined }}>
+        {children}
+      </span>
+      <motion.span
+        initial={false}
+        animate={{ scaleX: highlighted ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ originX: 0 }}
+        className="block h-px w-full bg-[var(--color-foreground)]"
+      />
+    </a>
+  );
+};
+
 export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string) => pathname === href;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 px-10 py-8 flex justify-between items-center transition-all duration-300">
@@ -22,10 +60,10 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
         <a href="/" aria-label="Hopper home">
           <HopperLogo theme={theme} className="h-8 w-auto" />
         </a>
-        <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-          <a href="/#mission"     className="hover:text-[var(--color-foreground)] transition-colors">Vision</a>
-          <a href="/#segments"    className="hover:text-[var(--color-foreground)] transition-colors">Impact</a>
-          <a href="/#how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">Technology</a>
+        <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
+          <NavLink href="/#mission">Vision</NavLink>
+          <NavLink href="/#segments">Impact</NavLink>
+          <NavLink href="/#how-it-works">Technology</NavLink>
         </div>
       </div>
 
@@ -35,10 +73,10 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
       </a>
 
       {/* Right: secondary links + theme toggle + download */}
-      <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
-        <a href="/how-it-works" className="hover:text-[var(--color-foreground)] transition-colors">How It Works</a>
-        <a href="/pricing"      className="hover:text-[var(--color-foreground)] transition-colors">Pricing</a>
-        <a href="/customers"    className="hover:text-[var(--color-foreground)] transition-colors">Customers</a>
+      <div className="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
+        <NavLink href="/how-it-works" active={isActive('/how-it-works')}>How It Works</NavLink>
+        <NavLink href="/pricing"      active={isActive('/pricing')}>Pricing</NavLink>
+        <NavLink href="/customers"    active={isActive('/customers')}>Customers</NavLink>
         <button
           onClick={toggleTheme}
           className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors"
@@ -74,12 +112,12 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
             exit={{ opacity: 0, y: -20 }}
             className="absolute top-20 left-0 w-full bg-[var(--color-background)] backdrop-blur-xl p-10 flex flex-col gap-8 md:hidden border-b border-[var(--color-surface-border)]"
           >
-            <a href="/#mission"      onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</a>
-            <a href="/#segments"     onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Impact</a>
-            <a href="/#how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Technology</a>
-            <a href="/how-it-works"  onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</a>
-            <a href="/pricing"       onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</a>
-            <a href="/customers"     onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</a>
+            <NavLink href="/#mission"      onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Vision</NavLink>
+            <NavLink href="/#segments"     onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Impact</NavLink>
+            <NavLink href="/#how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Technology</NavLink>
+            <NavLink href="/how-it-works"  active={isActive('/how-it-works')} onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</NavLink>
+            <NavLink href="/pricing"       active={isActive('/pricing')}      onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</NavLink>
+            <NavLink href="/customers"     active={isActive('/customers')}    onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</NavLink>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}

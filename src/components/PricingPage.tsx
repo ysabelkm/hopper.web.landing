@@ -516,22 +516,20 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
               One subscription. Both platforms. Every feature. No towers needed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <motion.button
+              <motion.a
+                href="#"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-10 py-5 bg-blue-600 text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-[0_0_50px_-10px_rgba(1,113,227,0.5)] hover:bg-blue-500 transition-colors"
               >
-                <Download className="w-4 h-4" />
-                Download on iOS
-              </motion.button>
-              <motion.button
+                <img src="/images/appstorebutton.png" alt="Download on the App Store" className="h-10 w-auto" />
+              </motion.a>
+              <motion.a
+                href="#"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-3 px-10 py-5 glass rounded-full font-bold text-sm uppercase tracking-widest"
               >
-                Get on Android
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
+                <img src="/images/playstorebutton.png" alt="Get it on Google Play" className="h-10 w-auto" />
+              </motion.a>
             </div>
           </motion.div>
         </div>
