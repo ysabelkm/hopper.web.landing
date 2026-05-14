@@ -82,7 +82,6 @@ const Hero = () => {
         >
           <PhoneMockup />
           {/* Abstract Hand Overlay (Visual hint via shadow/blur) */}
-          <div className="absolute -inset-20 bg-gradient-to-t from-black/60 to-transparent blur-3xl -z-10" />
           
           {/* Floating Connectivity Badges */}
           <motion.div 
