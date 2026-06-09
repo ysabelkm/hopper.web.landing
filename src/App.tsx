@@ -10,6 +10,7 @@ import { Section } from './components/Section';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { ExpandingCards, CardItem } from './components/ui/expanding-cards';
+import { PartnerButton } from './components/PartnerButton';
 
 
 const Hero = () => {
@@ -202,7 +203,7 @@ const Demo = () => {
                   </div>
                </div>
                <div className="flex items-start gap-4">
-                  <div className="p-2 glass rounded-lg border-current/10"><Zap className="w-4 h-4 text-emerald-500" /></div>
+                  <div className="p-2 glass rounded-lg border-current/10"><Zap className="w-4 h-4 text-white" /></div>
                   <div>
                     <div className="text-sm font-bold uppercase tracking-widest mb-1">Works in crowds</div>
                     <p className="text-xs text-[var(--color-muted)] font-light">Even at a packed festival or protest, Hopper stays fast because it doesn't rely on a tower everyone's fighting over.</p>
@@ -212,7 +213,7 @@ const Demo = () => {
             <div className="flex flex-wrap gap-4">
               <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-[var(--color-foreground)] uppercase tracking-widest border-current/40">Delivered 0.4s</div>
               <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-blue-600 dark:text-blue-500 uppercase tracking-widest border-current/40">Encrypted</div>
-              <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-emerald-700 dark:text-emerald-400 uppercase tracking-widest border-current/40">3 people nearby</div>
+              <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-white uppercase tracking-widest border-current/40">3 people nearby</div>
             </div>
           </div>
           
@@ -438,22 +439,16 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
               viewport={{ once: true }}
               className="max-w-4xl mx-auto"
             >
-          <h2 className="text-5xl md:text-8xl font-bold mb-12 tracking-tight">Stay close to the people who matter.<br />Even when the signal doesn't.</h2>
+          <h2 className="text-5xl md:text-8xl font-bold mb-12 tracking-tight">Ready to hop off the grid?</h2>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
              <motion.button 
                whileHover={{ scale: 1.2 }}
                whileTap={{ scale: 0.8 }}
-               className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold shadow-[0_0_50px_-10px_rgba(1,113,227,0.5)] transition-all text-white"
+               className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold transition-all text-white"
              >
                Download Hopper
              </motion.button>
-             <motion.button 
-               whileHover={{ scale: 1.2 }}
-               whileTap={{ scale: 0.8 }}
-               className="px-12 py-6 glass rounded-full text-lg font-bold hover:bg-white/10 transition-all"
-             >
-               Partner with us
-             </motion.button>
+             <PartnerButton />
           </div>
         </motion.div>
       </Section>

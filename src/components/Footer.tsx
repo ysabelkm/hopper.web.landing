@@ -92,6 +92,7 @@ const NewsletterForm = ({ isDark }: { isDark: boolean }) => {
   );
 };
 
+
 export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
   const isDark = theme === 'dark';
 
@@ -186,11 +187,11 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
             </p>
             <button className="w-full flex items-center justify-center gap-4 px-6 py-2 rounded-xl bg-white hover:bg-[#f0f0f0] text-[#000000] border border-black/10 transition-colors">
               <img src="/icons/appstoreicon.png" alt="" className="w-7 h-7 shrink-0 object-contain" />
-              <span className="font-[Outfit,sans-serif] text-[15px] font-medium tracking-tight">Download on the App Store</span>
+              <span className="text-[14px] font-medium tracking-tight">Download on the App Store</span>
             </button>
             <button className={`w-full flex items-center justify-center gap-4 px-6 py-2 rounded-xl transition-colors ${isDark ? 'bg-[#1c1c1e] hover:bg-[#2a2a2c] border border-white/10 text-white' : 'bg-[#1d1d1f] hover:bg-[#2d2d2f] text-white'}`}>
               <img src="/icons/playstoreicon.png" alt="" className="w-7 h-7 shrink-0 object-contain" />
-              <span className="font-[Outfit,sans-serif] text-[15px] font-medium tracking-tight">Download on Google Play</span>
+              <span className="text-[14px] font-medium tracking-tight">Download on Google Play</span>
             </button>
           </div>
         </div>

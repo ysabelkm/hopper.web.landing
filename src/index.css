@@ -146,3 +146,26 @@ html {
 .mesh-gradient {
   background: radial-gradient(circle at 50% 50%, rgba(1, 113, 227, 0.1) 0%, transparent 50%);
 }
+
+@keyframes flip {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-flip {
+  animation: flip 3s linear infinite;
+}
+
+.animate-rotate {
+  animation: rotate 3s linear infinite;
+}
+
+.mask-gradient {
+  -webkit-mask-image: linear-gradient(black, transparent 50%);
+  mask-image: linear-gradient(black, transparent 50%);
+}
