@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
+import AnimatedTextCycle from './ui/AnimatedTextCycle';
 import { Download, Radio, GitBranch, Shield, ArrowRight, Bluetooth, Wifi, Lock, CheckCircle, MessageCircle, Users, Signal } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { HopperLogo } from './HopperLogo';
@@ -79,8 +80,8 @@ const InstallScreen = ({ active }: { active: boolean }) => (
           <span className="text-[10px] text-white/60 uppercase tracking-widest font-bold">Generating keys</span>
         </div>
         {[
-          { label: "Ed25519 keypair", done: true, delay: 0.7 },
-          { label: "Secure enclave store", done: true, delay: 1.0 },
+          { label: "Identity created locally", done: true, delay: 0.7 },
+          { label: "Stored only on your device", done: true, delay: 1.0 },
           { label: "No account needed", done: true, delay: 1.3 },
         ].map((item, i) => (
           <motion.div
@@ -116,9 +117,9 @@ const InstallScreen = ({ active }: { active: boolean }) => (
 // ── Step 02: Discover — scanning screen with peer list populating ──────────────
 const DiscoverScreen = ({ active }: { active: boolean }) => {
   const peers = [
-    { name: "Node A7F2", rssi: -52, strong: true, delay: 0.5 },
-    { name: "Node 3C8E", rssi: -68, strong: true, delay: 0.9 },
-    { name: "Node B1D0", rssi: -74, strong: false, delay: 1.3 },
+    { name: "amara_k", rssi: -52, strong: true, delay: 0.5 },
+    { name: "kofi.gh", rssi: -68, strong: true, delay: 0.9 },
+    { name: "nneka_21", rssi: -74, strong: false, delay: 1.3 },
   ];
 
   return (
@@ -127,7 +128,7 @@ const DiscoverScreen = ({ active }: { active: boolean }) => {
       <div className="flex-1 flex flex-col px-4 py-3">
         {/* App header */}
         <div className="flex items-center justify-between mb-4">
-          <span className="text-white font-bold text-sm tracking-tight">Nearby Peers</span>
+          <span className="text-white font-bold text-sm tracking-tight">People Nearby</span>
           <motion.div
             animate={active ? { rotate: 360 } : { rotate: 0 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -177,7 +178,7 @@ const DiscoverScreen = ({ active }: { active: boolean }) => {
           transition={{ delay: 1.8 }}
           className="mt-3 text-center text-[9px] text-emerald-400 uppercase tracking-widest font-bold"
         >
-          3 peers · mesh ready
+          3 people nearby · ready
         </motion.div>
       </div>
     </Phone>
@@ -297,8 +298,8 @@ const DeliverScreen = ({ active }: { active: boolean }) => {
             <Users className="w-3.5 h-3.5 text-white" />
           </div>
           <div className="flex-1">
-            <div className="text-[11px] font-bold text-white">Node D9B1</div>
-            <div className="text-[8px] text-emerald-400 uppercase tracking-widest">3 hops · E2E encrypted</div>
+            <div className="text-[11px] font-bold text-white">amara_k</div>
+            <div className="text-[8px] text-emerald-400 uppercase tracking-widest">via 2 nearby devices · encrypted</div>
           </div>
           <Lock className="w-3.5 h-3.5 text-blue-400" />
         </div>
@@ -311,7 +312,7 @@ const DeliverScreen = ({ active }: { active: boolean }) => {
           className="mx-4 mt-3 mb-1 bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 py-2 flex items-center gap-2"
         >
           <Lock className="w-2.5 h-2.5 text-blue-400 shrink-0" />
-          <span className="text-[8px] text-blue-400 uppercase tracking-widest font-bold">AES-256-GCM · Relay nodes cannot read this</span>
+          <span className="text-[8px] text-blue-400 uppercase tracking-widest font-bold">End-to-end encrypted · only you can read this</span>
         </motion.div>
 
         {/* Messages */}
@@ -356,8 +357,8 @@ const STEPS = [
     number: "01",
     label: "Install",
     title: "One app.\nNo sign-up.",
-    desc: "Download Hopper on iOS or Android. No account, no phone number, no email. A cryptographic keypair is generated locally and never leaves your device.",
-    detail: "iOS 15+  ·  Android 10+",
+    desc: "Download Hopper on iOS or Android. No account, no phone number, no email. Just pick a username — your identity lives only on your device, nowhere else.",
+    detail: "iOS 13+  ·  Android 7+",
     icon: Download,
     accent: "blue" as const,
     Screen: InstallScreen,
@@ -366,8 +367,8 @@ const STEPS = [
     number: "02",
     label: "Discover",
     title: "Find peers.\nInstantly.",
-    desc: "Hopper pulses a Bluetooth LE advertisement every 400 ms. Nearby devices respond with a signed hello. A cryptographic handshake completes in under 80 ms — no pairing, no permissions dialog.",
-    detail: "60 m BLE range  ·  80 ms handshake",
+    desc: "Hopper quietly scans for other phones running the app nearby. When it finds one, they introduce themselves automatically — no pairing, no contact sharing, no permissions dialog.",
+    detail: "Up to 60 m range  ·  connects in under a second",
     icon: Radio,
     accent: "blue" as const,
     Screen: DiscoverScreen,
@@ -376,8 +377,8 @@ const STEPS = [
     number: "03",
     label: "Mesh",
     title: "Route around\nanything.",
-    desc: "Every node shares its peer table. Hopper builds a live topology graph and reroutes automatically if a relay drops. The mesh self-heals in under 1.2 seconds.",
-    detail: "1,024 nodes max  ·  1.2 s failover",
+    desc: "Hopper maps out everyone nearby and finds the best path to your recipient. If someone moves out of range, it reroutes through others automatically — you won't even notice.",
+    detail: "Up to 1,024 people  ·  reroutes in ~1 second",
     icon: GitBranch,
     accent: "emerald" as const,
     Screen: MeshScreen,
@@ -386,8 +387,8 @@ const STEPS = [
     number: "04",
     label: "Deliver",
     title: "End-to-end.\nEvery hop.",
-    desc: "Each message is AES-256-GCM encrypted to the recipient's public key before it enters the mesh. Relay nodes are blind couriers — they forward bytes they can never read.",
-    detail: "AES-256-GCM  ·  0 bytes stored at relay",
+    desc: "Each message is sealed before it leaves your phone. The people passing it along can't open it — only the intended recipient can. Nothing is stored anywhere along the way.",
+    detail: "End-to-end encrypted  ·  0 bytes stored at relay",
     icon: Shield,
     accent: "emerald" as const,
     Screen: DeliverScreen,
@@ -428,12 +429,14 @@ const StepCard = ({ step, index }: { step: typeof STEPS[0]; index: number }) => 
       {/* Text side */}
       <div className="flex-1 max-w-lg">
         <div className="flex items-center gap-4 mb-8">
-          <span className="text-[72px] font-bold text-[var(--color-ghost)] leading-none tracking-tighter">{step.number}</span>
+          <span className="text-[72px] font-bold text-[var(--color-faint)] leading-none tracking-tighter">{step.number}</span>
           <div className={cn(
             "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border",
-            accentBlue
-              ? "border-blue-500/30 text-blue-500 bg-blue-500/5"
-              : "border-emerald-500/30 text-emerald-500 bg-emerald-500/5"
+            step.number === "01"
+              ? "border-white/40 text-white bg-white/10"
+              : accentBlue
+                ? "border-blue-500/30 text-blue-500 bg-blue-500/5"
+                : "border-emerald-500/30 text-emerald-500 bg-emerald-500/5"
           )}>
             {step.label}
           </div>
@@ -629,6 +632,43 @@ const HeaderMesh = () => {
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />;
 };
 
+// ── CTA strip ─────────────────────────────────────────────────────────────────
+const CtaStrip = () => (
+  <div className="border-t border-current/10 px-10 md:px-20 py-24">
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+      <div>
+        <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+          Ready to hop off the{" "}
+          <AnimatedTextCycle
+            words={["grid?", "towers?", "internet?", "cloud?", "servers?"]}
+            interval={3000}
+            className="text-3xl md:text-4xl tracking-tight"
+          />
+        </h3>
+        <p className="text-[var(--color-muted)] font-light">Available on iOS and Android. Connect to your community in under 30 seconds.</p>
+      </div>
+      <div className="flex items-center gap-4 shrink-0">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-3 px-8 py-4 bg-[var(--color-foreground)] text-[var(--color-background)] rounded-full font-bold text-sm uppercase tracking-widest"
+        >
+          <Download className="w-4 h-4" />
+          App Store
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-3 px-8 py-4 glass rounded-full font-bold text-sm uppercase tracking-widest"
+        >
+          Google Play
+          <ArrowRight className="w-4 h-4" />
+        </motion.button>
+      </div>
+    </div>
+  </div>
+);
+
 // ── Main export ───────────────────────────────────────────────────────────────
 export const HowItWorks = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -684,8 +724,8 @@ export const HowItWorks = () => {
               className="mt-12 flex flex-wrap gap-4"
             >
               {[
-                { label: "App Store", sub: "iOS 15+" },
-                { label: "Google Play", sub: "Android 10+" },
+                { label: "App Store", sub: "iOS 13+" },
+                { label: "Google Play", sub: "Android 7+" },
               ].map((b, i) => (
                 <div key={i} className="flex items-center gap-3 px-5 py-3 glass rounded-2xl border border-current/10">
                   <Download className="w-4 h-4 text-[var(--color-muted)]" />
@@ -741,32 +781,7 @@ export const HowItWorks = () => {
       </div>
 
       {/* CTA strip */}
-      <div className="border-t border-current/10 px-10 md:px-20 py-24">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-          <div>
-            <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">Ready to hop off the grid?</h3>
-            <p className="text-[var(--color-muted)] font-light">Available on iOS and Android. Join the mesh in under 30 seconds.</p>
-          </div>
-          <div className="flex items-center gap-4 shrink-0">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3 px-8 py-4 bg-[var(--color-foreground)] text-[var(--color-background)] rounded-full font-bold text-sm uppercase tracking-widest"
-            >
-              <Download className="w-4 h-4" />
-              App Store
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3 px-8 py-4 glass rounded-full font-bold text-sm uppercase tracking-widest"
-            >
-              Google Play
-              <ArrowRight className="w-4 h-4" />
-            </motion.button>
-          </div>
-        </div>
-      </div>
+      <CtaStrip />
     </section>
   );
 };

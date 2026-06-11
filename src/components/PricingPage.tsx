@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import AnimatedTextCycle from './ui/AnimatedTextCycle';
+import { PartnerButton } from './PartnerButton';
 import { TopScrollProgress } from './TopScrollProgress';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
@@ -344,7 +346,7 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
               transition={{ delay: 0.5 }}
               className="flex flex-wrap gap-3 mt-12"
             >
-              {["App Store · iOS 15+", "Google Play · Android 10+"].map((label, i) => (
+              {["App Store · iOS 13+", "Google Play · Android 7+"].map((label, i) => (
                 <div key={i} className="flex items-center gap-2 px-4 py-2 glass rounded-full border border-current/10">
                   <Download className="w-3 h-3 text-[var(--color-muted)]" />
                   <span className="text-[10px] uppercase tracking-widest font-bold text-[var(--color-muted)]">{label}</span>
@@ -487,52 +489,32 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="py-32 px-10 md:px-20 border-t border-current/10 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-blue-500/8 blur-[100px] rounded-full" />
-        </div>
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">
-              $2 a month.<br />
-              <span className="flex flex-wrap justify-center">
-                {"Infinite reach.".split(" ").map((word, i) => (
-                  <motion.span
-                    key={i}
-                    whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
-                    className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </span>
-            </h2>
-            <p className="text-[var(--color-muted)] text-xl font-light mb-12 max-w-xl mx-auto">
-              One subscription. Both platforms. Every feature. No towers needed.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <img src="/images/appstorebutton.png" alt="Download on the App Store" className="h-10 w-auto" />
-              </motion.a>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <img src="/images/playstorebutton.png" alt="Get it on Google Play" className="h-10 w-auto" />
-              </motion.a>
-            </div>
-          </motion.div>
-        </div>
+      <section className="py-48 px-10 md:px-20 border-t border-current/10 text-center relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <h2 className="text-5xl md:text-8xl font-bold mb-12 tracking-tight">
+            Ready to hop off the{" "}
+            <AnimatedTextCycle
+              words={["grid?", "towers?", "internet?", "cloud?", "servers?"]}
+              interval={3000}
+              className="text-5xl md:text-8xl tracking-tight"
+            />
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <motion.button
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold transition-all text-white"
+            >
+              Download Hopper
+            </motion.button>
+            <PartnerButton />
+          </div>
+        </motion.div>
       </section>
 
       <Footer theme={theme} />

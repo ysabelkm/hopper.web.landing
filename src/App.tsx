@@ -10,7 +10,7 @@ import { Section } from './components/Section';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { ExpandingCards, CardItem } from './components/ui/expanding-cards';
-import { PartnerButton } from './components/PartnerButton';
+// PartnerButton removed — using App Store / Play Store icons directly in CTA
 
 
 const Hero = () => {
@@ -433,22 +433,45 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
 
       {/* Final CTA */}
       <Section className="py-48 px-10 md:px-20 text-center relative overflow-hidden">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-4xl mx-auto"
-            >
-          <h2 className="text-5xl md:text-8xl font-bold mb-12 tracking-tight">Ready to hop off the grid?</h2>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">
+            $2 a month.<br />
+            <span className="flex flex-wrap justify-center">
+              {"Infinite reach.".split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
+                  className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </h2>
+          <p className="text-[var(--color-muted)] text-xl font-light mb-12 max-w-xl mx-auto">
+            One subscription. Both platforms. Every feature. No towers needed.
+          </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-             <motion.button 
-               whileHover={{ scale: 1.2 }}
-               whileTap={{ scale: 0.8 }}
-               className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold transition-all text-white"
-             >
-               Download Hopper
-             </motion.button>
-             <PartnerButton />
+            <a
+              href="#"
+              className="transform hover:scale-105 transition"
+              aria-label="Download on the App Store"
+            >
+              <img src="/images/appstorebutton.png" alt="App Store" className="h-14" />
+            </a>
+
+            <a
+              href="#"
+              className="transform hover:scale-105 transition"
+              aria-label="Get it on Google Play"
+            >
+              <img src="/images/playstorebutton.png" alt="Google Play" className="h-14" />
+            </a>
           </div>
         </motion.div>
       </Section>
