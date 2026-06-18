@@ -440,7 +440,7 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
           className="max-w-4xl mx-auto"
         >
           <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">
-            $2 a month.<br />
+            $1 a month.<br />
             <span className="flex flex-wrap justify-center">
               {"Infinite reach.".split(" ").map((word, i) => (
                 <motion.span

@@ -67,9 +67,9 @@ const Toggle = ({ yearly, onChange }: { yearly: boolean; onChange: (v: boolean) 
 
 // ── Main plan card ────────────────────────────────────────────────────────────
 const PlanCard = ({ yearly }: { yearly: boolean }) => {
-  const price = yearly ? 22 : 2;
+  const price = yearly ? 11 : 1;
   const period = yearly ? "year" : "month";
-  const perMonth = yearly ? (22 / 12).toFixed(2) : null;
+  const perMonth = yearly ? (11 / 12).toFixed(2) : null;
 
   return (
     <motion.div
@@ -399,7 +399,7 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
                 role: "Event coordinator",
               },
               {
-                quote: "$2 a month is nothing for the peace of mind. We deployed it across our rural health clinics — it just works.",
+                quote: "$1 a month is nothing for the peace of mind. We deployed it across our rural health clinics — it just works.",
                 name: "Dr. Kwame A.",
                 role: "NGO field director",
               },

@@ -96,7 +96,7 @@ const TESTIMONIALS = [
     accent: "blue",
   },
   {
-    quote: "The $2/month price made it easy to roll out across our entire volunteer network. No budget approval needed — anyone can just subscribe.",
+    quote: "The $1/month price made it easy to roll out across our entire volunteer network. No budget approval needed — anyone can just subscribe.",
     name: "Tobias N.",
     role: "Operations, Red Cross chapter",
     accent: "emerald",
@@ -433,7 +433,7 @@ export const CustomersPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark'
               </span>
             </h2>
             <p className="text-[var(--color-muted)] text-xl font-light mb-12 max-w-xl mx-auto">
-              Join 50,000+ nodes already on the mesh. $2/month. No towers needed.
+              Join 50,000+ nodes already on the mesh. $1/month. No towers needed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
