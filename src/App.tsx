@@ -44,13 +44,14 @@ const Hero = () => {
             Hopper lets you chat, share files, and stay in touch with people nearby — no SIM card, no Wi-Fi, no data needed. Just you and the people around you.
           </p>
           <div className="flex flex-wrap items-center gap-8">
-            <motion.button
+            <motion.a
+              href="#pricing"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.8 }}
               className="bg-[var(--color-foreground)] text-[var(--color-background)] px-12 py-5 rounded-full font-bold text-sm uppercase tracking-widest transition-transform flex items-center gap-3 shadow-[0_0_30px_rgba(var(--color-foreground),0.1)]"
             >
               Get Started <ArrowRight className="w-4 h-4" />
-            </motion.button>
+            </motion.a>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -85,7 +86,7 @@ const Hero = () => {
           className="relative lg:w-2/5 flex justify-center"
         >
           <img
-            src="/herosection.png"
+            src="/mockups/herosection.png"
             alt="Hopper app screens"
             className="w-full h-auto object-contain drop-shadow-2xl scale-[1.4]"
           />
@@ -94,7 +95,7 @@ const Hero = () => {
       </div>
 
       <div className="absolute bottom-12 left-10 md:left-20 flex flex-col items-start gap-4">
-<div className="w-64 h-px bg-white/10 relative overflow-hidden">
+        <div className="w-64 h-px bg-white/10 relative overflow-hidden">
           <motion.div 
             animate={{ left: ["-100%", "100%"] }}
             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
@@ -188,7 +189,7 @@ const Demo = () => {
       <div className="flex flex-col gap-64 px-10 md:px-20 max-w-7xl mx-auto">
         {/* Scenario 1 - Messaging */}
         <div className="flex flex-col lg:flex-row items-center gap-32">
-          <div className="flex-1">
+          <div className="w-full lg:w-1/2 lg:flex-none">
             <div className="w-12 h-px bg-blue-500 mb-8" />
             <h3 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">Messages find their way</h3>
             <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed mb-10">
@@ -287,8 +288,8 @@ const Demo = () => {
         </div>
 
         {/* Scenario 02 - Zero Cloud */}
-        <div className="flex flex-col lg:flex-row-reverse items-center gap-32">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row-reverse items-center lg:items-end gap-32">
+          <div className="w-full lg:w-1/2 lg:flex-none">
              <div className="w-12 h-px bg-blue-500 mb-8" />
              <h3 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">Your messages stay yours</h3>
              <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed mb-10">
@@ -311,18 +312,21 @@ const Demo = () => {
              </ul>
           </div>
           
-          <div className="flex-1 relative" style={{ marginLeft: 'calc(-1 * (50vw - 50%))' }}>
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="translate-x-[10%]"
-            >
+          <div
+            className="w-full lg:w-[50vw] lg:flex-none relative self-stretch flex items-end"
+            style={{ marginLeft: 'calc(-1 * (50vw - 50%))' }}
+          >
+            <div className="relative z-10">
               <img
-                src="/holdingphonemockup.png"
+                src="/mockups/holdingphone.png"
                 alt="Hopper app"
-                className="w-full h-auto object-contain object-left scale-[1.2]"
+                className="block w-full h-auto object-contain object-left"
               />
-            </motion.div>
+              <div
+                className="h-px bg-white/20"
+                style={{ width: '70vw', marginTop: '-1px', marginLeft: 'calc(50% - 50vw)' }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -432,7 +436,7 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
       <Demo />
 
       {/* Final CTA */}
-      <Section className="py-48 px-10 md:px-20 text-center relative overflow-hidden">
+      <Section id="pricing" className="py-48 px-10 md:px-20 text-center relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -440,7 +444,7 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
           className="max-w-4xl mx-auto"
         >
           <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">
-            $1 a month.<br />
+            ₦867 a month.<br />
             <span className="flex flex-wrap justify-center">
               {"Infinite reach.".split(" ").map((word, i) => (
                 <motion.span

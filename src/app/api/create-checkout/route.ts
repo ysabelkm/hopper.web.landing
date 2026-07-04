@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Forwards to Supabase's create-checkout-link Edge Function (which holds the
-// Paystack secret). The browser only ever talks to this route, never to
-// Supabase or Paystack directly.
+// Flutterwave secret). The browser only ever talks to this route, never to
+// Supabase or Flutterwave directly.
 
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
-  let body: { device_id?: string; email?: string; plan?: string };
+  let body: { device_id?: string; email?: string; plan?: string; auto_renew?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
   }
 
   const { device_id, email, plan } = body;
+  const autoRenew = body.auto_renew !== false; // default on
   if (!device_id || !/^[0-9a-fA-F]{64}$/.test(device_id)) {
     return NextResponse.json({ error: 'invalid_device_id' }, { status: 400 });
   }
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
     const resp = await fetch(`${base}/functions/v1/create-checkout-link`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device_id: device_id.toLowerCase(), email, plan }),
+      body: JSON.stringify({ device_id: device_id.toLowerCase(), email, plan, auto_renew: autoRenew }),
       cache: 'no-store',
     });
     const data = await resp.json();

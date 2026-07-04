@@ -1,6 +1,6 @@
 export const metadata = { title: 'Payment received — Hopper' };
 
-// Paystack redirects here after a successful checkout. Informational only — the
+// Flutterwave redirects here after a successful checkout. Informational only — the
 // webhook (server-to-server) is what actually grants entitlement, so we tell
 // the user to reopen the app where it'll update within a few seconds.
 export default function SuccessPage() {

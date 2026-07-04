@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
       plan: payload?.plan ?? null,
       periodEnd: payload?.period_end ?? null,
       graceUntil: payload?.grace_until ?? null,
+      autoRenew: data?.auto_renew ?? null,
     });
   } catch {
     return NextResponse.json({ error: 'upstream_error' }, { status: 502 });

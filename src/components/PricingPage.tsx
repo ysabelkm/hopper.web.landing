@@ -67,9 +67,9 @@ const Toggle = ({ yearly, onChange }: { yearly: boolean; onChange: (v: boolean) 
 
 // ── Main plan card ────────────────────────────────────────────────────────────
 const PlanCard = ({ yearly }: { yearly: boolean }) => {
-  const price = yearly ? 11 : 1;
+  const price = yearly ? "₦9,500" : "₦867";
   const period = yearly ? "year" : "month";
-  const perMonth = yearly ? (11 / 12).toFixed(2) : null;
+  const perMonth = yearly ? "₦792" : null;
 
   return (
     <motion.div
@@ -109,7 +109,7 @@ const PlanCard = ({ yearly }: { yearly: boolean }) => {
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   className="text-7xl md:text-8xl font-bold tracking-tighter leading-none"
                 >
-                  ${price}
+                  {price}
                 </motion.span>
               </AnimatePresence>
               <div className="mb-3">
@@ -124,7 +124,7 @@ const PlanCard = ({ yearly }: { yearly: boolean }) => {
                   exit={{ opacity: 0, height: 0 }}
                   className="text-[var(--color-muted)] text-sm font-light"
                 >
-                  That's just <span className="text-[var(--color-foreground)] font-bold">${perMonth}</span>/month
+                  That's just <span className="text-[var(--color-foreground)] font-bold">{perMonth}</span>/month
                 </motion.p>
               )}
             </AnimatePresence>
@@ -227,7 +227,7 @@ const FAQS = [
   },
   {
     q: "Is my payment data stored by Hopper?",
-    a: "Never. Payments are handled securely by Paystack — we never see or store your card details.",
+    a: "Never. Payments are handled securely by Flutterwave — we never see or store your card details.",
   },
   {
     q: "What happens if I let my subscription lapse?",

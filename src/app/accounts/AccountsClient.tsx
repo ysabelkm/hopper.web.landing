@@ -9,11 +9,12 @@ interface Status {
   plan: string | null;
   periodEnd: string | null;
   graceUntil: string | null;
+  autoRenew: boolean | null;
 }
 
 const PRICES: Record<Plan, { label: string; price: string; sub: string }> = {
-  annual: { label: 'Annual', price: '₦17,000', sub: '₦1,417/month · billed yearly' },
-  monthly: { label: 'Monthly', price: '₦1,550', sub: 'billed monthly' },
+  annual: { label: 'Annual', price: '₦9,500', sub: '₦792/month · billed yearly' },
+  monthly: { label: 'Monthly', price: '₦867', sub: 'billed monthly' },
 };
 
 function getDeviceId(): string {
@@ -25,10 +26,13 @@ export function AccountsClient() {
   const [deviceId, setDeviceId] = useState('');
   const [email, setEmail] = useState('');
   const [plan, setPlan] = useState<Plan>('annual');
+  const [autoRenew, setAutoRenew] = useState(true);
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [managing, setManaging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     const id = getDeviceId();
@@ -57,7 +61,7 @@ export function AccountsClient() {
       const resp = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ device_id: deviceId, email, plan }),
+        body: JSON.stringify({ device_id: deviceId, email, plan, auto_renew: autoRenew }),
       });
       const data = await resp.json();
       if (!resp.ok || !data.checkout_url) {
@@ -69,6 +73,36 @@ export function AccountsClient() {
     } catch {
       setError('Network error. Please try again.');
       setSubmitting(false);
+    }
+  }
+
+  async function toggleAutoRenew() {
+    if (!status) return;
+    const action = status.autoRenew ? 'disable' : 'enable';
+    setManaging(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const resp = await fetch('/api/manage-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id: deviceId, action }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        setError('Could not update auto-renewal. Please try again.');
+      } else {
+        setStatus({ ...status, autoRenew: data.auto_renew });
+        setNotice(
+          data.auto_renew
+            ? 'Auto-renewal is on. Your subscription will renew automatically.'
+            : 'Auto-renewal is off. You keep access until your current period ends.',
+        );
+      }
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setManaging(false);
     }
   }
 
@@ -101,6 +135,37 @@ export function AccountsClient() {
         <p className="mt-3 text-white/50">Checking your subscription…</p>
       ) : (
         statusLine && <p className="mt-3 text-white/60">{statusLine}</p>
+      )}
+
+      {/* Manage panel — only when this device has an active subscription. */}
+      {!loading && status?.hasSubscription && (
+        <div className="mt-6 rounded-2xl border border-white/12 bg-white/[0.04] p-5">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="font-medium text-white">Auto-renewal</p>
+              <p className="mt-1 text-sm text-white/50">
+                {status.autoRenew
+                  ? 'Renews automatically each period.'
+                  : 'Will not renew — access ends after the current period.'}
+              </p>
+            </div>
+            <button
+              onClick={toggleAutoRenew}
+              disabled={managing}
+              aria-pressed={!!status.autoRenew}
+              className={`relative h-7 w-12 shrink-0 rounded-full transition disabled:opacity-50 ${
+                status.autoRenew ? 'bg-emerald-500' : 'bg-white/20'
+              }`}
+            >
+              <span
+                className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${
+                  status.autoRenew ? 'left-6' : 'left-1'
+                }`}
+              />
+            </button>
+          </div>
+          {notice && <p className="mt-3 text-sm text-white/60">{notice}</p>}
+        </div>
       )}
 
       <div className="mt-8 space-y-3">
@@ -142,6 +207,16 @@ export function AccountsClient() {
         className="mt-5 w-full rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-4 text-white placeholder-white/40 outline-none focus:border-white/40"
       />
 
+      <label className="mt-4 flex cursor-pointer items-center gap-3 text-sm text-white/70">
+        <input
+          type="checkbox"
+          checked={autoRenew}
+          onChange={(e) => setAutoRenew(e.target.checked)}
+          className="h-4 w-4 rounded border-white/30 bg-white/10 accent-emerald-500"
+        />
+        Automatically renew my subscription (you can turn this off any time)
+      </label>
+
       {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
 
       <button
@@ -153,7 +228,7 @@ export function AccountsClient() {
       </button>
 
       <p className="mt-4 text-center text-xs text-white/40">
-        Secure payment via Paystack. You’ll be redirected to complete checkout.
+        Secure payment via Flutterwave. You’ll be redirected to complete checkout.
       </p>
     </Shell>
   );
