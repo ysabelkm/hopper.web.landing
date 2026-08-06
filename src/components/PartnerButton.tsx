@@ -11,11 +11,12 @@ export function PartnerButton({ className, onClick }: PartnerButtonProps) {
     <motion.button
       onClick={onClick}
       className={cn(
-        "px-12 py-5 glass rounded-full text-lg font-bold hover:bg-white/10 transition-all cursor-pointer",
+        "w-full sm:w-auto min-w-64 px-10 py-5 bg-transparent border border-current/20 rounded-2xl text-base font-semibold hover:bg-current/5 hover:border-current/40 transition-colors cursor-pointer shadow-none backdrop-blur-none",
         className
       )}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ y: -2 }}
+      whileTap={{ y: 0, scale: 0.98 }}
+      transition={{ duration: 0.2 }}
     >
       Partner with us
     </motion.button>

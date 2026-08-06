@@ -504,12 +504,14 @@ export const PricingPage = ({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
               className="text-5xl md:text-8xl tracking-tight"
             />
           </h2>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <motion.button
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
-              className="px-12 py-6 bg-blue-600 rounded-full text-lg font-bold transition-all text-white"
+              whileHover={{ y: -2 }}
+              whileTap={{ y: 0, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="w-full sm:w-auto min-w-64 px-10 py-5 bg-blue-600 hover:bg-blue-700 rounded-2xl text-base font-semibold transition-colors text-white shadow-none flex items-center justify-center gap-3"
             >
+              <Download className="w-5 h-5" />
               Download Hopper
             </motion.button>
             <PartnerButton />

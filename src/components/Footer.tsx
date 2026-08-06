@@ -10,10 +10,10 @@ const columns: { heading: string; links: FooterLink[] }[] = [
   {
     heading: 'Company',
     links: [
-      { label: 'About Us',  href: '#' },
-      { label: 'The Team',  href: '#' },
-      { label: 'Manifesto', href: '#' },
-      { label: 'Careers',   href: '#' },
+      { label: 'About Us',  href: '/about' },
+      { label: 'The Team',  href: '/team' },
+      { label: 'Manifesto', href: '/manifesto' },
+      { label: 'Careers',   href: '/careers' },
       { label: 'Support',   href: '/support' },
     ],
   },
@@ -56,12 +56,30 @@ const columns: { heading: string; links: FooterLink[] }[] = [
 const NewsletterForm = ({ isDark }: { isDark: boolean }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const inputBg = isDark ? 'bg-[#2a2a2c] border-white/10 text-[var(--color-foreground)] placeholder:text-[var(--color-faint)]' : 'bg-[#f5f5f7] border-black/8 text-[var(--color-foreground)] placeholder:text-[var(--color-faint)]';
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (email) setSubmitted(true);
+    if (!email || loading) return;
+    setLoading(true);
+    setError('');
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Could not subscribe');
+      setSubmitted(true);
+    } catch {
+      setError('We could not add you right now. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -73,7 +91,7 @@ const NewsletterForm = ({ isDark }: { isDark: boolean }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 max-w-sm">
+    <form onSubmit={handleSubmit} className="flex flex-wrap items-center gap-2 max-w-sm">
       <input
         type="email"
         value={email}
@@ -84,10 +102,12 @@ const NewsletterForm = ({ isDark }: { isDark: boolean }) => {
       />
       <button
         type="submit"
-        className="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors shrink-0"
+        disabled={loading}
+        className="px-5 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white text-sm font-medium transition-colors shrink-0"
       >
-        Subscribe
+        {loading ? 'Joining…' : 'Subscribe'}
       </button>
+      {error && <p className="basis-full text-xs text-red-400 mt-1">{error}</p>}
     </form>
   );
 };

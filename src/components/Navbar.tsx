@@ -76,7 +76,6 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
       <div className="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-medium text-[var(--color-muted)]">
         <NavLink href="/how-it-works" active={isActive('/how-it-works')}>How It Works</NavLink>
         <NavLink href="/pricing"      active={isActive('/pricing')}>Pricing</NavLink>
-        <NavLink href="/customers"    active={isActive('/customers')}>Customers</NavLink>
         <button
           onClick={toggleTheme}
           className="p-2 border border-current/10 rounded-full hover:bg-current/5 transition-colors"
@@ -84,13 +83,14 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
-        <motion.button
+        <motion.a
+          href="/#pricing"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="px-6 py-2 border border-current/20 rounded-full text-[10px] uppercase tracking-widest hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)] transition-all"
         >
           Download
-        </motion.button>
+        </motion.a>
       </div>
 
       {/* Mobile: theme + hamburger */}
@@ -117,14 +117,15 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
             <NavLink href="/#how-it-works" onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Technology</NavLink>
             <NavLink href="/how-it-works"  active={isActive('/how-it-works')} onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">How It Works</NavLink>
             <NavLink href="/pricing"       active={isActive('/pricing')}      onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Pricing</NavLink>
-            <NavLink href="/customers"     active={isActive('/customers')}    onClick={() => setIsOpen(false)} className="text-3xl font-light tracking-tight">Customers</NavLink>
-            <motion.button
+            <motion.a
+              href="/#pricing"
+              onClick={() => setIsOpen(false)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-5 bg-[var(--color-foreground)] text-[var(--color-background)] rounded-lg font-bold uppercase tracking-widest text-xs"
+              className="w-full py-5 bg-[var(--color-foreground)] text-[var(--color-background)] rounded-lg font-bold uppercase tracking-widest text-xs text-center"
             >
               Download Hopper
-            </motion.button>
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll } from 'motion/react';
-import { Bluetooth, Zap, Users, ArrowRight, Radio, GraduationCap, HeartHandshake, Music } from 'lucide-react';
+import { ArrowRight, Radio, GraduationCap, HeartHandshake, Music } from 'lucide-react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Video02Icon } from '@hugeicons/core-free-icons';
 import { useState, useEffect } from 'react';
@@ -165,129 +165,8 @@ const Segments = () => {
 const Demo = () => {
   return (
     <Section id="how-it-works" className="py-48 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent">
-      <div className="max-w-7xl mx-auto px-10 md:px-20 mb-32">
-        <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-8 block text-[var(--color-faint)]">How it works</span>
-        <h2 className="text-5xl md:text-[110px] leading-[0.9] font-bold tracking-tighter mb-10 py-2">
-          Simple to use.<br />
-          <span className="flex flex-wrap">
-            {"Powerful when it matters.".split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                whileHover={{ scale: 1.05 }}
-                className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-        </h2>
-        <p className="max-w-2xl text-[var(--color-muted)] text-lg md:text-xl font-light leading-relaxed">
-          Open Hopper. See who's nearby. Start chatting. When you're too far apart, other Hopper users in between quietly pass the message along — like a chain of hands.
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-64 px-10 md:px-20 max-w-7xl mx-auto">
-        {/* Scenario 1 - Messaging */}
-        <div className="flex flex-col lg:flex-row items-center gap-32">
-          <div className="w-full lg:w-1/2 lg:flex-none">
-            <div className="w-12 h-px bg-blue-500 mb-8" />
-            <h3 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">Messages find their way</h3>
-            <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed mb-10">
-              Hopper works like a neighbourhood. If you can't reach someone directly, someone nearby passes the message along. No towers. No internet. No middleman.
-            </p>
-            <div className="space-y-6 mb-12">
-               <div className="flex items-start gap-4">
-                  <div className="p-2 glass rounded-lg border-current/10"><Bluetooth className="w-4 h-4 text-blue-500" /></div>
-                  <div>
-                    <div className="text-sm font-bold uppercase tracking-widest mb-1">Finds people nearby</div>
-                    <p className="text-xs text-[var(--color-muted)] font-light">Hopper quietly scans for other users in range. When it finds someone, you're connected instantly.</p>
-                  </div>
-               </div>
-               <div className="flex items-start gap-4">
-                  <div className="p-2 glass rounded-lg border-current/10"><Zap className="w-4 h-4 text-white" /></div>
-                  <div>
-                    <div className="text-sm font-bold uppercase tracking-widest mb-1">Works in crowds</div>
-                    <p className="text-xs text-[var(--color-muted)] font-light">Even at a packed festival or protest, Hopper stays fast because it doesn't rely on a tower everyone's fighting over.</p>
-                  </div>
-               </div>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-[var(--color-foreground)] uppercase tracking-widest border-current/40">Delivered 0.4s</div>
-              <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-blue-600 dark:text-blue-500 uppercase tracking-widest border-current/40">Encrypted</div>
-              <div className="px-5 py-2 glass rounded-full text-[10px] font-mono text-white uppercase tracking-widest border-current/40">3 people nearby</div>
-            </div>
-          </div>
-          
-          <div className="flex-1 relative w-full h-[600px]">
-            <div className="absolute inset-0 bg-white/[0.05] dark:bg-white/[0.02] backdrop-blur-3xl rounded-[60px] border border-current/10 shadow-2xl overflow-hidden p-12">
-              <div className="flex justify-between items-center mb-16 border-b border-current/10 pb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
-                  <span className="text-xs uppercase font-bold tracking-[0.2em] text-[var(--color-muted)] text-glow">Signal Active</span>
-                </div>
-                <div className="flex flex-col items-end">
-                   <span className="text-[10px] font-mono text-[var(--color-faint)] tracking-widest">Signal Active</span>
-                   <span className="text-[8px] font-mono text-blue-600 dark:text-blue-400">Encrypted</span>
-                </div>
-              </div>
-              
-              <div className="space-y-10">
-                <motion.div 
-                   initial={{ x: -20, opacity: 0 }}
-                   whileInView={{ x: 0, opacity: 1 }}
-                   viewport={{ once: true }}
-                   className="bg-current/5 p-6 rounded-3xl rounded-tl-none max-w-[85%] border border-current/10"
-                >
-                  <p className="text-sm font-light text-[var(--color-muted)] leading-relaxed italic">"Are you guys at the stage yet? Signal is gone up here 😭"</p>
-                </motion.div>
-                
-                <motion.div 
-                   initial={{ x: 20, opacity: 0 }}
-                   whileInView={{ x: 0, opacity: 1 }}
-                   viewport={{ once: true }}
-                   transition={{ delay: 0.4 }}
-                   className="bg-blue-100 dark:bg-blue-600/10 p-6 rounded-3xl rounded-tr-none border border-blue-300/50 dark:border-blue-500/20 ml-auto max-w-[90%] shadow-[0_8px_24px_-14px_rgba(1,113,227,0.2)]"
-                >
-                  <p className="text-sm leading-relaxed font-light signal-bubble-text">Yeah! Walk towards the big screen — Amara and I are right there, I'll send you our exact spot.</p>
-                </motion.div>
-                
-                <div className="pt-16 flex flex-col items-center gap-8">
-                   <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                   <div className="flex gap-8 items-center">
-                      <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center opacity-30 shadow-inner">
-                        <Users className="w-5 h-5" />
-                      </div>
-                      <motion.div 
-                        animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_30px_rgba(1,113,227,1)]" 
-                      />
-                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-[0_15px_40px_rgba(255,255,255,0.2)]">
-                        <ArrowRight className="w-6 h-6 text-black" />
-                      </div>
-                   </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute -bottom-8 -left-8 bg-[var(--color-background)] border border-current/10 p-8 rounded-[40px] shadow-2xl w-64 hidden md:block backdrop-blur-xl">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[var(--color-muted)] mb-5 font-bold">Connection status</p>
-              <div className="flex items-center gap-4">
-                <div className="w-3.5 h-3.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(1,113,227,0.5)]" />
-                <div className="h-px flex-1 bg-current/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-current/20" />
-                <div className="h-px flex-1 bg-current/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-current/20" />
-              </div>
-              <div className="flex justify-between mt-5 text-[11px] font-mono text-[var(--color-muted)] tracking-tighter uppercase leading-none">
-                 <span>Status</span>
-                 <span className="text-blue-600 dark:text-blue-400">Synced</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scenario 02 - Zero Cloud */}
+      <div className="px-10 md:px-20 max-w-7xl mx-auto">
+        {/* Zero Cloud */}
         <div className="flex flex-col lg:flex-row-reverse items-center lg:items-end gap-32">
           <div className="w-full lg:w-1/2 lg:flex-none">
              <div className="w-12 h-px bg-blue-500 mb-8" />
