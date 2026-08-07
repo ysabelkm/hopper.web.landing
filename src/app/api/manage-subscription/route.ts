@@ -29,7 +29,12 @@ export async function POST(req: NextRequest) {
   try {
     const resp = await fetch(`${base}/functions/v1/manage-subscription`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        // Authenticates this proxy to the Edge Function (see HOPPER_PROXY_SECRET
+        // in the Supabase env). The browser never sees this value.
+        'x-hopper-proxy-secret': process.env.HOPPER_PROXY_SECRET ?? '',
+      },
       body: JSON.stringify({ device_id: device_id.toLowerCase(), action }),
       cache: 'no-store',
     });

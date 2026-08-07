@@ -5,7 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 // human-readable status for the /accounts page to display.
 //
 // Env (Vercel project settings, server-side only):
-//   SUPABASE_URL  — e.g. https://<ref>.supabase.co  (no /functions/v1 suffix)
+//   SUPABASE_URL          — e.g. https://<ref>.supabase.co  (no /functions/v1 suffix)
+//   HOPPER_PROXY_SECRET   — shared secret authenticating this proxy to the
+//                           Edge Functions (must match the Supabase env var of
+//                           the same name; requests are rejected without it)
 
 export const runtime = 'nodejs';
 
@@ -42,10 +45,22 @@ export async function GET(req: NextRequest) {
   try {
     const resp = await fetch(`${base}/functions/v1/check-entitlement`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hopper-proxy-secret': process.env.HOPPER_PROXY_SECRET ?? '',
+      },
       body: JSON.stringify({ device_id: deviceId.toLowerCase() }),
       cache: 'no-store',
     });
+    // An upstream failure must NOT be reported as "no subscription": a 401 or
+    // 500 body has no `token`, which would otherwise decode to null and tell a
+    // paying customer they have nothing. Only a 200 means the answer is real.
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => null);
+      console.error('device-status upstream failed:', resp.status, err?.error);
+      return NextResponse.json({ error: 'upstream_error' }, { status: 502 });
+    }
+
     const data = await resp.json();
     const payload = decodePayload(data?.token ?? null);
 
