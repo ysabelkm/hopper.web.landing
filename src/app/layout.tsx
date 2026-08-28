@@ -19,7 +19,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=League+Spartan:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
         <link rel="icon" href="/hopper_icon_black.png" type="image/png" sizes="any" media="(prefers-color-scheme: light)" />
         <link rel="icon" href="/hopper_icon_white.png" type="image/png" sizes="any" media="(prefers-color-scheme: dark)" />
         <link rel="shortcut icon" href="/hopper_icon_black.png" type="image/png" />

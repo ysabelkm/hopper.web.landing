@@ -34,7 +34,7 @@ const FAQS = [
   },
   {
     q: 'Is my payment data stored by Hopper?',
-    a: 'Never. Payments are handled by Flutterwave — your card details never reach us, and there is no account record to leak.',
+    a: 'Your card details are handled entirely by Flutterwave and never reach us. For a paid plan we keep only your name and email against the subscription — nothing about who you message or what you send.',
   },
   {
     q: 'What happens if my subscription lapses?',

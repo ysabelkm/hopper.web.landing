@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { HopperLogo } from './HopperLogo';
 
-type FooterLink = { label: string; href: string };
+type FooterLink = { label: string; href: string; external?: boolean };
 
 /** Columns whose entries are links… */
 const LINK_COLUMNS: { heading: string; links: FooterLink[] }[] = [
@@ -42,9 +43,9 @@ const TAIL_COLUMNS: { heading: string; links: FooterLink[] }[] = [
   {
     heading: 'Socials',
     links: [
-      { label: 'Twitter / X', href: '#' },
-      { label: 'LinkedIn',    href: '#' },
-      { label: 'Instagram',   href: '#' },
+      { label: 'Twitter / X', href: '#', external: true },
+      { label: 'LinkedIn',    href: '#', external: true },
+      { label: 'Instagram',   href: '#', external: true },
     ],
   },
 ];
@@ -52,6 +53,23 @@ const TAIL_COLUMNS: { heading: string; links: FooterLink[] }[] = [
 const HEADING = 'm-0 text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-faint)]';
 const ITEM = 'text-sm font-light text-[var(--color-muted)]';
 const LINK = `${ITEM} transition-colors hover:text-[var(--color-foreground)]`;
+function FooterAnchor({ link }: { link: FooterLink }) {
+  if (!link.external) {
+    return <a href={link.href} className={LINK}>{link.label}</a>;
+  }
+  return (
+    <a
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${LINK} inline-flex items-center gap-1.5`}
+    >
+      {link.label}
+      <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+    </a>
+  );
+}
+
 const RULE_LABEL = 'shrink-0 text-[11px] font-medium uppercase tracking-[0.25em] text-[var(--color-faint)]';
 
 /** A section label sitting inside a dashed hairline rule. */
@@ -142,7 +160,7 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
               <div key={col.heading} className="flex flex-col gap-3">
                 <h6 className={HEADING}>{col.heading}</h6>
                 {col.links.map(link => (
-                  <a key={link.label} href={link.href} className={LINK}>{link.label}</a>
+                  <FooterAnchor key={link.label} link={link} />
                 ))}
               </div>
             ))}
@@ -158,7 +176,7 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
               <div key={col.heading} className="flex flex-col gap-3">
                 <h6 className={HEADING}>{col.heading}</h6>
                 {col.links.map(link => (
-                  <a key={link.label} href={link.href} className={LINK}>{link.label}</a>
+                  <FooterAnchor key={link.label} link={link} />
                 ))}
               </div>
             ))}
@@ -174,7 +192,15 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
           <SectionRule label="Credit" />
 
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 pt-3 pb-4">
-            <span className="text-[11px] text-[var(--color-faint)]">© 2026 Hopper Africa. All rights reserved.</span>
+            <span className="text-[11px] text-[var(--color-faint)]">
+              © 2026 HopperAfrica by{' '}
+              <span
+                className="text-white"
+                style={{ fontFamily: '"League Spartan", ui-sans-serif, system-ui, sans-serif' }}
+              >
+                KambiliTech
+              </span>
+            </span>
             <span className="text-[11px] italic text-[var(--color-faint)]">
               built for the moments that matter — Team Hopper
             </span>

@@ -80,10 +80,13 @@ export const StickyPanelList = ({ rows, fit = 'cover', variant = 'steps' }: Stic
 
       <div
         className={cn(
-          'relative hidden aspect-[4/5] overflow-hidden rounded-[20px] border border-[var(--color-surface-border)] bg-[var(--color-surface-1)] lg:sticky lg:block',
+          'hidden aspect-[4/5] place-items-center lg:sticky lg:grid',
           isSteps ? 'lg:top-[130px]' : 'lg:top-[120px]',
         )}
       >
+        {/* Phone frame: the mockups are screenshots, so they sit inside a device
+            shell rather than floating on the panel. */}
+        <div className="relative h-full max-h-full w-auto overflow-hidden rounded-[2.25rem] border-[3px] border-[var(--color-foreground)]/85 bg-[var(--color-surface-1)] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.55)] aspect-[9/19.5]">
         {rows.map((row, i) => (
           <div
             key={row.num}
@@ -113,6 +116,7 @@ export const StickyPanelList = ({ rows, fit = 'cover', variant = 'steps' }: Stic
             )}
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

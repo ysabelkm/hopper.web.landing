@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TopScrollProgress } from './TopScrollProgress';
 import { Footer } from './Footer';
 import { Navbar } from './Navbar';
 import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
@@ -323,7 +322,6 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       {/* ── Hero ── */}

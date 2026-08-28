@@ -14,38 +14,37 @@ const STEPS: PanelRow[] = [
   {
     num: "01",
     title: "Install",
-    desc: "Download Hopper, pick a username and an avatar. That pair is all people nearby ever see — no phone number, no email, no account.",
+    desc: "Download Hopper, pick a username and an avatar. That pair is all people nearby ever see — no phone number, no social account, nothing tied to your real name.",
     detail: "Identity keys generated on-device",
-    img: "/mockups/steps/step-01.png",
+    img: "/mockups/step-01-install.webp",
   },
   {
     num: "02",
     title: "Discover",
     desc: "Your phone advertises and scans at the same time over Bluetooth LE, Wi-Fi Direct on Android and Multipeer on iOS. Peers introduce themselves the moment they are in range.",
     detail: "BLE service 8E9A2B00 · iOS ↔ Android",
-    img: "/mockups/steps/step-02.png",
+    img: "/mockups/step-02-discover.webp",
   },
   {
     num: "03",
     title: "Handshake",
     desc: "Each pair runs a Noise XX handshake then exchanges signing keys. Scan a peer’s QR to verify the key out of band.",
     detail: "Noise_XX_25519_AESGCM_SHA256",
-    img: "/mockups/steps/step-03.png",
+    img: "/mockups/step-03-handshake.webp",
   },
   {
     num: "04",
     title: "Relay",
     desc: "No direct link? The message is flooded through neighbours with a hop budget of 7 (16 in Large Venue Mode). Each node drops duplicates it has already seen and forwards the rest.",
     detail: "TTL 7 / 16 · 3-minute duplicate window",
-    img: "/mockups/steps/step-04.png",
+    img: "/mockups/step-04-relay.webp",
   },
   {
     num: "05",
     title: "Deliver",
     desc: "Relays only ever carry ciphertext, and every broadcast is Ed25519-signed so no node can forge or tamper with it in flight.",
     detail: "Signed envelope · 24-hour freshness window",
-    img: null,
-    placeholder: "Delivered-state mockup",
+    img: "/mockups/step-05-deliver.webp",
   },
 ];
 
@@ -59,8 +58,8 @@ const GUARANTEES = [
     body: "A relay remembers only a message id, for three minutes, so it can drop duplicates. There is no server and no log.",
   },
   {
-    title: "No identity needed",
-    body: "No phone number, no email, no sign-up. Your X25519 and Ed25519 keys are generated on the device and stay in its secure storage.",
+    title: "No identity on the mesh",
+    body: "No phone number and no sign-up to message. Your X25519 and Ed25519 keys are generated on the device and stay in its secure storage. A paid plan takes your name and email for billing only — the mesh never sees them.",
   },
 ];
 
@@ -92,7 +91,7 @@ export const HowItWorks = () => (
             Exactly how the app does it.
           </span>
         </h2>
-        <StickyPanelList rows={STEPS} variant="steps" fit="contain" />
+        <StickyPanelList rows={STEPS} variant="steps" fit="cover" />
       </div>
     </Section>
 
