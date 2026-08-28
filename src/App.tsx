@@ -1,294 +1,145 @@
 "use client";
 
-import { motion, useScroll } from 'motion/react';
-import { ArrowRight, Radio, GraduationCap, HeartHandshake, Music } from 'lucide-react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { Video02Icon } from '@hugeicons/core-free-icons';
 import { useState, useEffect } from 'react';
-import { ParticleBackground } from './components/ParticleBackground';
 import { Section } from './components/Section';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
-import { ExpandingCards, CardItem } from './components/ui/expanding-cards';
-// PartnerButton removed — using App Store / Play Store icons directly in CTA
+import { MeshHero, HeroHeadline, HeroParagraph, StoreBadges } from './components/MeshHero';
+import { StickyPanelList, PanelRow } from './components/StickyPanelList';
 
-
-const Hero = () => {
-  return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center px-10 md:px-20 overflow-hidden pt-32 pb-20">
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-5%] right-[-5%] w-[50%] h-[50%] rounded-full bg-white/5 blur-[100px] pointer-events-none" />
-      
-      <div className="max-w-7xl w-full flex flex-col lg:flex-row items-center justify-between gap-20 relative z-10">
-      <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:w-3/5"
-        >
-      <h1 className="text-[64px] md:text-[90px] leading-[0.95] font-bold tracking-tighter mb-10">
-            Connect communities.<br />
-            <span className="flex flex-wrap">
-              {"One hop at a time.".split(" ").map((word, i) => (
-                <motion.span
-                  key={i}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-[var(--color-muted)] leading-relaxed mb-12 max-w-xl font-light">
-            Hopper lets you chat, share files, and stay in touch with people nearby — no SIM card, no Wi-Fi, no data needed. Just you and the people around you.
-          </p>
-          <div className="flex flex-wrap items-center gap-8">
-            <motion.a
-              href="#pricing"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
-              className="bg-[var(--color-foreground)] text-[var(--color-background)] px-12 py-5 rounded-full font-bold text-sm uppercase tracking-widest transition-transform flex items-center gap-3 shadow-[0_0_30px_rgba(var(--color-foreground),0.1)]"
-            >
-              Get Started <ArrowRight className="w-4 h-4" />
-            </motion.a>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-4 group"
-            >
-              <span className="w-14 h-14 rounded-full border border-current opacity-20 flex items-center justify-center group-hover:opacity-100 group-hover:border-blue-500 group-hover:bg-blue-500/10 transition-all duration-300">
-                <HugeiconsIcon icon={Video02Icon} className="group-hover:text-blue-500 transition-colors duration-300" />
-              </span>
-              <div className="flex flex-col items-start">
-                <span className="text-[11px] uppercase tracking-widest font-bold text-[var(--color-muted)] group-hover:text-blue-500 transition-colors duration-300">See it in action</span>
-                <span className="text-[9px] text-[var(--color-faint)] tracking-[0.2em] group-hover:text-blue-400 transition-colors duration-300">2 MIN DEMO</span>
-              </div>
-            </motion.button>
-          </div>
-          
-          <div className="mt-20 grid grid-cols-2 gap-10 max-w-md border-t border-current/10 pt-10">
-            <div>
-              <div className="text-2xl font-bold mb-1 tracking-tight">100%</div>
-              <div className="text-[10px] uppercase tracking-widest text-[var(--color-muted)] font-bold">Your messages are private</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold mb-1 tracking-tight">0.0ms</div>
-              <div className="text-[10px] uppercase tracking-widest text-[var(--color-muted)] font-bold">No internet required</div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 50, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative lg:w-2/5 flex justify-center"
-        >
-          <img
-            src="/mockups/herosection.png"
-            alt="Hopper app screens"
-            className="w-full h-auto object-contain drop-shadow-2xl scale-[1.4]"
-          />
-
-        </motion.div>
-      </div>
-
-      <div className="absolute bottom-12 left-10 md:left-20 flex flex-col items-start gap-4">
-        <div className="w-64 h-px bg-white/10 relative overflow-hidden">
-          <motion.div 
-            animate={{ left: ["-100%", "100%"] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            className="absolute top-0 w-1/2 h-full bg-blue-500/50" 
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const hopperSegments: CardItem[] = [
+const SEGMENTS: PanelRow[] = [
   {
-    id: "rural",
-    title: "Rural Communities",
-    description: "People living in remote areas with poor or no mobile coverage. Hopper keeps them connected — no data, no towers, no cost.",
-    imgSrc: "/images/ruralareas.jpg",
-    icon: <Radio size={24} />,
-    linkHref: "#",
+    num: '01',
+    title: 'Rural communities',
+    desc: 'Remote areas with poor or no mobile coverage. No data, no towers, no cost.',
+    img: '/images/ruralareas.jpg',
   },
   {
-    id: "students",
-    title: "Students & Schools",
-    description: "Educational institutions in low-infrastructure areas where internet is unreliable or unaffordable. Chat on campus, no Wi-Fi needed.",
-    imgSrc: "/images/campuses.jpg",
-    icon: <GraduationCap size={24} />,
-    linkHref: "#",
+    num: '02',
+    title: 'Students & schools',
+    desc: 'Campuses where internet is unreliable or unaffordable. Chat without Wi-Fi.',
+    img: '/images/campuses.jpg',
   },
   {
-    id: "ngos",
-    title: "Field Workers & NGOs",
-    description: "Teams in isolated environments — humanitarian missions, medical camps — that need offline coordination that never drops.",
-    imgSrc: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1000",
-    icon: <HeartHandshake size={24} />,
-    linkHref: "#",
+    num: '03',
+    title: 'Field workers & NGOs',
+    desc: 'Humanitarian missions and medical camps that need coordination that never drops.',
+    img: '/images/fieldwokers.jpg',
   },
   {
-    id: "events",
-    title: "Event Attendees",
-    description: "Participants at festivals, conferences, or crowded venues where mobile networks get congested. Hopper stays fast even when towers fail.",
-    imgSrc: "/images/festivals.jpg",
-    icon: <Music size={24} />,
-    linkHref: "#",
+    num: '04',
+    title: 'Event attendees',
+    desc: 'Festivals and venues where mobile networks get congested. Fast even when towers fail.',
+    img: '/images/festivals.jpg',
   },
 ];
 
-const Segments = () => {
-  return (
-    <Section id="segments" className="py-48 px-10 md:px-20">
-      <div className="max-w-7xl mx-auto flex flex-col items-center">
-        <div className="w-full mb-16">
-          <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-6 block">Who It's For</span>
-          <h2 className="text-5xl md:text-[84px] font-bold tracking-tighter leading-[0.9] mb-6">
-            No signal?<br />
-            <span className="text-[var(--color-faint)]">No problem.</span>
-          </h2>
-          <p className="text-[var(--color-muted)] text-lg font-light max-w-xl leading-relaxed">
-            Hover or tap a card to learn who Hopper is built for.
-          </p>
-        </div>
-        <ExpandingCards items={hopperSegments} defaultActiveIndex={0} className="w-full" />
-      </div>
-    </Section>
-  );
-};
+const Vision = () => (
+  <Section id="vision" className="relative overflow-hidden px-5 pt-[max(200px,28vw)] pb-[max(200px,25vw)] sm:px-8">
+    {/* Each watermark spans the viewport exactly once horizontally. The two
+        sizes differ because Sora's uppercase advance makes "COLLECTIVE" (10
+        glyphs, 5.99em wide) wider per point than "RESILIENT" (9 glyphs,
+        4.90em) — 100/4.90 and 100/5.99 vw respectively.
 
-const Demo = () => {
-  return (
-    <Section id="how-it-works" className="py-48 bg-gradient-to-b from-transparent via-blue-900/5 to-transparent">
-      <div className="px-10 md:px-20 max-w-7xl mx-auto">
-        {/* Zero Cloud */}
-        <div className="flex flex-col lg:flex-row-reverse items-center lg:items-end gap-32">
-          <div className="w-full lg:w-1/2 lg:flex-none">
-             <div className="w-12 h-px bg-blue-500 mb-8" />
-             <h3 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight">Your messages stay yours</h3>
-             <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed mb-10">
-               Hopper has no servers. Your messages go directly from your phone to theirs — nothing is stored in the cloud, nothing passes through a company's systems. When you delete a message, it's gone. Simple.
-             </p>
-             <ul className="space-y-6 mb-12">
-               {[
-                 { label: "Your messages are encrypted", desc: "Every message is scrambled before it leaves your phone. Only the person you're talking to can read it." },
-                 { label: "We don't log anything", desc: "We have no servers, so there's nothing to hand over, leak, or sell. Ever." },
-                 { label: "Your keys live on your phone", desc: "The key that unlocks your messages never leaves your device — not even we can read them." }
-               ].map((item, i) => (
-                 <li key={i} className="flex items-start gap-5 text-[var(--color-muted)] font-light group">
-                   <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 group-hover:scale-150 transition-transform" />
-                   <div>
-                     <span className="block font-bold text-[var(--color-foreground)] text-sm uppercase tracking-widest mb-1">{item.label}</span>
-                     <span className="block text-sm opacity-100 leading-relaxed max-w-sm">{item.desc}</span>
-                   </div>
-                 </li>
-               ))}
-             </ul>
-          </div>
-          
-          <div
-            className="w-full lg:w-[50vw] lg:flex-none relative self-stretch flex items-end"
-            style={{ marginLeft: 'calc(-1 * (50vw - 50%))' }}
+        Both sit flush inside the section rather than being pulled outwards:
+        `leading-[0.8]` makes the line box shorter than the glyphs it holds, so
+        any negative offset pushes the letterforms past the section's
+        `overflow-hidden` edge and shears their tops and bottoms off. The
+        `py-[0.14em]` restores the room the tight leading removes.
+
+        The section's vertical padding is tied to the same vw units as the type
+        (`22vw` / `19vw`), so the copy always starts below "RESILIENT" and ends
+        above "COLLECTIVE" — they never overlap the text at any width. */}
+    <div className="pointer-events-none absolute top-0 left-0 w-full select-none whitespace-nowrap py-[0.25em] font-display text-[20vw] font-bold uppercase leading-[0.8] tracking-[-0.05em] text-[var(--color-ghost)]">
+      Resilient
+    </div>
+    <div className="pointer-events-none absolute bottom-0 left-0 w-full select-none whitespace-nowrap py-[0.14em] text-right font-display text-[16.4vw] font-bold uppercase leading-[0.8] tracking-[-0.05em] text-[var(--color-ghost)]">
+      Collective
+    </div>
+
+    <div className="relative mx-auto max-w-[1080px]">
+      <span className="mb-7 block text-[10.5px] font-semibold uppercase tracking-[0.34em] text-[var(--color-brand-blue)]">
+        Why we built this
+      </span>
+      <h2 className="m-0 mb-8 font-display text-[clamp(34px,5.4vw,76px)] font-semibold leading-[1.02] tracking-[-0.04em]">
+        Built for the moments<br />
+        <span className="text-[var(--color-faint)]">where everything else fails.</span>
+      </h2>
+      <p className="m-0 max-w-[640px] text-[clamp(17px,2vw,21px)] leading-[1.6] text-[var(--color-muted)]">
+        In an emergency, reaching your people isn&rsquo;t a nice-to-have. It&rsquo;s everything.
+        When the towers go dark, Hopper stays on.
+      </p>
+
+      <div className="mt-[120px] grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-16 border-t border-[var(--color-surface-border)] pt-16">
+        <div>
+          <h5 className="m-0 mb-6 font-display text-[11px] font-semibold uppercase tracking-[0.34em]">The philosophy</h5>
+          <p className="m-0 mb-5 text-lg leading-[1.6] text-[var(--color-muted)]">
+            Connecting with your community shouldn&rsquo;t be a privilege granted by a centralized
+            grid. It is a fundamental, resilient right.
+          </p>
+          <p
+            className="m-0 pl-5 text-sm leading-[1.65] text-[var(--color-faint)]"
+            style={{ borderLeft: '1px solid color-mix(in oklab, var(--color-brand-blue) 45%, transparent)' }}
           >
-            <div className="relative z-10">
-              <img
-                src="/mockups/holdingphone.png"
-                alt="Hopper app"
-                className="block w-full h-auto object-contain object-left"
-              />
-              <div
-                className="h-px bg-white/20"
-                style={{ width: '70vw', marginTop: '-1px', marginLeft: 'calc(50% - 50vw)' }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
-  );
-};
-
-
-const Mission = () => {
-  return (
-    <Section id="mission" className="py-64 px-10 md:px-20 bg-[var(--color-background)] relative overflow-hidden">
-      <div className="max-w-5xl mx-auto relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-32"
-        >
-          <span className="text-blue-500 uppercase font-bold tracking-[0.4em] text-[11px] mb-8 block">Why we built this</span>
-          <h2 className="text-4xl md:text-[84px] font-bold tracking-tighter leading-[1] mb-12">
-            Built for the moments<br />
-            <span className="flex flex-wrap">
-              {"where everything else fails.".split(" ").map((word, i) => (
-                <motion.span
-                  key={i}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.2em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
-          </h2>
-          <p className="text-xl md:text-2xl text-[var(--color-muted)] font-light leading-relaxed max-w-3xl">
-            In an emergency, being able to reach your people isn't a nice-to-have. It's everything. When the towers go dark, Hopper stays on.
+            Communication should be physics-based, not contract-based. By using the radio waves
+            already in our devices, we reclaim the airwaves.
           </p>
-        </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 border-t border-white/5 pt-24 text-left">
-          <div className="group">
-            <h5 className="text-[12px] uppercase tracking-[0.4em] font-bold mb-8">The Philosophy</h5>
-            <p className="text-[var(--color-muted)] text-lg md:text-xl font-light leading-relaxed mb-6">
-              We believe that being able to connect with your community shouldn't be a privilege
-              granted by a centralized grid. It is a fundamental resilient right.
-            </p>
-            <p className="text-sm text font-light leading-relaxed border-l border-blue-500/30 pl-6">
-              Communication should be physics-based, not contract-based. By utilizing the ambient
-              radio waves already present in our devices, we reclaim the airwaves.
-            </p>
-          </div>
-          <div className="group">
-            <h5 className="text-[12px] uppercase tracking-[0.4em] font-bold mb-8">The Global Vision</h5>
-            <p className="text-[var(--color-muted)] text-lg md:text-xl font-light leading-relaxed mb-6">
-              To turn every mobile device into a bridge, forming a global emergency
-              infrastructure that remains active through any disaster or shutdown.
-            </p>
-            <p className="text-sm text font-light leading-relaxed border-l border-emerald-500/30 pl-6">
-              Our goal is 1 billion active relay points by 2030, ensuring that no territory on
-              earth is ever truly "offline" or isolated from the human collective.
-            </p>
-          </div>
+        </div>
+        <div>
+          <h5 className="m-0 mb-6 font-display text-[11px] font-semibold uppercase tracking-[0.34em]">The global vision</h5>
+          <p className="m-0 mb-5 text-lg leading-[1.6] text-[var(--color-muted)]">
+            Turn every mobile device into a bridge — a global emergency layer that stays active
+            through any disaster or shutdown.
+          </p>
+          <p
+            className="m-0 pl-5 text-sm leading-[1.65] text-[var(--color-faint)]"
+            style={{ borderLeft: '1px solid color-mix(in oklab, var(--color-brand-blue) 45%, transparent)' }}
+          >
+            One billion active relay points by 2030, so no territory on earth is ever truly offline.
+          </p>
         </div>
       </div>
-      
-      {/* Decorative large text in background */}
-      <div className="absolute -bottom-20 -right-20 text-[20vw] font-bold text-[var(--color-ghost)] pointer-events-none select-none tracking-tighter uppercase transition-colors duration-500">
-        Collective
-      </div>
-      <div className="absolute -top-20 -left-20 text-[20vw] font-bold text-[var(--color-ghost)] pointer-events-none select-none tracking-tighter uppercase transition-colors duration-500">
-        Resilient
-      </div>
-    </Section>
-  );
-};
+    </div>
+  </Section>
+);
 
+const Impact = () => (
+  <Section id="impact" className="px-5 pt-10 pb-[180px] sm:px-8">
+    <div className="mx-auto max-w-[1080px]">
+      <span className="mb-6 block text-[10.5px] font-semibold uppercase tracking-[0.34em] text-[var(--color-brand-blue)]">
+        Who it&rsquo;s for
+      </span>
+      <h2 className="m-0 mb-14 font-display text-[clamp(30px,4.2vw,52px)] font-semibold leading-[1.06] tracking-[-0.035em]">
+        No signal? <span className="text-[var(--color-faint)]">No problem.</span>
+      </h2>
+      <StickyPanelList rows={SEGMENTS} variant="segments" fit="cover" />
+    </div>
+  </Section>
+);
+
+const GetHopper = () => (
+  <Section id="get" className="px-5 pb-[180px] sm:px-8">
+    <div className="mx-auto max-w-[1080px] border-t border-[var(--color-surface-border)] pt-[120px] text-center">
+      {/* Two stacked lines rather than one long one — the price reads as the
+          headline it is, with the promise sitting under it in faint. */}
+      <h2 className="m-0 mb-8 font-display text-[clamp(38px,7.4vw,104px)] font-semibold leading-[1.06] tracking-[-0.045em]">
+        ₦867 a month.<br />
+        <span className="text-[var(--color-faint)]">Infinite reach.</span>
+      </h2>
+      <p className="mx-auto mb-14 max-w-[560px] text-[clamp(16px,1.5vw,20px)] leading-[1.6] text-[var(--color-muted)]">
+        One subscription. Both platforms. Every feature. No towers needed.
+      </p>
+      <div className="flex flex-wrap justify-center gap-5">
+        <StoreBadges height={60} />
+      </div>
+    </div>
+  </Section>
+);
 
 export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' | 'light' }) {
   const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-  const { scrollYProgress } = useScroll();
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
+  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
     document.documentElement.classList.remove('light', 'dark');
@@ -298,66 +149,23 @@ export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' |
   }, [theme]);
 
   return (
-    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] selection:bg-blue-500 selection:text-white transition-colors duration-500 ease-in-out">
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-[var(--color-foreground)] z-[100] origin-left shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-        style={{ scaleX: scrollYProgress }}
-      />
-      <ParticleBackground theme={theme} />
+    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ease-in-out selection:bg-blue-500 selection:text-white">
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      
-      <Hero />
 
-      <Mission />
-      
-      <Segments />
-      
-      <Demo />
+      <MeshHero
+        eyebrow="Off-grid mesh network"
+        footnotes={['Phone to phone · up to 1,024 peers', 'End-to-end encrypted · 0 bytes stored']}
+      >
+        <HeroParagraph>
+          Your message hops phone to phone until it arrives. No SIM, no Wi-Fi, no towers — just the
+          radios already around you.
+        </HeroParagraph>
+        <HeroHeadline lines={['The network is', 'everyone here.']} />
+      </MeshHero>
 
-      {/* Final CTA */}
-      <Section id="pricing" className="py-48 px-10 md:px-20 text-center relative overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
-        >
-          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6">
-            ₦867 a month.<br />
-            <span className="flex flex-wrap justify-center">
-              {"Infinite reach.".split(" ").map((word, i) => (
-                <motion.span
-                  key={i}
-                  whileHover={{ color: "var(--color-foreground)", scale: 1.05 }}
-                  className="text-[var(--color-faint)] transition-colors cursor-default mr-[0.2em]"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
-          </h2>
-          <p className="text-[var(--color-muted)] text-xl font-light mb-12 max-w-xl mx-auto">
-            One subscription. Both platforms. Every feature. No towers needed.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a
-              href="#"
-              className="transform hover:scale-105 transition"
-              aria-label="Download on the App Store"
-            >
-              <img src="/images/appstorebutton.png" alt="App Store" className="h-14" />
-            </a>
-
-            <a
-              href="#"
-              className="transform hover:scale-105 transition"
-              aria-label="Get it on Google Play"
-            >
-              <img src="/images/playstorebutton.png" alt="Google Play" className="h-14" />
-            </a>
-          </div>
-        </motion.div>
-      </Section>
+      <Vision />
+      <Impact />
+      <GetHopper />
 
       <Footer theme={theme} />
     </main>

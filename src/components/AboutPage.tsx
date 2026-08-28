@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
-  ArrowDown,
-  ArrowRight,
   Globe2,
   Network,
   ShieldCheck,
@@ -12,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Footer } from './Footer';
 import { Navbar } from './Navbar';
-import { TopScrollProgress } from './TopScrollProgress';
+import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
 
 const principles = [
   {
@@ -84,41 +82,27 @@ export const AboutPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) 
 
   return (
     <div className="min-h-screen overflow-hidden bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       <main>
-        <section className="relative min-h-[92vh] px-6 pb-20 pt-40 md:px-12 md:pt-48 lg:px-20">
-          <div className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-blue-900/10 blur-[140px]" />
-          <div className="relative mx-auto flex min-h-[65vh] max-w-7xl flex-col justify-between gap-20">
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="max-w-5xl"
+        <MeshHero
+          eyebrow="About Hopper"
+          topRight={
+            <a
+              href="#our-story"
+              className="inline-flex items-center rounded-full border border-[var(--color-surface-border)] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-muted)] hover:text-[var(--color-foreground)]"
             >
-              <span className="mb-8 block text-[11px] font-bold uppercase tracking-[0.4em] text-blue-500">
-                About Hopper
-              </span>
-              <h1 className="text-5xl font-bold leading-[0.94] tracking-[-0.055em] sm:text-6xl md:text-8xl lg:text-[104px]">
-                Connection should not<br className="hidden sm:block" /> depend on a signal.
-              </h1>
-            </motion.div>
-
-            <div className="flex flex-col items-start justify-between gap-10 border-t border-[var(--color-glass-border)] pt-8 md:flex-row md:items-end">
-              <p className="max-w-2xl text-lg font-light leading-relaxed text-[var(--color-muted)] md:text-xl">
-                Hopper is building an offline-first communication network that lets nearby phones connect directly—so people can keep talking when conventional infrastructure cannot.
-              </p>
-              <a
-                href="#our-story"
-                className="inline-flex min-h-11 items-center gap-3 rounded-full border border-[var(--color-glass-border)] px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-muted)] transition-colors duration-200 hover:border-[var(--color-muted)] hover:text-[var(--color-foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              >
-                Our story
-                <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </section>
+              Our story
+            </a>
+          }
+          footnotes={['Built in Africa · for everywhere', 'Offline-first by design']}
+        >
+          <HeroParagraph>
+            Hopper is building an offline-first communication network that lets nearby phones
+            connect directly — so people can keep talking when conventional infrastructure cannot.
+          </HeroParagraph>
+          <HeroHeadline lines={['Connection should', 'not need a signal.']} />
+        </MeshHero>
 
         <section id="our-story" className="border-t border-[var(--color-glass-border)] px-6 py-28 md:px-12 md:py-40 lg:px-20">
           <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[0.72fr_1.28fr] lg:gap-24">
@@ -221,32 +205,6 @@ export const AboutPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) 
           </div>
         </section>
 
-        <section className="px-4 py-4 md:px-6 md:py-6">
-          <motion.div
-            {...reveal}
-            className="relative mx-auto flex min-h-[480px] max-w-[1500px] flex-col items-center justify-center overflow-hidden rounded-[32px] bg-[#0171e3] px-6 py-24 text-center text-white md:rounded-[44px]"
-          >
-            <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_center,transparent_0,transparent_2px,rgba(255,255,255,.2)_2.5px,transparent_3px)] [background-size:28px_28px]" />
-            <div className="relative z-10">
-              <span className="mb-7 block text-[11px] font-bold uppercase tracking-[0.4em] text-white/70">
-                The future is peer to peer
-              </span>
-              <h2 className="mx-auto mb-8 max-w-4xl text-4xl font-bold leading-[1] tracking-tighter md:text-7xl">
-                Help us build a world that stays connected.
-              </h2>
-              <p className="mx-auto mb-10 max-w-xl text-base font-light leading-relaxed text-white/80 md:text-lg">
-                Discover how Hopper turns the phones around you into a resilient communication network.
-              </p>
-              <a
-                href="/how-it-works"
-                className="inline-flex min-h-12 items-center gap-3 rounded-full bg-white px-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#111111] transition-colors duration-200 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-500"
-              >
-                See how it works
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-            </div>
-          </motion.div>
-        </section>
       </main>
 
       <Footer theme={theme} />

@@ -1,19 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Footer } from './Footer';
-import { TopScrollProgress } from './TopScrollProgress';
-import { Navbar } from './Navbar';
+import { LegalPage, LegalSection, Note } from './LegalPage';
 
-// ─── Section ─────────────────────────────────────────────────────────────────
-
-type Section = { title: string; body: React.ReactNode };
-
-const Note = ({ children }: { children: React.ReactNode }) => (
-  <div className="border-l-2 border-blue-500/40 pl-4 italic text-[var(--color-faint)]">{children}</div>
-);
-
-const sections: Section[] = [
+const sections: LegalSection[] = [
   {
     title: 'Agreement to Terms',
     body: (
@@ -218,62 +207,26 @@ const sections: Section[] = [
     body: (
       <>
         <p>If you have any questions, concerns, or feedback regarding these Terms or the Hopper application, please contact us:</p>
-        <div className="mt-4 flex flex-col gap-1">
-          <a href="mailto:legal@hopper.app" className="text-blue-500 hover:underline">legal@hopper.app</a>
-          <a href="https://hopper.app" className="text-blue-500 hover:underline">hopper.app</a>
-          <a href="/privacy" className="text-blue-500 hover:underline">Privacy Policy</a>
+        <div className="mt-4">
+          <a
+            href="mailto:support@hopperafrica.com"
+            className="text-[var(--color-brand-blue)] hover:underline"
+          >
+            support@hopperafrica.com
+          </a>
         </div>
       </>
     ),
   },
 ];
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
-export const TermsPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'light') root.classList.add('light');
-    else root.classList.remove('light');
-    document.cookie = `hopper-theme=${theme};path=/;max-age=31536000`;
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
-
-  const divider = theme === 'dark' ? 'border-white/8' : 'border-black/8';
-
-  return (
-    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <TopScrollProgress />
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-
-      {/* Hero */}
-      <section className="pt-40 pb-20 px-6 md:px-8 lg:px-12 max-w-7xl mx-auto">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-faint)] mb-4">Legal</p>
-        <h1 className="text-5xl md:text-6xl font-semibold tracking-tight mb-6">Terms of Service</h1>
-        <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed max-w-2xl">
-          Please read these terms carefully before using the Hopper app. They constitute a legally binding agreement governing your use of our services.
-        </p>
-        <p className="text-[var(--color-faint)] text-sm mt-6">Effective Date: May 11, 2026 · Version 1.0</p>
-      </section>
-
-      {/* Content */}
-      <section className="px-6 md:px-8 lg:px-12 max-w-7xl mx-auto pb-32">
-        <div className={`border-t ${divider} flex flex-col divide-y divide-[var(--color-ghost)]`}>
-          {sections.map((sec) => (
-            <div key={sec.title} className="py-12 grid md:grid-cols-[200px_1fr] gap-12">
-              <h2 className="text-[15px] font-semibold text-[var(--color-foreground)] leading-snug">{sec.title}</h2>
-              <div className="flex flex-col gap-4 text-[var(--color-muted)] text-sm font-light leading-relaxed">
-                {sec.body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Footer theme={theme} />
-    </div>
-  );
-};
+export const TermsPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => (
+  <LegalPage
+    initialTheme={initialTheme}
+    eyebrow="Legal · Terms"
+    headline={['Terms of', 'Service.']}
+    intro="Please read these terms carefully before using the Hopper app. They constitute a legally binding agreement governing your use of our services."
+    effective="Effective 11 May 2026 · Version 1.0"
+    sections={sections}
+  />
+);

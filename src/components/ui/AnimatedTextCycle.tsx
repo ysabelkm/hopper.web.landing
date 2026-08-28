@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 
 interface AnimatedTextCycleProps {
   words: string[];

@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { TopScrollProgress } from './TopScrollProgress';
 import { Footer } from './Footer';
 import { Navbar } from './Navbar';
+import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
 import {
   Bluetooth, Wifi,
   Zap, ArrowRight,
-  Send, CheckCircle, ArrowDown
+  Send, CheckCircle
 } from 'lucide-react';
 
 // ─── FAQ Item ──────────────────────────────────────────────────────────────────
@@ -69,9 +70,8 @@ const MeshDiagram = () => {
 
   return (
     <svg
-      viewBox="0 0 500 220"
-      className="w-full h-auto"
-      style={{ overflow: 'visible' }}
+      viewBox="-14 -10 528 258"
+      className="block h-auto w-full"
     >
       {/* Connection lines */}
       {edges.map(([a, b], i) => (
@@ -327,53 +327,27 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       {/* ── Hero ── */}
-      {/* ── Hero ── */}
-      <section className="relative pt-48 pb-32 px-10 md:px-20 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[50%] h-[60%] rounded-full bg-blue-900/10 blur-[120px] pointer-events-none" />
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-8 block">Help Center</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1] mb-8">
-              How can we help<br />
-              <span className="flex flex-wrap justify-center">
-                {'you get connected?'.split(' ').map((word, i) => (
-                  <motion.span
-                    key={i}
-                    whileHover={{ scale: 1.05 }}
-                    className="text-[var(--color-faint)] hover:text-[var(--color-foreground)] transition-colors cursor-default mr-[0.25em]"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
-            <p className="text-[var(--color-muted)] text-xl font-light leading-relaxed max-w-xl mx-auto mb-14">
-              Step-by-step guides, troubleshooting, and answers — built for everyone from students to field teams operating without internet.
-            </p>
-
-            {/* Contact CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="flex justify-center"
-            >
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-7 py-4 rounded-full border border-[var(--color-glass-border)] text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:border-[var(--color-muted)] transition-all"
-              >
-                Contact us
-                <ArrowDown className="w-3.5 h-3.5" />
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <MeshHero
+        eyebrow="Help centre"
+        topRight={
+          <a
+            href="#contact"
+            className="inline-flex items-center rounded-full border border-[var(--color-surface-border)] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-muted)] hover:text-[var(--color-foreground)]"
+          >
+            Contact us
+          </a>
+        }
+        footnotes={['Guides · troubleshooting · setup', 'Replies within one business day']}
+      >
+        <HeroParagraph>
+          Step-by-step guides, troubleshooting and answers — built for everyone from students to
+          field teams operating without internet.
+        </HeroParagraph>
+        <HeroHeadline lines={['How can we', 'help you?']} />
+      </MeshHero>
 
       {/* ── FAQ ── */}
-      <section className="py-24 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+      <section className="py-24 px-5 sm:px-8 md:px-20 border-t border-[var(--color-glass-border)]">
         <div className="max-w-2xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
             <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-4 block">FAQ</span>
@@ -396,11 +370,11 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
       </section>
 
       {/* ── "No Internet" Explainer ── */}
-      <section className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+      <section className="py-32 px-5 sm:px-8 md:px-20 border-t border-[var(--color-glass-border)]">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-20">
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="lg:w-1/2"
           >
@@ -434,12 +408,12 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
 
           {/* Mesh Diagram */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="lg:w-1/2 w-full"
           >
-            <div className="p-10 rounded-[40px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)]">
+            <div className="overflow-hidden rounded-[40px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] p-6 sm:p-10">
               <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-[var(--color-muted)] mb-8">Message route — live mesh simulation</p>
               <MeshDiagram />
               <p className="text-[11px] text-[var(--color-muted)] font-light leading-relaxed mt-8 border-l border-blue-500/30 pl-5">
@@ -451,7 +425,7 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
       </section>
 
       {/* ── Permission Setup Guide ── */}
-      <section className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+      <section className="py-32 px-5 sm:px-8 md:px-20 border-t border-[var(--color-glass-border)]">
         <div className="max-w-xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-16">
             <span className="text-blue-500 font-bold uppercase tracking-[0.4em] text-[11px] mb-8 block">Getting Started</span>
@@ -471,7 +445,7 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex gap-6"
+                  className="flex gap-4 sm:gap-6"
                 >
                   {/* Timeline spine */}
                   <div className="flex flex-col items-center">
@@ -484,7 +458,7 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
                   </div>
 
                   {/* Card — all highlighted */}
-                  <div className="mb-3 flex-1 rounded-[20px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] p-7">
+                  <div className="mb-3 min-w-0 flex-1 rounded-[20px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] p-5 sm:p-7">
                     <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-[var(--color-muted)] mb-1">Step {i + 1}</p>
                     <h4 className="text-xl font-bold tracking-tight mb-3">{s.title}</h4>
                     <p className="text-[var(--color-muted)] text-sm font-light leading-relaxed">{s.desc}</p>
@@ -497,14 +471,14 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
       </section>
 
       {/* ── Contact Form ── */}
-      <section id="contact" className="py-32 px-10 md:px-20 border-t border-[var(--color-glass-border)]">
+      <section id="contact" className="py-32 px-5 sm:px-8 md:px-20 border-t border-[var(--color-glass-border)]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
 
             {/* Left — info */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="lg:w-2/5 flex flex-col justify-between gap-12"
             >
@@ -525,15 +499,15 @@ export const SupportPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
                 <div>
                   <p className="text-sm text-[var(--color-muted)] mb-1">Response time:</p>
                   <p className="text-lg font-semibold tracking-tight">Within one business day</p>
-                  <p className="text-sm text-[var(--color-muted)] mt-1">Monday to Friday, 9 AM – 6 PM GMT</p>
+                  <p className="text-sm text-[var(--color-muted)] mt-1">Monday to Friday, 9 AM – 6 PM WAT</p>
                 </div>
               </div>
             </motion.div>
 
             {/* Right — form */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="lg:w-3/5 bg-[var(--color-glass-bg)] border border-[var(--color-glass-border)] rounded-[32px] p-10 md:p-12"
             >

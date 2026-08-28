@@ -1,21 +1,12 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Footer } from './Footer';
-import { TopScrollProgress } from './TopScrollProgress';
-import { Navbar } from './Navbar';
-
-// ─── Section ─────────────────────────────────────────────────────────────────
-
-type Section = { title: string; body: React.ReactNode };
-
-const Note = ({ children }: { children: React.ReactNode }) => (
-  <div className="border-l-2 border-blue-500/40 pl-4 italic text-[var(--color-faint)]">{children}</div>
-);
+import { LegalPage, LegalSection, Note } from './LegalPage';
 
 const Table = () => (
-  <div className="overflow-x-auto">
-    <table className="w-full text-sm border-collapse">
+  // `min-w-0` lets this flex child shrink below its content width, so the
+  // min-width columns scroll inside the container instead of widening the page.
+  <div className="min-w-0 max-w-full overflow-x-auto">
+    <table className="w-full min-w-[560px] text-sm border-collapse">
       <thead>
         <tr className="border-b border-[var(--color-ghost)]">
           <th className="text-left py-3 pr-4 font-semibold text-[var(--color-foreground)] min-w-[140px]">Permission</th>
@@ -48,7 +39,7 @@ const Table = () => (
   </div>
 );
 
-const sections: Section[] = [
+const sections: LegalSection[] = [
   {
     title: 'Introduction',
     body: (
@@ -255,7 +246,7 @@ const sections: Section[] = [
         <p>If you are a California resident, the CCPA grants you the right to know what personal information is collected, the right to delete it, and the right to opt out of the sale of personal information. Hopper does not sell personal information to third parties.</p>
 
         <p><strong className="font-medium text-[var(--color-foreground)]">Exercising Your Rights</strong></p>
-        <p>To exercise any of these rights, contact us at <a href="mailto:privacy@hopper.app" className="text-blue-500 hover:underline">privacy@hopper.app</a>. Because Hopper holds no remote data about you, most requests can be fulfilled entirely by you using the in-app data management tools.</p>
+        <p>To exercise any of these rights, contact us at <a href="mailto:support@hopperafrica.com" className="text-[var(--color-brand-blue)] hover:underline">support@hopperafrica.com</a>. Because Hopper holds no remote data about you, most requests can be fulfilled entirely by you using the in-app data management tools.</p>
       </>
     ),
   },
@@ -293,63 +284,26 @@ const sections: Section[] = [
     body: (
       <>
         <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data handling practices, please contact us:</p>
-        <div className="mt-4 flex flex-col gap-1">
-          <span className="text-[var(--color-muted)]">Privacy Team</span>
-          <a href="mailto:privacy@hopper.app" className="text-blue-500 hover:underline">privacy@hopper.app</a>
-          <a href="mailto:hello@hopper.app" className="text-blue-500 hover:underline">hello@hopper.app</a>
-          <a href="https://hopper.app" className="text-blue-500 hover:underline">hopper.app</a>
+        <div className="mt-4">
+          <a
+            href="mailto:support@hopperafrica.com"
+            className="text-[var(--color-brand-blue)] hover:underline"
+          >
+            support@hopperafrica.com
+          </a>
         </div>
       </>
     ),
   },
 ];
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
-export const PrivacyPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === 'light') root.classList.add('light');
-    else root.classList.remove('light');
-    document.cookie = `hopper-theme=${theme};path=/;max-age=31536000`;
-  }, [theme]);
-
-  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
-
-  const divider = theme === 'dark' ? 'border-white/8' : 'border-black/8';
-
-  return (
-    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <TopScrollProgress />
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-
-      {/* Hero */}
-      <section className="pt-40 pb-20 px-6 md:px-8 lg:px-12 max-w-7xl mx-auto">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-faint)] mb-4">Legal</p>
-        <h1 className="text-5xl md:text-6xl font-semibold tracking-tight mb-6">Privacy Policy</h1>
-        <p className="text-[var(--color-muted)] text-lg font-light leading-relaxed max-w-2xl">
-          We believe privacy is a fundamental right. Here's exactly what we collect, why, and how we protect it — down to the technical architecture.
-        </p>
-        <p className="text-[var(--color-faint)] text-sm mt-6">Effective Date: May 11, 2026 · Version 1.0</p>
-      </section>
-
-      {/* Content */}
-      <section className="px-6 md:px-8 lg:px-12 max-w-7xl mx-auto pb-32">
-        <div className={`border-t ${divider} flex flex-col divide-y divide-[var(--color-ghost)]`}>
-          {sections.map((sec) => (
-            <div key={sec.title} className="py-12 grid md:grid-cols-[200px_1fr] gap-12">
-              <h2 className="text-[15px] font-semibold text-[var(--color-foreground)] leading-snug">{sec.title}</h2>
-              <div className="flex flex-col gap-4 text-[var(--color-muted)] text-sm font-light leading-relaxed">
-                {sec.body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <Footer theme={theme} />
-    </div>
-  );
-};
+export const PrivacyPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => (
+  <LegalPage
+    initialTheme={initialTheme}
+    eyebrow="Legal · Privacy"
+    headline={['Privacy is', 'the default.']}
+    intro="We believe privacy is a fundamental right. Here's exactly what we collect, why, and how we protect it — down to the technical architecture."
+    effective="Effective 11 May 2026 · Version 1.0"
+    sections={sections}
+  />
+);

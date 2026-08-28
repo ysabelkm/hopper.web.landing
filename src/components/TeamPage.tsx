@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, Network, Radio, ShieldCheck } from 'lucide-react';
+import { Network, Radio, ShieldCheck } from 'lucide-react';
 import { Footer } from './Footer';
 import { Navbar } from './Navbar';
-import { TopScrollProgress } from './TopScrollProgress';
+import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
 
 const founders = [
   {
@@ -55,31 +55,20 @@ export const TeamPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) =
 
   return (
     <div className="min-h-screen overflow-hidden bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <TopScrollProgress />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
       <main>
-        <section className="relative px-6 pb-24 pt-40 md:px-12 md:pb-32 md:pt-48 lg:px-20">
-          <div className="pointer-events-none absolute left-[-12%] top-[-15%] h-[600px] w-[600px] rounded-full bg-blue-900/10 blur-[140px]" />
-          <div className="relative mx-auto max-w-7xl">
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.8 }}
-              className="max-w-5xl"
-            >
-              <span className="mb-8 block text-[11px] font-bold uppercase tracking-[0.4em] text-blue-500">
-                The founding team
-              </span>
-              <h1 className="mb-10 text-5xl font-bold leading-[0.94] tracking-[-0.055em] sm:text-6xl md:text-8xl lg:text-[104px]">
-                Three co-founders.
-              </h1>
-              <p className="max-w-2xl text-lg font-light leading-relaxed text-[var(--color-muted)] md:text-xl">
-                Hopper is led by a multidisciplinary founding team bringing company building, technology, growth, finance, and operations around one mission: communication that keeps working.
-              </p>
-            </motion.div>
-          </div>
-        </section>
+        <MeshHero
+          eyebrow="The founding team"
+          footnotes={['Company building · technology · growth', 'Finance · operations']}
+        >
+          <HeroParagraph>
+            Hopper is led by a multidisciplinary founding team bringing company building,
+            technology, growth, finance and operations around one mission: communication that
+            keeps working.
+          </HeroParagraph>
+          <HeroHeadline lines={['Three', 'co-founders.']} />
+        </MeshHero>
 
         <section className="border-t border-[var(--color-glass-border)] px-4 py-20 md:px-6 md:py-28">
           <div className="mx-auto grid max-w-[1500px] gap-4 lg:grid-cols-3">
@@ -164,29 +153,6 @@ export const TeamPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) =
           </div>
         </section>
 
-        <section className="px-4 py-4 md:px-6 md:py-6">
-          <motion.div
-            {...reveal}
-            className="relative mx-auto flex min-h-[440px] max-w-[1500px] flex-col items-center justify-center overflow-hidden rounded-[32px] bg-[#0171e3] px-6 py-20 text-center text-white md:rounded-[44px]"
-          >
-            <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_center,transparent_0,transparent_2px,rgba(255,255,255,.2)_2.5px,transparent_3px)] [background-size:28px_28px]" />
-            <div className="relative z-10">
-              <span className="mb-7 block text-[11px] font-bold uppercase tracking-[0.4em] text-white/70">
-                The reason behind the work
-              </span>
-              <h2 className="mx-auto mb-10 max-w-4xl text-4xl font-bold leading-[1] tracking-tighter md:text-7xl">
-                Meet the mission that brought us together.
-              </h2>
-              <a
-                href="/about"
-                className="inline-flex min-h-12 items-center gap-3 rounded-full bg-white px-7 text-[11px] font-bold uppercase tracking-[0.2em] text-[#111111] transition-colors duration-200 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-blue-500"
-              >
-                About Hopper
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-            </div>
-          </motion.div>
-        </section>
       </main>
 
       <Footer theme={theme} />

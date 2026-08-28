@@ -7,6 +7,11 @@
   --color-brand-blue: #0171e3;
   --header-height: 80px;
 
+  /* Radii mirror AppTokens in the mobile app so cards/pills match exactly. */
+  --radius-card: 20px;
+  --radius-chip: 10px;
+  --radius-pill: 999px;
+
   /* Remap Tailwind blue-* to the brand shade */
   --color-blue-300: #5aa8f5;
   --color-blue-400: #2d8ef0;
@@ -15,18 +20,21 @@
   --color-blue-900: #012d5a;
 }
 
+/* Surface palette mirrors the mobile app's HopperPalette
+   (mobileapp/lib/core/design_tokens.dart) so the site and the app read as one
+   product. Blue stays as the web-only brand accent — the app has no accent
+   color of its own, so this is the one deliberate divergence. */
 :root {
-  /* Softened dark — inspired by developer.android.com */
-  --color-background: #111111;          /* Warm dark grey, not pure black         */
-  --color-foreground: #f0f0f0;          /* Off-white — less glare than #fff        */
-  --color-muted: rgba(240, 240, 240, 0.65);   /* Lifted from 0.5 — clearly readable      */
-  --color-faint: rgba(240, 240, 240, 0.38);   /* Lifted from 0.15 — no longer invisible  */
+  /* Dark = HopperPalette.dark */
+  --color-background: #1c1c1e;          /* palette.bg      */
+  --color-foreground: #ffffff;          /* palette.text    */
+  --color-muted: #c7c7cc;               /* palette.text2   */
+  --color-faint: #8e8e93;               /* palette.text3   */
   --color-ghost: rgba(255, 255, 255, 0.06);
 
-  /* Android-style card surfaces — two elevation levels */
-  --color-surface-1: #1c1c1e;           /* Base card — 1 stop above page bg       */
-  --color-surface-2: #242426;           /* Raised card — hover / nested elements  */
-  --color-surface-border: rgba(255, 255, 255, 0.08);  /* Subtle hairline border   */
+  --color-surface-1: #2c2c2e;           /* palette.surface  */
+  --color-surface-2: #3a3a3c;           /* palette.surface2 */
+  --color-surface-border: #3a3a3c;      /* palette.border   */
 
   --color-brand-glow: rgba(1, 113, 227, 0.4);
   --color-glass-bg: rgba(255, 255, 255, 0.04);
@@ -38,16 +46,19 @@
 }
 
 :root.light {
-  /* Apple.com light mode palette */
-  --color-background: #f5f5f7;        /* Apple's signature warm off-white page bg */
-  --color-foreground: #1d1d1f;        /* Apple's near-black primary text */
-  --color-muted: #6e6e73;             /* Apple's secondary text grey */
-  --color-faint: #a1a1a6;             /* Apple's tertiary/caption grey */
+  /* Light = HopperPalette.light */
+  --color-background: #f7f8fa;        /* palette.bg       */
+  --color-foreground: #232629;        /* palette.text     */
+  --color-muted: #61656c;             /* palette.text2    */
+  --color-faint: #8b9098;             /* palette.text3    */
   --color-ghost: rgba(0, 0, 0, 0.04);
   --color-brand-glow: rgba(1, 113, 227, 0.18);
-  --color-glass-bg: rgba(255, 255, 255, 0.72);   /* Apple frosted glass */
-  --color-glass-border: rgba(0, 0, 0, 0.08);     /* Apple hairline border */
-  --color-surface: #ffffff;           /* Card / section white surface */
+  --color-glass-bg: rgba(255, 255, 255, 0.72);
+  --color-glass-border: rgba(0, 0, 0, 0.08);
+  --color-surface: #ffffff;           /* palette.surface  */
+  --color-surface-1: #ffffff;         /* palette.surface  */
+  --color-surface-2: #f0f1f4;         /* palette.surface2 */
+  --color-surface-border: rgba(0, 0, 0, 0.08);  /* palette.border */
 }
 
 body {
@@ -99,53 +110,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.signal-bubble-text { color: #ffffff; }
-:root.light .signal-bubble-text { color: #000000; }
-
-/* ── Android-style elevated card system ───────────────────────────────────────
-   Inspired by developer.android.com:
-   - No pure black bg — cards sit on a warm dark surface
-   - Two elevation tiers with a subtle border, no heavy blur
-   - Hover raises the card one tier, giving a tactile depth feel
-──────────────────────────────────────────────────────────────────────────── */
-.card {
-  background: var(--color-surface-1);
-  border: 1px solid var(--color-surface-border);
-  border-radius: 20px;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  background: var(--color-surface-2);
-  border-color: rgba(255, 255, 255, 0.13);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.card-raised {
-  background: var(--color-surface-2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-}
-
-.glass {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--color-glass-border);
-}
-
-/* Dark mode glass uses surface-1 so it's visible against the #111 page bg */
-:root:not(.light) .glass {
-  background: var(--color-surface-1);
-  border-color: var(--color-surface-border);
-}
-
-/* In light mode, cards sit on a white surface above the f5f5f7 page bg */
-:root.light .glass {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
-}
-
 /* Apple-style section dividers — override the dark-mode white/5 borders */
 :root.light .border-white\/5 {
   border-color: rgba(0, 0, 0, 0.08);
@@ -155,33 +119,3 @@ html {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-.text-glow {
-  text-shadow: 0 0 20px var(--color-brand-glow);
-}
-
-.mesh-gradient {
-  background: radial-gradient(circle at 50% 50%, rgba(1, 113, 227, 0.1) 0%, transparent 50%);
-}
-
-@keyframes flip {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes rotate {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.animate-flip {
-  animation: flip 3s linear infinite;
-}
-
-.animate-rotate {
-  animation: rotate 3s linear infinite;
-}
-
-.mask-gradient {
-  -webkit-mask-image: linear-gradient(black, transparent 50%);
-  mask-image: linear-gradient(black, transparent 50%);
-}
