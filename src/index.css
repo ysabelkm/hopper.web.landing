@@ -45,20 +45,56 @@
   overflow-x: hidden;
 }
 
+:root.dark {
+  --color-ghost: rgba(255, 255, 255, 0.05);
+}
+
+/* Light is the default theme (web v2): white canvas, cool-gray surfaces. */
 :root.light {
-  /* Light = HopperPalette.light */
-  --color-background: #f7f8fa;        /* palette.bg       */
-  --color-foreground: #232629;        /* palette.text     */
-  --color-muted: #61656c;             /* palette.text2    */
-  --color-faint: #8b9098;             /* palette.text3    */
-  --color-ghost: rgba(0, 0, 0, 0.04);
+  --color-background: #ffffff;
+  --color-foreground: #232629;
+  --color-muted: #4b5057;
+  --color-faint: #8b9098;
+  --color-ghost: rgba(0, 0, 0, 0.035);
   --color-brand-glow: rgba(1, 113, 227, 0.18);
   --color-glass-bg: rgba(255, 255, 255, 0.72);
   --color-glass-border: rgba(0, 0, 0, 0.08);
-  --color-surface: #ffffff;           /* palette.surface  */
-  --color-surface-1: #ffffff;         /* palette.surface  */
-  --color-surface-2: #f0f1f4;         /* palette.surface2 */
-  --color-surface-border: rgba(0, 0, 0, 0.08);  /* palette.border */
+  --color-surface: #f6f8fb;
+  --color-surface-1: #f6f8fb;
+  --color-surface-2: #eef1f5;
+  --color-surface-border: rgba(0, 0, 0, 0.10);
+}
+
+::selection {
+  background: var(--color-brand-blue);
+  color: #fff;
+}
+
+@keyframes hopRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hopFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hopReveal { from { transform: translateY(105%); } to { transform: translateY(0); } }
+@keyframes hopMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* The tilted blue highlight on headline words. Entrance animations must go on
+   a wrapper: a `both` fill-mode animation would override this transform. */
+.hop-pill {
+  display: inline-block;
+  background: var(--color-brand-blue);
+  color: #fff;
+  padding: 0.02em 0.24em 0.13em;
+  border-radius: 999px;
+  line-height: 1;
+  transform: rotate(-2.5deg);
+  cursor: default;
+  transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hop-pill:hover {
+  transform: rotate(3deg) scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hop-marquee { animation: none !important; }
 }
 
 body {

@@ -1,48 +1,44 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { Footer } from './Footer';
-import { Navbar } from './Navbar';
-import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
+import { Mail } from 'lucide-react';
+import { PageShell } from './PageShell';
+import { PageHero } from './PageHero';
+import { Section } from './Section';
+import { Card } from './ui/Card';
+import { LinkButton } from './ui/LinkButton';
+import type { Theme } from '../hooks/useTheme';
 
-export const CareersPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
+const CONTACT_EMAIL = 'support@hopperafrica.com';
 
-  const toggleTheme = () => setTheme(current => (current === 'dark' ? 'light' : 'dark'));
+export const CareersPage = ({ initialTheme }: { initialTheme: Theme }) => (
+  <PageShell initialTheme={initialTheme}>
+    {/* There are no roles to list, so the hero carries the message and a
+        single card says where openings will appear. */}
+    <PageHero
+      eyebrow="Careers at Hopper"
+      title="No open roles."
+      highlight="For now."
+      actions={<LinkButton href="/about" variant="secondary">About Hopper</LinkButton>}
+    >
+      We are not hiring at the moment. When new opportunities become available, they will be posted here.
+    </PageHero>
 
-  useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
-    document.cookie = `hopper-theme=${theme}; path=/; max-age=31536000; samesite=lax`;
-    window.localStorage.setItem('hopper-theme', theme);
-  }, [theme]);
-
-  return (
-    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ease-in-out selection:bg-blue-500 selection:text-white">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-
-      {/* The page is the hero: there are no roles to list, so the mesh hero
-          carries the whole message rather than sitting above an empty board. */}
-      <MeshHero
-        eyebrow="Careers at Hopper"
-        topRight={
-          <a
-            href="/about"
-            className="inline-flex items-center rounded-full border border-[var(--color-surface-border)] px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-muted)] hover:text-[var(--color-foreground)]"
-          >
-            About Hopper
+    <Section className="px-4 pb-[140px] sm:px-6">
+      <Card className="mx-auto flex max-w-[760px] flex-col items-center gap-5 px-7 py-12 text-center sm:px-12 sm:py-14">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-[color-mix(in_oklab,var(--color-brand-blue)_14%,transparent)] text-[var(--color-brand-blue)]">
+          <Mail className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <h2 className="m-0 font-display text-[clamp(24px,3vw,32px)] font-semibold tracking-[-0.03em]">
+          Roles are posted here when they open.
+        </h2>
+        <p className="m-0 max-w-[460px] text-[15px] leading-[1.65] text-[var(--color-muted)]">
+          Questions in the meantime? Reach the team at{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-[var(--color-brand-blue)] hover:opacity-80">
+            {CONTACT_EMAIL}
           </a>
-        }
-        footnotes={['Roles posted here when open', 'support@hopperafrica.com']}
-      >
-        <HeroParagraph>
-          We are not hiring at the moment. When new opportunities become available, they will be
-          posted here.
-        </HeroParagraph>
-        <HeroHeadline lines={['No open roles.', 'For now.']} />
-      </MeshHero>
-
-      <Footer theme={theme} />
-    </main>
-  );
-};
+          .
+        </p>
+      </Card>
+    </Section>
+  </PageShell>
+);

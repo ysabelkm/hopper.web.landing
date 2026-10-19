@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { HopperLogo } from './HopperLogo';
+import { TESTFLIGHT_URL } from '../lib/links';
 
 type FooterLink = { label: string; href: string; external?: boolean };
 
@@ -44,7 +45,7 @@ const TAIL_COLUMNS: { heading: string; links: FooterLink[] }[] = [
     heading: 'Socials',
     links: [
       { label: 'Twitter / X', href: '#', external: true },
-      { label: 'LinkedIn',    href: '#', external: true },
+      { label: 'LinkedIn',    href: 'https://www.linkedin.com/company/hopperafrica', external: true },
       { label: 'Instagram',   href: '#', external: true },
     ],
   },
@@ -74,7 +75,7 @@ const RULE_LABEL = 'shrink-0 text-[11px] font-medium uppercase tracking-[0.25em]
 
 /** A section label sitting inside a dashed hairline rule. */
 const SectionRule = ({ label }: { label: string }) => (
-  <div className="mx-6 flex items-center gap-4">
+  <div className="mx-6 flex sm:mx-8 items-center gap-4">
     <span className={RULE_LABEL}>{label}</span>
     <span className="flex-1 border-t border-dashed border-[var(--color-surface-border)]" />
   </div>
@@ -143,19 +144,17 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
 
         {/* ── Left card — nav, newsletter, credit ── */}
         <div className={`${card} flex-[1_1_560px] overflow-hidden`}>
-          <div className="flex flex-col gap-2.5 px-6 pt-6 pb-4">
+          <div className="flex flex-col gap-3 px-6 pt-8 pb-5 sm:px-8">
             {/* self-start keeps the flex column from stretching the logo wide */}
             <HopperLogo theme={theme} className="h-[34px] w-auto self-start" />
-            {/* No max-width: the tagline reads as a single line. It only wraps
-                once the card is genuinely too narrow to hold it. */}
-            <p className="m-0 text-sm font-light leading-[1.6] text-[var(--color-muted)]">
+            <p className="m-0 max-w-[320px] text-sm font-light leading-[1.6] text-[var(--color-muted)]">
               Decentralized, offline-first communication. Built for a resilient future.
             </p>
           </div>
 
           <SectionRule label="Navigation" />
 
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(130px,100%),1fr))] gap-x-8 gap-y-5 px-6 py-5">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(130px,100%),1fr))] gap-x-8 gap-y-6 px-6 py-6 sm:px-8">
             {LINK_COLUMNS.map(col => (
               <div key={col.heading} className="flex flex-col gap-3">
                 <h6 className={HEADING}>{col.heading}</h6>
@@ -182,7 +181,7 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
             ))}
           </div>
 
-          <div className="flex flex-col gap-2.5 px-6 pb-4">
+          <div className="flex flex-col gap-3 px-6 pb-5 sm:px-8">
             <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-[var(--color-faint)]">
               Join our newsletter
             </span>
@@ -191,35 +190,27 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
 
           <SectionRule label="Credit" />
 
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 pt-3 pb-4">
-            <span className="text-[11px] text-[var(--color-faint)]">
-              © 2026 HopperAfrica by{' '}
-              <span
-                className="text-white"
-                style={{ fontFamily: '"League Spartan", ui-sans-serif, system-ui, sans-serif' }}
-              >
-                KambiliTech
-              </span>
-            </span>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2.5 px-6 pt-4 pb-5 sm:px-8">
+            <span className="text-[11px] text-[var(--color-faint)]">© 2026 Hopper Africa. All rights reserved.</span>
             <span className="text-[11px] italic text-[var(--color-faint)]">
               built for the moments that matter — Team Hopper
             </span>
           </div>
         </div>
 
-        {/* ── Right card — QR + store buttons ── */}
-        <div className={`${card} flex flex-[0_1_340px] flex-col gap-4 p-6`}>
-          <div className="grid flex-1 place-items-center">
-            {/* No plate: the QR is painted through a CSS mask so its modules
-                take a theme token and its background stays transparent — which
-                a plain <img> could not do, since the SVG's fills cannot inherit
-                colour through one. `--color-faint` gives the subdued look while
-                holding 4.27:1 against the card; the SVG's own rgb(83,83,84)
-                would be 1.81:1, under the ~3:1 scanners need. */}
+        {/* ── Right card — QR + store buttons ──
+            A sidebar beside the main card on desktop; below lg it spans the
+            full width with the QR beside the buttons, so no gap is left. */}
+        <div className={`${card} flex flex-[1_1_300px] flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8 lg:flex-[0_1_340px] lg:flex-col lg:items-stretch lg:gap-5`}>
+          <div className="grid place-items-center sm:flex-[0_0_200px] lg:flex-1">
+            {/* No tile: the QR is painted through a CSS mask so its modules take
+                the text colour (near-black in light, white in dark) and its
+                background stays transparent — a plain <img> can't recolour
+                the SVG's fills. */}
             <span
               role="img"
               aria-label="Scan to download Hopper"
-              className="block aspect-square w-full max-w-[260px] bg-[var(--color-faint)]"
+              className="block aspect-square w-full max-w-[232px] bg-[var(--color-foreground)]"
               style={{
                 WebkitMaskImage: 'url(/hopperwebqr.svg)',
                 maskImage: 'url(/hopperwebqr.svg)',
@@ -233,24 +224,41 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
             />
           </div>
 
-          <div className="flex flex-col gap-3">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-faint)]">
-              Download the app
-            </span>
-            <a
-              href="/pricing"
-              className="flex items-center justify-center gap-4 rounded-xl border border-black/10 bg-white px-6 py-[9px] text-black transition-opacity hover:opacity-[0.88]"
-            >
-              <img src="/icons/appstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
-              <span className="text-sm font-medium tracking-[-0.01em]">Download on the App Store</span>
-            </a>
-            <a
-              href="/pricing"
-              className="flex items-center justify-center gap-4 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-background)] px-6 py-[9px] text-[var(--color-foreground)] transition-opacity hover:opacity-[0.88]"
-            >
-              <img src="/icons/playstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
-              <span className="text-sm font-medium tracking-[-0.01em]">Download on Google Play</span>
-            </a>
+          <div className="flex flex-col gap-5 sm:flex-1 lg:flex-none">
+            <div className="flex flex-col gap-3">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-faint)]">
+                Download the app
+              </span>
+              <a
+                href="/pricing"
+                className="flex items-center justify-center gap-4 rounded-xl border border-black/10 bg-white px-6 py-[9px] text-black transition-opacity hover:opacity-[0.88]"
+              >
+                <img src="/icons/appstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
+                <span className="text-sm font-medium tracking-[-0.01em]">Download on the App Store</span>
+              </a>
+              <a
+                href="/pricing"
+                className="flex items-center justify-center gap-4 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-background)] px-6 py-[9px] text-[var(--color-foreground)] transition-opacity hover:opacity-[0.88]"
+              >
+                <img src="/icons/playstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
+                <span className="text-sm font-medium tracking-[-0.01em]">Download on Google Play</span>
+              </a>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-faint)]">
+                Beta testing
+              </span>
+              <a
+                href={TESTFLIGHT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-4 rounded-xl border border-[color-mix(in_oklab,var(--color-brand-blue)_30%,transparent)] bg-[color-mix(in_oklab,var(--color-brand-blue)_12%,transparent)] px-6 py-[9px] text-[var(--color-brand-blue)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-brand-blue)_20%,transparent)] [:root.dark_&]:text-white"
+              >
+                <img src="/images/testflight.webp" alt="" className="h-7 w-7 shrink-0 rounded-[7px] object-contain" />
+                <span className="text-sm font-medium tracking-[-0.01em]">Try on TestFlight</span>
+              </a>
+            </div>
           </div>
         </div>
 

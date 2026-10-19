@@ -138,6 +138,10 @@ export function useMeshCanvas({ accent = '#0171e3', density: densityScale = 1 }:
         ctx.beginPath();
         ctx.arc(x, y, 2.6, 0, Math.PI * 2);
         ctx.fill();
+        ctx.fillStyle = `rgba(${ar},${ag},${ab},0.14)`;
+        ctx.beginPath();
+        ctx.arc(x, y, 9, 0, Math.PI * 2);
+        ctx.fill();
         if (p.t >= 1 && !p.done) {
           p.done = true;
           if (nodes[p.b]) nodes[p.b].glow = 1;
@@ -150,21 +154,31 @@ export function useMeshCanvas({ accent = '#0171e3', density: densityScale = 1 }:
       raf = requestAnimationFrame(draw);
     };
 
-    const onResize = () => build();
+    // Watch the canvas itself, not the window: a hero sized by its content
+    // (e.g. once images load) grows without any window resize, and a stale
+    // backing store would be stretched by CSS into smeared vertical streaks.
+    let lastW = 0, lastH = 0;
+    const observer = new ResizeObserver(() => {
+      const rect = canvas.getBoundingClientRect();
+      if (Math.round(rect.width) === lastW && Math.round(rect.height) === lastH) return;
+      lastW = Math.round(rect.width);
+      lastH = Math.round(rect.height);
+      build();
+    });
     const onMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       mouse.x = e.clientX - rect.left;
       mouse.y = e.clientY - rect.top;
     };
 
-    window.addEventListener('resize', onResize);
+    observer.observe(canvas);
     window.addEventListener('pointermove', onMove);
     build();
     draw();
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener('resize', onResize);
+      observer.disconnect();
       window.removeEventListener('pointermove', onMove);
     };
   }, [accent, densityScale]);

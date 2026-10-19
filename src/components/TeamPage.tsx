@@ -1,10 +1,12 @@
 "use client";
 
-import { Fragment, useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
-import { Footer } from './Footer';
-import { Navbar } from './Navbar';
-import { MeshHero, HeroHeadline, HeroParagraph } from './MeshHero';
+import { Fragment } from 'react';
+import { PageShell } from './PageShell';
+import { PageHero } from './PageHero';
+import { Section } from './Section';
+import { Card } from './ui/Card';
+import { SectionHeader } from './ui/SectionHeader';
+import type { Theme } from '../hooks/useTheme';
 
 // solar:structure-line-duotone
 function OrganizationIcon({ className }: { className?: string }) {
@@ -74,133 +76,73 @@ const founders = [
   },
 ];
 
-export const TeamPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-  const prefersReducedMotion = useReducedMotion();
+export const TeamPage = ({ initialTheme }: { initialTheme: Theme }) => (
+  <PageShell initialTheme={initialTheme}>
+    <PageHero eyebrow="The founding team" title="Three" highlight="co-founders.">
+      Hopper is led by a multidisciplinary founding team bringing company building, technology, growth,
+      finance and operations around one mission: communication that keeps working.
+    </PageHero>
 
-  useEffect(() => {
-    document.cookie = `hopper-theme=${theme};path=/;max-age=31536000`;
-    document.documentElement.classList.toggle('light', theme === 'light');
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
-  const reveal = prefersReducedMotion
-    ? { initial: false as const }
-    : {
-        initial: { opacity: 0, y: 24 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-60px' },
-        transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] as const },
-      };
-
-  return (
-    <div className="min-h-screen overflow-hidden bg-[var(--color-background)] text-[var(--color-foreground)]">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
-
-      <main>
-        <MeshHero
-          eyebrow="The founding team"
-          footnotes={['Company building · technology · growth', 'Finance · operations']}
-        >
-          <HeroParagraph>
-            Hopper is led by a multidisciplinary founding team bringing company building,
-            technology, growth, finance and operations around one mission: communication that
-            keeps working.
-          </HeroParagraph>
-          <HeroHeadline lines={['Three', 'co-founders.']} />
-        </MeshHero>
-
-        <section className="border-t border-[var(--color-glass-border)] px-4 py-20 md:px-6 md:py-28">
-          <div className="mx-auto grid max-w-[1500px] gap-4 lg:grid-cols-3">
-            {founders.map((founder, index) => {
-              const Icon = founder.icon;
-              return (
-                <motion.article
-                  key={founder.name}
-                  {...reveal}
-                  transition={{ ...('transition' in reveal ? reveal.transition : {}), delay: prefersReducedMotion ? 0 : index * 0.1 }}
-                  className="group flex min-h-[620px] flex-col overflow-hidden rounded-[32px] border border-[var(--color-glass-border)] bg-[var(--color-glass-bg)] md:min-h-[700px]"
+    <Section className="px-4 pb-[100px] sm:px-6 md:pb-[140px]">
+      <div className="mx-auto grid max-w-[1180px] gap-5 md:grid-cols-3 lg:gap-6">
+        {founders.map((founder, index) => {
+          const Icon = founder.icon;
+          return (
+            <Card key={founder.name} className="group flex flex-col overflow-hidden p-3">
+              {/* Portrait panel: initials over a soft blue glow until photos exist. */}
+              <div className="relative grid aspect-[4/3.4] place-items-center md:aspect-[4/4.4] lg:aspect-[4/3.4] overflow-hidden rounded-[20px] bg-[var(--color-background)]">
+                <div className="absolute inset-x-5 top-5 flex items-center justify-between">
+                  <span className="text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[var(--color-faint)]">
+                    Co-founder · 0{index + 1}
+                  </span>
+                  <span className="grid h-9 w-9 place-items-center rounded-full bg-[color-mix(in_oklab,var(--color-brand-blue)_14%,transparent)] text-[var(--color-brand-blue)]">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                </div>
+                <div className="pointer-events-none absolute h-56 w-56 rounded-full bg-[color-mix(in_oklab,var(--color-brand-blue)_16%,transparent)] blur-[70px] transition-transform duration-500 group-hover:scale-110" />
+                <span
+                  aria-hidden="true"
+                  className="relative select-none font-display text-[clamp(88px,10vw,128px)] font-semibold md:text-[72px] lg:text-[clamp(96px,9vw,128px)] tracking-[-0.08em]"
                 >
-                  <div className="relative flex flex-1 items-center justify-center overflow-hidden border-b border-[var(--color-glass-border)] bg-[var(--color-ghost)]">
-                    <div className="absolute inset-x-8 top-8 flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--color-faint)]">
-                        Co-founder · 0{index + 1}
-                      </span>
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-glass-border)] text-blue-500">
-                        <Icon className="h-4 w-4" aria-hidden="true" />
-                      </div>
-                    </div>
+                  {founder.initials}
+                </span>
+              </div>
 
-                    <div
-                      className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(var(--color-muted)_1px,transparent_1px),linear-gradient(90deg,var(--color-muted)_1px,transparent_1px)] [background-size:36px_36px]"
-                      aria-hidden="true"
-                    />
-                    <div className="pointer-events-none absolute h-64 w-64 rounded-full bg-blue-500/10 blur-[80px] transition-colors duration-300 group-hover:bg-blue-500/15" />
-                    <span
-                      className="relative select-none text-[112px] font-bold tracking-[-0.09em] text-[var(--color-foreground)] sm:text-[148px] lg:text-[112px] xl:text-[148px]"
-                      aria-hidden="true"
-                    >
-                      {founder.initials}
-                    </span>
+              <div className="px-5 pt-6 pb-5 md:px-4 lg:px-6">
+                <div className="mb-5 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+                  <div className="min-w-0">
+                    <h2 className="m-0 font-display text-[24px] font-semibold tracking-[-0.03em] md:text-[20px] lg:text-[24px]">{founder.name}</h2>
+                    <p className="m-0 mt-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-brand-blue)]">
+                      {founder.focus}
+                    </p>
                   </div>
+                  <span className="mt-1 shrink-0 whitespace-nowrap rounded-full border border-[var(--color-surface-border)] px-3 py-1.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-[var(--color-faint)]">
+                    {founder.shorthand}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-[var(--color-surface-border)] pt-5 text-[14px] leading-[1.6] text-[var(--color-muted)]">
+                  {founder.roles.map((role, roleIndex) => (
+                    <Fragment key={role}>
+                      {roleIndex > 0 && (
+                        <span aria-hidden="true" className="h-3.5 w-px shrink-0 bg-[var(--color-surface-border)]" />
+                      )}
+                      <span>{role}</span>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </Section>
 
-                  <div className="p-7 md:p-9">
-                    <div className="mb-7 flex items-start justify-between gap-5">
-                      <div className="min-w-0">
-                        <h2 className="whitespace-nowrap text-[clamp(1.375rem,2.1vw,1.875rem)] font-semibold tracking-tight">{founder.name}</h2>
-                        <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.25em] text-blue-500">
-                          {founder.focus}
-                        </p>
-                      </div>
-                      <span className="mt-1 hidden shrink-0 whitespace-nowrap rounded-full border border-[var(--color-glass-border)] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[var(--color-faint)] sm:block">
-                        {founder.shorthand}
-                      </span>
-                    </div>
-
-                    <div className="border-t border-[var(--color-glass-border)] pt-6">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 whitespace-nowrap text-[clamp(0.6875rem,0.95vw,0.875rem)] font-light leading-relaxed text-[var(--color-muted)]">
-                        {founder.roles.map((role, roleIndex) => (
-                          <Fragment key={role}>
-                            {roleIndex > 0 && (
-                              <span aria-hidden="true" className="h-3.5 w-px shrink-0 bg-[var(--color-glass-border)]" />
-                            )}
-                            <span>{role}</span>
-                          </Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="border-t border-[var(--color-glass-border)] px-6 py-28 md:px-12 md:py-40 lg:px-20">
-          <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
-            <motion.div {...reveal}>
-              <span className="mb-6 block text-[11px] font-bold uppercase tracking-[0.4em] text-blue-500">
-                How we lead
-              </span>
-              <p className="max-w-xs text-sm font-light leading-relaxed text-[var(--color-muted)]">
-                Different responsibilities. Shared ownership.
-              </p>
-            </motion.div>
-
-            <motion.div {...reveal}>
-              <h2 className="mb-10 text-4xl font-bold leading-[1.04] tracking-tighter md:text-6xl">
-                Built together from day one.
-              </h2>
-              <p className="max-w-3xl text-lg font-light leading-relaxed text-[var(--color-muted)] md:text-xl">
-                Hopper’s founding team works across disciplines, with every decision connected to the same goal: making resilient communication useful, trustworthy, and accessible to the communities that need it.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-      </main>
-
-      <Footer theme={theme} />
-    </div>
-  );
-};
+    <Section className="px-5 pb-[140px] sm:px-8">
+      <SectionHeader
+        eyebrow="How we lead"
+        title="Built together from day one."
+        sub="Hopper’s founding team works across disciplines, with every decision connected to the same goal: making resilient communication useful, trustworthy, and accessible to the communities that need it."
+      />
+    </Section>
+  </PageShell>
+);

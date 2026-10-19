@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getInitialTheme } from '../../lib/theme';
 import { HowItWorksPage } from '../../components/HowItWorksPage';
 
 export const metadata = {
@@ -7,6 +7,6 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const initialTheme = (await cookies()).get('hopper-theme')?.value === 'light' ? 'light' : 'dark';
+  const initialTheme = await getInitialTheme();
   return <HowItWorksPage initialTheme={initialTheme} />;
 }

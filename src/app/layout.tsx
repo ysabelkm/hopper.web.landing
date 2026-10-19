@@ -1,5 +1,5 @@
+import { getInitialTheme } from '../lib/theme';
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import '../index.css';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const theme = (await cookies()).get('hopper-theme')?.value === 'light' ? 'light' : 'dark';
+  const theme = await getInitialTheme();
 
   return (
     <html lang="en" className={theme} suppressHydrationWarning>

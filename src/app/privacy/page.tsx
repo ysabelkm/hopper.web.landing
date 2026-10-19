@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { getInitialTheme } from '../../lib/theme';
 import { PrivacyPage } from '../../components/PrivacyPage';
 
 export const metadata = {
@@ -7,6 +7,6 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const initialTheme = (await cookies()).get('hopper-theme')?.value === 'light' ? 'light' : 'dark';
+  const initialTheme = await getInitialTheme();
   return <PrivacyPage initialTheme={initialTheme} />;
 }

@@ -1,13 +1,37 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { motion } from 'motion/react';
 import { Section } from './components/Section';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
-import { MeshHero, HeroHeadline, HeroParagraph, StoreBadges } from './components/MeshHero';
-import { StickyPanelList, PanelRow } from './components/StickyPanelList';
+import { StoreBadges } from './components/ui/StoreBadges';
+import { DemoVideo } from './components/DemoVideo';
+import { Eyebrow, Pill } from './components/ui/Pill';
+import { useMeshCanvas } from './hooks/useMeshCanvas';
+import { useTheme, Theme } from './hooks/useTheme';
 
-const SEGMENTS: PanelRow[] = [
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Hero phones, left to right. Each sits lower or higher and tilts slightly. */
+const MOCKUPS = [
+  { name: 'step-02-discover', offset: 'mt-[7%]', tilt: '-rotate-3', delay: 0.76 },
+  { name: 'step-04-relay', offset: 'mt-[3%]', tilt: 'rotate-0', delay: 0.86 },
+  { name: 'step-05-deliver', offset: 'mt-[7%]', tilt: 'rotate-3', delay: 0.96 },
+];
+
+const MARQUEE = [
+  'Rural communities',
+  'Campuses',
+  'Field operations',
+  'Festivals',
+  'Emergencies',
+  'Community halls',
+  'Markets',
+  'Remote clinics',
+];
+
+const USE_CASES = [
   {
     num: '01',
     title: 'Rural communities',
@@ -34,139 +58,198 @@ const SEGMENTS: PanelRow[] = [
   },
 ];
 
-const Vision = () => (
-  <Section id="vision" className="relative overflow-hidden px-5 pt-[max(200px,28vw)] pb-[max(200px,25vw)] sm:px-8">
-    {/* Each watermark spans the viewport exactly once horizontally. The two
-        sizes differ because Sora's uppercase advance makes "COLLECTIVE" (10
-        glyphs, 5.99em wide) wider per point than "RESILIENT" (9 glyphs,
-        4.90em) — 100/4.90 and 100/5.99 vw respectively.
-
-        Both sit flush inside the section rather than being pulled outwards:
-        `leading-[0.8]` makes the line box shorter than the glyphs it holds, so
-        any negative offset pushes the letterforms past the section's
-        `overflow-hidden` edge and shears their tops and bottoms off. The
-        `py-[0.14em]` restores the room the tight leading removes.
-
-        The section's vertical padding is tied to the same vw units as the type
-        (`22vw` / `19vw`), so the copy always starts below "RESILIENT" and ends
-        above "COLLECTIVE" — they never overlap the text at any width. */}
-    <div className="pointer-events-none absolute top-0 left-0 w-full select-none whitespace-nowrap py-[0.25em] font-display text-[20vw] font-bold uppercase leading-[0.8] tracking-[-0.05em] text-[var(--color-ghost)]">
-      Resilient
-    </div>
-    <div className="pointer-events-none absolute bottom-0 left-0 w-full select-none whitespace-nowrap py-[0.14em] text-right font-display text-[16.4vw] font-bold uppercase leading-[0.8] tracking-[-0.05em] text-[var(--color-ghost)]">
-      Collective
-    </div>
-
-    <div className="relative mx-auto max-w-[1080px]">
-      <span className="mb-7 block text-[10.5px] font-semibold uppercase tracking-[0.34em] text-[var(--color-brand-blue)]">
-        Why we built this
-      </span>
-      <h2 className="m-0 mb-8 font-display text-[clamp(34px,5.4vw,76px)] font-semibold leading-[1.02] tracking-[-0.04em]">
-        Built for the moments<br />
-        <span className="text-[var(--color-faint)]">where everything else fails.</span>
-      </h2>
-      <p className="m-0 max-w-[640px] text-[clamp(17px,2vw,21px)] leading-[1.6] text-[var(--color-muted)]">
-        In an emergency, reaching your people isn&rsquo;t a nice-to-have. It&rsquo;s everything.
-        When the towers go dark, Hopper stays on.
-      </p>
-
-      <div className="mt-[120px] grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-16 border-t border-[var(--color-surface-border)] pt-16">
-        <div>
-          <h5 className="m-0 mb-6 font-display text-[11px] font-semibold uppercase tracking-[0.34em]">The philosophy</h5>
-          <p className="m-0 mb-5 text-lg leading-[1.6] text-[var(--color-muted)]">
-            Connecting with your community shouldn&rsquo;t be a privilege granted by a centralized
-            grid. It is a fundamental, resilient right.
-          </p>
-          <p
-            className="m-0 pl-5 text-sm leading-[1.65] text-[var(--color-faint)]"
-            style={{ borderLeft: '1px solid color-mix(in oklab, var(--color-brand-blue) 45%, transparent)' }}
-          >
-            Communication should be physics-based, not contract-based. By using the radio waves
-            already in our devices, we reclaim the airwaves.
-          </p>
-        </div>
-        <div>
-          <h5 className="m-0 mb-6 font-display text-[11px] font-semibold uppercase tracking-[0.34em]">The global vision</h5>
-          <p className="m-0 mb-5 text-lg leading-[1.6] text-[var(--color-muted)]">
-            Turn every mobile device into a bridge — a global emergency layer that stays active
-            through any disaster or shutdown.
-          </p>
-          <p
-            className="m-0 pl-5 text-sm leading-[1.65] text-[var(--color-faint)]"
-            style={{ borderLeft: '1px solid color-mix(in oklab, var(--color-brand-blue) 45%, transparent)' }}
-          >
-            One billion active relay points by 2030, so no territory on earth is ever truly offline.
-          </p>
-        </div>
-      </div>
-    </div>
-  </Section>
-);
-
-const Impact = () => (
-  <Section id="impact" className="px-5 pt-10 pb-[180px] sm:px-8">
-    <div className="mx-auto max-w-[1080px]">
-      <span className="mb-6 block text-[10.5px] font-semibold uppercase tracking-[0.34em] text-[var(--color-brand-blue)]">
-        Who it&rsquo;s for
-      </span>
-      <h2 className="m-0 mb-14 font-display text-[clamp(30px,4.2vw,52px)] font-semibold leading-[1.06] tracking-[-0.035em]">
-        No signal? <span className="text-[var(--color-faint)]">No problem.</span>
-      </h2>
-      <StickyPanelList rows={SEGMENTS} variant="segments" fit="cover" />
-    </div>
-  </Section>
-);
-
-const GetHopper = () => (
-  <Section id="get" className="px-5 pb-[180px] sm:px-8">
-    <div className="mx-auto max-w-[1080px] border-t border-[var(--color-surface-border)] pt-[120px] text-center">
-      {/* Two stacked lines rather than one long one — the price reads as the
-          headline it is, with the promise sitting under it in faint. */}
-      <h2 className="m-0 mb-8 font-display text-[clamp(38px,7.4vw,104px)] font-semibold leading-[1.06] tracking-[-0.045em]">
-        ₦867 a month.<br />
-        <span className="text-[var(--color-faint)]">Infinite reach.</span>
-      </h2>
-      <p className="mx-auto mb-14 max-w-[560px] text-[clamp(16px,1.5vw,20px)] leading-[1.6] text-[var(--color-muted)]">
-        One subscription. Both platforms. Every feature. No towers needed.
-      </p>
-      <div className="flex flex-wrap justify-center gap-5">
-        <StoreBadges height={60} />
-      </div>
-    </div>
-  </Section>
-);
-
-export default function App({ initialTheme = 'dark' }: { initialTheme?: 'dark' | 'light' }) {
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
-
-  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-
-  useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
-    document.cookie = `hopper-theme=${theme}; path=/; max-age=31536000; samesite=lax`;
-    window.localStorage.setItem('hopper-theme', theme);
-  }, [theme]);
+const Hero = ({ theme }: { theme: Theme }) => {
+  const canvasRef = useMeshCanvas();
 
   return (
-    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ease-in-out selection:bg-blue-500 selection:text-white">
+    <section id="top" className="relative overflow-hidden px-5 pt-[132px] sm:px-6 md:pt-[150px]">
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 block h-full w-full" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 42% at 50% 30%, color-mix(in oklab, var(--color-background) 94%, transparent) 0%, transparent 78%)',
+        }}
+      />
+
+      <div className="relative mx-auto flex max-w-[980px] flex-col items-center gap-7 text-center">
+        <span className="animate-[hopFade_900ms_ease_160ms_both]">
+          <Eyebrow>No signal? No problem.</Eyebrow>
+        </span>
+
+        <h1 className="m-0 font-display text-[clamp(42px,7.4vw,112px)] font-semibold leading-[1.02] tracking-[-0.05em]">
+          <span className="block overflow-hidden pb-[0.1em]">
+            <span className="block animate-[hopReveal_1100ms_cubic-bezier(0.16,1,0.3,1)_240ms_both]">
+              Connects communities,
+            </span>
+          </span>
+          <span className="mt-[0.06em] flex flex-wrap items-center justify-center gap-x-[0.22em] gap-y-[0.1em]">
+            <span className="inline-block animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_400ms_both]">
+              <Pill>one hop</Pill>
+            </span>
+            <span className="animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_500ms_both]">at a time.</span>
+          </span>
+        </h1>
+
+        <p className="m-0 max-w-[470px] animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_560ms_both] text-[17px] leading-[1.6] text-[var(--color-muted)] sm:text-lg">
+          Your message hops phone to phone until it arrives. No SIM, no Wi-Fi, no towers.
+        </p>
+
+        <div className="flex animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_680ms_both] flex-wrap justify-center gap-3">
+          <StoreBadges height={48} />
+        </div>
+      </div>
+
+      {/* Phones crop at the bottom edge. The light page shows the dark app
+          screens and vice versa, so the phones always contrast the canvas. */}
+      <div className="relative mx-auto mt-10 flex h-[min(640px,64vw)] max-w-[1000px] items-start justify-center gap-2 overflow-hidden sm:gap-5">
+        {MOCKUPS.map(m => (
+          <motion.div
+            key={m.name}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: m.delay, ease: EASE }}
+            className={`min-w-0 flex-[0_1_300px] ${m.offset}`}
+          >
+            <img
+              src={theme === 'light' ? `/mockups/${m.name}.webp` : `/mockups/light/${m.name}.png`}
+              alt=""
+              width={804}
+              height={1748}
+              className={`block h-auto w-full ${m.tilt}`}
+            />
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Marquee = () => {
+  // Rendered twice so a -50% translate loops seamlessly.
+  const run = (copy: number) => (
+    <div className="flex flex-none items-center" aria-hidden={copy > 0}>
+      {MARQUEE.map(word => (
+        <span
+          key={word}
+          className="flex items-center gap-5 whitespace-nowrap pr-5 font-display text-[22px] font-semibold tracking-[-0.03em] sm:gap-7 sm:pr-7 sm:text-[30px]"
+        >
+          {word}
+          <span className="h-2 w-2 rounded-full bg-[var(--color-brand-blue)] sm:h-2.5 sm:w-2.5" />
+        </span>
+      ))}
+    </div>
+  );
+
+  return (
+    <section className="overflow-hidden border-y border-[var(--color-surface-border)] bg-[var(--color-surface-1)] py-5 sm:py-[26px]">
+      <div className="hop-marquee flex w-max animate-[hopMarquee_36s_linear_infinite]">
+        {run(0)}
+        {run(1)}
+      </div>
+    </section>
+  );
+};
+
+const UseCases = () => (
+  <Section id="impact" className="px-5 py-[100px] sm:px-8 md:py-[140px]">
+    <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto mb-14 max-w-[640px] text-center md:mb-[72px]">
+        <Eyebrow className="mb-[22px]">Use cases</Eyebrow>
+        <h2 className="m-0 mb-[18px] font-display text-[clamp(32px,4.6vw,62px)] font-semibold leading-[1.04] tracking-[-0.04em]">
+          Made for places{' '}
+          <span className="text-[var(--color-brand-blue)]">the towers don&rsquo;t reach.</span>
+        </h2>
+        <p className="m-0 text-[17px] leading-[1.6] text-[var(--color-muted)]">
+          Pick your door. They all lead to your people.
+        </p>
+      </div>
+
+      <div className="mx-auto grid max-w-[980px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-x-8 gap-y-14">
+        {USE_CASES.map(item => (
+          <div key={item.num} className="flex flex-col gap-[18px]">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[28px] bg-[var(--color-surface-1)]">
+              <Image
+                src={item.img}
+                alt={item.title}
+                fill
+                sizes="(min-width: 1024px) 474px, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <div className="mb-2 text-[11px] font-semibold tracking-[0.2em] text-[var(--color-brand-blue)]">
+                {item.num}
+              </div>
+              <div className="mb-2 font-display text-[22px] font-semibold tracking-[-0.025em]">{item.title}</div>
+              <div className="text-[15px] leading-[1.6] text-[var(--color-muted)]">{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Section>
+);
+
+const Demo = () => (
+  <Section id="how-it-works" className="px-4 pb-[100px] sm:px-6 md:pb-[140px]">
+    <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto mb-12 max-w-[640px] text-center md:mb-14">
+        <Eyebrow className="mb-[22px]">How it works</Eyebrow>
+        <h2 className="m-0 font-display text-[clamp(32px,4.6vw,62px)] font-semibold leading-[1.04] tracking-[-0.04em]">
+          See it in action.
+        </h2>
+      </div>
+      <div className="mx-auto max-w-[1080px]">
+        <DemoVideo />
+      </div>
+    </div>
+  </Section>
+);
+
+const PricingCard = () => (
+  <Section id="get" className="px-4 pb-[100px] sm:px-6">
+    <div className="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] items-end gap-14 rounded-[28px] border border-[var(--color-surface-border)] bg-[var(--color-surface-1)] px-7 py-14 sm:rounded-[40px] sm:px-14 sm:py-20">
+      <div>
+        <Eyebrow className="mb-6">Pricing</Eyebrow>
+        <div className="flex flex-wrap items-end gap-4">
+          <span className="font-display text-[clamp(80px,13vw,190px)] font-semibold leading-[0.8] tracking-[-0.055em] text-[var(--color-foreground)]">
+            ₦867
+          </span>
+          <span className="pb-1.5 font-display text-[clamp(20px,2.6vw,34px)] font-semibold tracking-[-0.03em] text-[var(--color-faint)]">
+            / month
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-col gap-6">
+        <p className="m-0 max-w-[400px] text-[17px] leading-[1.6] text-[var(--color-muted)]">
+          One subscription. Both platforms. Every feature. No towers needed.
+        </p>
+        <div className="flex flex-wrap items-center gap-3.5">
+          <StoreBadges height={48} />
+        </div>
+        <a
+          href="/pricing"
+          className="self-start text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-brand-blue)] transition-opacity hover:opacity-70"
+        >
+          See full pricing →
+        </a>
+      </div>
+    </div>
+  </Section>
+);
+
+export default function App({ initialTheme = 'light' }: { initialTheme?: Theme }) {
+  const { theme, toggleTheme } = useTheme(initialTheme);
+
+  return (
+    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ease-in-out">
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-
-      <MeshHero
-        eyebrow="Off-grid mesh network"
-        footnotes={['Phone to phone · up to 1,024 peers', 'End-to-end encrypted · 0 bytes stored']}
-      >
-        <HeroParagraph>
-          Your message hops phone to phone until it arrives. No SIM, no Wi-Fi, no towers — just the
-          radios already around you.
-        </HeroParagraph>
-        <HeroHeadline lines={['The network is', 'everyone here.']} />
-      </MeshHero>
-
-      <Vision />
-      <Impact />
-      <GetHopper />
-
+      <Hero theme={theme} />
+      <Marquee />
+      <UseCases />
+      <Demo />
+      <PricingCard />
       <Footer theme={theme} />
     </main>
   );

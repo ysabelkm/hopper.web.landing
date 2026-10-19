@@ -1,8 +1,8 @@
+import { getInitialTheme } from '../lib/theme';
 import App from '../App';
-import { cookies } from 'next/headers';
 
 export default async function Page() {
-  const initialTheme = (await cookies()).get('hopper-theme')?.value === 'light' ? 'light' : 'dark';
+  const initialTheme = await getInitialTheme();
 
   return <App initialTheme={initialTheme} />;
 }
