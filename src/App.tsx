@@ -101,8 +101,10 @@ const Hero = ({ theme }: { theme: Theme }) => {
       </div>
 
       {/* Phones crop at the bottom edge. The light page shows the dark app
-          screens and vice versa, so the phones always contrast the canvas. */}
-      <div className="relative mx-auto mt-10 flex h-[min(640px,64vw)] max-w-[1000px] items-start justify-center gap-2 overflow-hidden sm:gap-5">
+          screens and vice versa, so the phones always contrast the canvas.
+          On phones the row bleeds to the screen edges (-mx-5 cancels the
+          section's px-5) so the screenshots get the full width. */}
+      <div className="relative -mx-5 mt-10 flex h-[min(640px,64vw)] items-start justify-center gap-2 overflow-hidden sm:mx-auto sm:max-w-[1000px] sm:gap-5">
         {MOCKUPS.map(m => (
           <motion.div
             key={m.name}
