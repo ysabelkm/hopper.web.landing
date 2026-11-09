@@ -88,7 +88,7 @@ const sections: LegalSection[] = [
 
         <p><strong className="font-medium text-[var(--color-foreground)]">What We Do NOT Collect</strong></p>
         <ul className="list-disc pl-6 flex flex-col gap-2">
-          <li>The content of your messages on any server</li>
+          <li>The content of your messages on any server, except a message you choose to report (see "Safety Reports" below)</li>
           <li>Your GPS location, precise geographic coordinates, or location history</li>
           <li>Your contacts list, phone book, or social graph</li>
           <li>Your real name, email address, phone number, or any government-issued identifier</li>
@@ -97,6 +97,10 @@ const sections: LegalSection[] = [
           <li>Browsing history or activity outside the Hopper application</li>
           <li>Behavioral analytics or usage patterns on any server</li>
         </ul>
+
+        <p><strong className="font-medium text-[var(--color-foreground)]">Safety Reports</strong></p>
+        <p>Keeping Hopper safe is the one case where information leaves your device for Hopper. When you report a message or a person, or block someone, the app sends the Hopper moderation team: the reported person's username and network identifier, the reason you chose, any details you type, and, for a reported message, its text and when it was sent (photos, videos, voice notes and files are never sent). It also sends your own network identifier so we can follow up and prevent abuse of reporting. Reports are sent when your phone next has an internet connection. We use them only to review and act on violations of our Terms of Use, keep them for up to 12 months, and never sell or share them except where required by law.</p>
+        <p>To enforce removals, the app also downloads the list of network identifiers the team has removed from Hopper. This download sends nothing about you.</p>
       </>
     ),
   },
@@ -162,8 +166,8 @@ const sections: LegalSection[] = [
         <p><strong className="font-medium text-[var(--color-foreground)]">User-Initiated Deletion</strong></p>
         <p>You may delete all locally stored data at any time by navigating to Settings &gt; Clear All Data, or by uninstalling the application, which permanently deletes the database, media directory, and all preferences. There is no way for us to recover deleted data, as Hopper does not maintain any remote copies.</p>
 
-        <p><strong className="font-medium text-[var(--color-foreground)]">No Remote Data to Delete</strong></p>
-        <p>Because Hopper does not store your personal data on any server, there is no remote data to request deletion of. Your data is always entirely under your control on your device.</p>
+        <p><strong className="font-medium text-[var(--color-foreground)]">Deleting Your Account</strong></p>
+        <p>You can delete your account at any time in the app under Settings &gt; Delete Account. This permanently erases your username, identity, keys, messages, files and settings from your device, together with any account data held on Hopper's server. Safety reports you filed about others may be kept for up to 12 months so we can complete the review; contact support@hopperafrica.com to ask about them.</p>
       </>
     ),
   },
@@ -303,7 +307,7 @@ export const PrivacyPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }
     eyebrow="Legal · Privacy"
     headline={['Privacy is', 'the default.']}
     intro="We believe privacy is a fundamental right. Here's exactly what we collect, why, and how we protect it — down to the technical architecture."
-    effective="Effective 11 May 2026 · Version 1.0"
+    effective="Effective 9 November 2026 · Version 1.1"
     sections={sections}
   />
 );

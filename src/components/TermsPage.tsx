@@ -24,7 +24,7 @@ const sections: LegalSection[] = [
           <li><strong className="font-medium text-[var(--color-foreground)]">Bluetooth Low Energy (BLE):</strong> Low-power Bluetooth scanning and peripheral broadcasting used for device discovery and signal proximity estimation.</li>
         </ul>
         <p>Through the mesh network, Hopper supports: Direct Messaging, Broadcast Messaging, Media Sharing, Voice Messages, Message Reactions, Reply Threading, Read Receipts, Delivery Status, and Hop-Based Routing.</p>
-        <Note>Hopper is NOT an internet-based service and does NOT connect to any central server or cloud infrastructure. All communication is local, device-to-device, and dependent on physical proximity and network density.</Note>
+        <Note>Hopper is NOT an internet-based service. Messages are never sent through any central server or cloud infrastructure: all communication is local, device-to-device, and dependent on physical proximity and network density. The only things Hopper sends to its own server are the safety reports described in Section 3A and, where billing applies, your account and subscription details.</Note>
       </>
     ),
   },
@@ -34,7 +34,7 @@ const sections: LegalSection[] = [
       <>
         <p><strong className="font-medium text-[var(--color-foreground)]">Minimum Age:</strong> You must be at least 13 years of age to use Hopper. If you are between 13 and 17, a parent or legal guardian must have reviewed and agreed to these Terms on your behalf. We do not knowingly collect information from children under 13.</p>
         <p><strong className="font-medium text-[var(--color-foreground)]">Username Registration:</strong> Hopper does not require an email address, phone number, or password. You create a local username that must be 3–12 characters (letters, numbers, underscores only), is stored exclusively on your device, and is visible to all Hopper users within your active mesh network.</p>
-        <p><strong className="font-medium text-[var(--color-foreground)]">No Central Account:</strong> Because Hopper operates without central servers, there is no account database, password recovery, or remote account management. All user data exists solely on your device. Uninstalling the application permanently deletes all locally stored data with no possibility of recovery.</p>
+        <p><strong className="font-medium text-[var(--color-foreground)]">Your Account:</strong> Your account lives on your device; there is no password recovery or remote account management. Before creating an account you must agree to these Terms in the app. You can permanently delete your account and its data at any time in Settings &gt; Delete Account.</p>
       </>
     ),
   },
@@ -61,6 +61,22 @@ const sections: LegalSection[] = [
           <li>Probe or scan the vulnerability of the application without prior written authorization from Hopper</li>
         </ul>
         <Note>CRITICAL: Hopper is NOT a substitute for official emergency services. In any life-threatening emergency, contact your local emergency services immediately (e.g., 911 in the US, 112 in the EU, 999 in the UK). Hopper cannot guarantee message delivery and must never be relied upon as the sole means of emergency communication.</Note>
+      </>
+    ),
+  },
+  {
+    title: '3A. Community Standards: Zero Tolerance',
+    body: (
+      <>
+        <p><strong className="font-medium text-[var(--color-foreground)]">There is no tolerance on Hopper for objectionable content or abusive users.</strong> Objectionable content includes everything listed under Prohibited Content above, as well as harassment, bullying, threats, spam, scams, and nudity or sexual content sent to anyone who has not asked for it. Abusive users are people who post such content or who target, intimidate, or harass others.</p>
+        <p>To keep the network safe, Hopper provides the following, and you agree to their use:</p>
+        <ul className="list-disc pl-6 flex flex-col gap-2">
+          <li><strong className="font-medium text-[var(--color-foreground)]">Filtering:</strong> offensive words in messages from other people are masked on your device by default. You can turn the filter off in Settings &gt; Privacy &amp; Security.</li>
+          <li><strong className="font-medium text-[var(--color-foreground)]">Reporting:</strong> press and hold any message to report it, or report a person from their profile. A reported message is hidden from you immediately.</li>
+          <li><strong className="font-medium text-[var(--color-foreground)]">Blocking:</strong> blocking someone immediately removes their messages from your view and stops them contacting you. Every block is also sent to the Hopper team for review.</li>
+        </ul>
+        <p><strong className="font-medium text-[var(--color-foreground)]">Enforcement:</strong> the Hopper team reviews every report within 24 hours. When content breaks these Terms, we remove it by removing the account that posted it: the account is ejected from Hopper, its messages are hidden on every device that receives our removal list, and other devices stop communicating with it. We may do this without notice. Attempting to evade a removal, for example by creating a new account, is itself a violation of these Terms.</p>
+        <p>By agreeing to these Terms in the app, you confirm that you understand and accept this policy.</p>
       </>
     ),
   },
@@ -144,7 +160,7 @@ const sections: LegalSection[] = [
       <>
         <p>Your use of Hopper is also governed by our <a href="/privacy" className="text-blue-500 hover:underline">Privacy Policy</a>, incorporated into these Terms by reference. Key privacy principles embedded in Hopper's design include:</p>
         <ul className="list-disc pl-6 flex flex-col gap-2">
-          <li>No central data collection — we do not collect, store, or process your messages on any server</li>
+          <li>No central data collection — we do not collect, store, or process your messages on any server, except the text of a message you choose to report</li>
           <li>Local-first architecture — all personal data remains on your device unless explicitly shared by you</li>
           <li>Minimal permissions — we only request device permissions strictly necessary for core mesh networking functionality</li>
           <li>User control — you can clear all local data at any time from within the application</li>
@@ -161,7 +177,7 @@ const sections: LegalSection[] = [
   {
     title: '12. Termination',
     body: (
-      <p>Hopper reserves the right to restrict, suspend, or terminate your access to the Service at any time, with or without cause and without notice, if we reasonably believe you have violated these Terms or applicable law. You may stop using the Service at any time by uninstalling the application. Upon uninstallation, all locally stored data will be permanently deleted from your device.</p>
+      <p>Hopper reserves the right to restrict, suspend, or terminate your access to the Service at any time, with or without cause and without notice, if we reasonably believe you have violated these Terms or applicable law, including by removing your account as described in Section 3A. You may stop using the Service at any time by deleting your account in Settings &gt; Delete Account, or by uninstalling the application.</p>
     ),
   },
   {
@@ -226,7 +242,7 @@ export const TermsPage = ({ initialTheme }: { initialTheme: 'dark' | 'light' }) 
     eyebrow="Legal · Terms"
     headline={['Terms of', 'Service.']}
     intro="Please read these terms carefully before using the Hopper app. They constitute a legally binding agreement governing your use of our services."
-    effective="Effective 11 May 2026 · Version 1.0"
+    effective="Effective 9 November 2026 · Version 1.1"
     sections={sections}
   />
 );
