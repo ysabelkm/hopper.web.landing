@@ -3,8 +3,9 @@ import type { Metadata } from 'next';
 import '../index.css';
 
 export const metadata: Metadata = {
-  title: 'Hopper',
-  description: 'Offline-first mesh networking for resilient communication.',
+  title: 'Hopper: Offline Chat',
+  description:
+    'The offline chat app. Messages hop phone to phone over Bluetooth and Wi-Fi Direct — no SIM, no Wi-Fi, no towers.',
 };
 
 export default async function RootLayout({

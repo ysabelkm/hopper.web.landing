@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { HopperLogo } from './HopperLogo';
-import { TESTFLIGHT_URL } from '../lib/links';
+import { APP_STORE_URL, PLAY_STORE_URL } from '../lib/links';
 
 type FooterLink = { label: string; href: string; external?: boolean };
 
@@ -201,7 +201,7 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
         {/* ── Right card — QR + store buttons ──
             A sidebar beside the main card on desktop; below lg it spans the
             full width with the QR beside the buttons, so no gap is left. */}
-        <div className={`${card} flex flex-[1_1_300px] flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8 lg:flex-[0_1_340px] lg:flex-col lg:items-stretch lg:gap-5`}>
+        <div id="download" className={`${card} scroll-mt-24 flex flex-[1_1_300px] flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8 lg:flex-[0_1_340px] lg:flex-col lg:items-stretch lg:gap-5`}>
           <div className="grid place-items-center sm:flex-[0_0_200px] lg:flex-1">
             {/* No tile: the QR is painted through a CSS mask so its modules take
                 the text colour (near-black in light, white in dark) and its
@@ -230,33 +230,22 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
                 Download the app
               </span>
               <a
-                href="/pricing"
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-4 rounded-xl border border-black/10 bg-white px-6 py-[9px] text-black transition-opacity hover:opacity-[0.88]"
               >
                 <img src="/icons/appstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
                 <span className="text-sm font-medium tracking-[-0.01em]">Download on the App Store</span>
               </a>
               <a
-                href="/pricing"
+                href={PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-4 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-background)] px-6 py-[9px] text-[var(--color-foreground)] transition-opacity hover:opacity-[0.88]"
               >
                 <img src="/icons/playstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
-                <span className="text-sm font-medium tracking-[-0.01em]">Download on Google Play</span>
-              </a>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-faint)]">
-                Beta testing
-              </span>
-              <a
-                href={TESTFLIGHT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-4 rounded-xl border border-[color-mix(in_oklab,var(--color-brand-blue)_30%,transparent)] bg-[color-mix(in_oklab,var(--color-brand-blue)_12%,transparent)] px-6 py-[9px] text-[var(--color-brand-blue)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-brand-blue)_20%,transparent)] [:root.dark_&]:text-white"
-              >
-                <img src="/images/testflight.webp" alt="" className="h-7 w-7 shrink-0 rounded-[7px] object-contain" />
-                <span className="text-sm font-medium tracking-[-0.01em]">Try on TestFlight</span>
+                <span className="text-sm font-medium tracking-[-0.01em]">Get it on Google Play</span>
               </a>
             </div>
           </div>

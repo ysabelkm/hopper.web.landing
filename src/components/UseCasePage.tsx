@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Footer } from './Footer';
 import { TopScrollProgress } from './TopScrollProgress';
 import { Navbar } from './Navbar';
+import { externalProps, useDownloadHref } from '../hooks/useDownloadHref';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -32,6 +33,7 @@ export const UseCasePage = ({
   sections,
 }: UseCasePageProps) => {
   const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme);
+  const downloadHref = useDownloadHref();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -107,9 +109,13 @@ export const UseCasePage = ({
             <h3 className="text-3xl font-semibold tracking-tight max-w-sm">Ready to deploy Hopper?</h3>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button className="px-8 py-3.5 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors">
+            <a
+              href={downloadHref}
+              {...externalProps(downloadHref)}
+              className="px-8 py-3.5 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors text-center"
+            >
               Download the App
-            </button>
+            </a>
             <a href="/support" className="px-8 py-3.5 rounded-full border border-current/20 text-sm font-medium hover:bg-current/5 transition-colors text-center">
               Talk to Us
             </a>

@@ -2,7 +2,9 @@
   <img src="public/hopper_logo_black.png" alt="Hopper" height="44" />
   <p><strong>Connects communities, one hop at a time.</strong></p>
   <p>
-    <a href="https://testflight.apple.com/join/zENrqBdh">Try the iOS beta on TestFlight</a>
+    <a href="https://apps.apple.com/app/hopper-offline-chat/id6822310511">App Store</a>
+    ·
+    <a href="https://play.google.com/store/apps/details?id=com.hopperafrica.app">Google Play</a>
     ·
     <a href="https://www.linkedin.com/company/hopperafrica">LinkedIn</a>
   </p>
@@ -94,7 +96,7 @@ src/
     PageShell.tsx      Theme + navbar + footer wrapper for a page
     PageHero.tsx       Centred mesh hero used by the secondary pages
   hooks/               useTheme, useMeshCanvas
-  lib/                 Theme cookie helper, shared links (TestFlight URL)
+  lib/                 Theme cookie helper, shared links (store URLs)
   index.css            Design tokens (light/dark), keyframes, the .hop-pill highlight
 public/                Images, app mockups, logos, demo video
 ```

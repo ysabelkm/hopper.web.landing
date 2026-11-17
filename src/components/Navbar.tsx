@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
 import { HopperLogo } from './HopperLogo';
 import { cn } from '../lib/utils';
-import { TESTFLIGHT_URL } from '../lib/links';
+import { externalProps, useDownloadHref } from '../hooks/useDownloadHref';
 
 type NavbarProps = {
   theme: 'dark' | 'light';
@@ -82,6 +81,7 @@ function MoonIcon({ className }: { className?: string }) {
 export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const downloadHref = useDownloadHref();
   const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
 
@@ -123,7 +123,7 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
         className={cn(
           'flex items-center justify-between gap-4 border py-2.5 transition-[background-color,border-color,border-radius,box-shadow,padding] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:gap-10',
           condensed
-            ? 'rounded-full border-[var(--color-surface-border)] pl-5 pr-2.5 shadow-[0_8px_32px_-12px_rgba(0,0,0,0.18)] backdrop-blur-[18px] sm:pl-6'
+            ? 'rounded-full border-[var(--color-surface-border)] pl-5 pr-2.5 shadow-[0_4px_14px_-8px_rgba(0,0,0,0.08)] backdrop-blur-[18px] sm:pl-6'
             : 'rounded-[10px] border-transparent pl-2 pr-0 sm:pl-3 sm:pr-1',
         )}
         style={{
@@ -185,26 +185,28 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
             </AnimatePresence>
           </button>
 
-          {/* The iOS beta. Phones get the short label so the bar still fits. */}
+          {/* Download: Apple devices open the App Store, Android opens Google
+              Play, Windows/Linux scroll to the footer's QR.
+              The rainbow outline is two backgrounds: the page colour clipped
+              to the padding box over a gradient clipped to the border box, so
+              only the 1.5px transparent border shows the gradient. The gradient
+              layer is twice as wide and slides on hover. */}
           <a
-            href={TESTFLIGHT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[color-mix(in_oklab,var(--color-brand-blue)_14%,transparent)] py-1.5 pl-1.5 pr-3.5 text-[10px] font-semibold tracking-[0.18em] text-[var(--color-brand-blue)] transition-colors hover:bg-[color-mix(in_oklab,var(--color-brand-blue)_22%,transparent)] sm:pr-4 [:root.dark_&]:text-white"
+            href={downloadHref}
+            {...externalProps(downloadHref)}
+            className="inline-flex h-[34px] items-center whitespace-nowrap rounded-full border-[1.5px] border-transparent px-[18px] text-[13px] font-medium normal-case tracking-[-0.005em] text-[var(--color-foreground)] [background-position:0_0,0_0] [background-size:100%_100%,200%_100%] transition-[background-position] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:[background-position:0_0,100%_0]"
+            style={{
+              backgroundImage:
+                // Angled, not left-to-right: the top edge runs teal → blue →
+                // purple → pink while the bottom runs purple → pink → orange
+                // → amber, so the two edges differ. The spectrum repeats in
+                // the second half for the hover slide.
+                'linear-gradient(var(--color-background), var(--color-background)), linear-gradient(118deg, #3ccfc4 0%, #4f86f7 7%, #8b5cf6 16%, #d946b0 27%, #f2607a 37%, #f79a4a 44%, #f6c443 50%, #3ccfc4 58%, #4f86f7 64%, #8b5cf6 72%, #d946b0 81%, #f2607a 89%, #f79a4a 95%, #f6c443 100%)',
+              backgroundOrigin: 'border-box',
+              backgroundClip: 'padding-box, border-box',
+            }}
           >
-            <img
-              src="/images/testflight.webp"
-              alt=""
-              width={22}
-              height={22}
-              className="block h-[22px] w-[22px] rounded-[6px]"
-            />
-            <span className="sm:hidden">TestFlight</span>
-            <span className="hidden sm:inline">Try on TestFlight</span>
-            <ArrowUpRight
-              aria-hidden="true"
-              className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px"
-            />
+            Download
           </a>
 
           <button

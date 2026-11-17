@@ -1,11 +1,14 @@
 "use client";
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Section } from './components/Section';
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { StoreBadges } from './components/ui/StoreBadges';
+import { CrowdCanvas } from './components/ui/CrowdCanvas';
+import { PhoneFrame } from './components/ui/PhoneFrame';
 import { DemoVideo } from './components/DemoVideo';
 import { Eyebrow, Pill } from './components/ui/Pill';
 import { useMeshCanvas } from './hooks/useMeshCanvas';
@@ -13,11 +16,33 @@ import { useTheme, Theme } from './hooks/useTheme';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/** Hero phones, left to right. Each sits lower or higher and tilts slightly. */
+/** Hero phones, fanned: two tilted behind, one upright in front (listed last so it paints on top). */
 const MOCKUPS = [
-  { name: 'step-02-discover', offset: 'mt-[7%]', tilt: '-rotate-3', delay: 0.76 },
-  { name: 'step-04-relay', offset: 'mt-[3%]', tilt: 'rotate-0', delay: 0.86 },
-  { name: 'step-05-deliver', offset: 'mt-[7%]', tilt: 'rotate-3', delay: 0.96 },
+  {
+    name: 'step-02-discover',
+    place: 'left-0 top-[9%] w-[40%]',
+    tilt: 'rotateY(24deg) rotateZ(-5deg)',
+    hoverTilt: 'rotateY(16deg) rotateZ(-9deg)',
+    hoverMove: 'motion-safe:group-hover:-translate-x-[22%] motion-safe:group-hover:-translate-y-[5%]',
+    // Starts tucked behind the centre phone and slides out.
+    enter: { x: '30%', delay: 0.14 },
+  },
+  {
+    name: 'step-05-deliver',
+    place: 'right-0 top-[9%] w-[40%]',
+    tilt: 'rotateY(-24deg) rotateZ(5deg)',
+    hoverTilt: 'rotateY(-16deg) rotateZ(9deg)',
+    hoverMove: 'motion-safe:group-hover:translate-x-[22%] motion-safe:group-hover:-translate-y-[5%]',
+    enter: { x: '-30%', delay: 0.14 },
+  },
+  {
+    name: 'step-04-relay',
+    place: 'left-1/2 top-0 w-[48%] -translate-x-1/2',
+    tilt: 'rotateX(8deg) rotateY(-12deg) rotateZ(-2deg)',
+    hoverTilt: 'rotateX(3deg) rotateY(-4deg) rotateZ(0deg)',
+    hoverMove: 'motion-safe:group-hover:-translate-y-[7%] motion-safe:group-hover:scale-[1.03]',
+    enter: { x: '0%', delay: 0 },
+  },
 ];
 
 const MARQUEE = [
@@ -58,71 +83,136 @@ const USE_CASES = [
   },
 ];
 
+const mockupSrc = (name: string, theme: Theme) =>
+  theme === 'light' ? `/mockups/${name}.webp` : `/mockups/light/${name}.png`;
+
+/**
+ * True once every hero screenshot has downloaded and decoded, so the phones
+ * enter with their screens already painted instead of as empty frames that
+ * fill in mid-fade. Gives up after 2.5s so a slow connection still sees them.
+ */
+function useMockupsReady(theme: Theme) {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let done = false;
+    const finish = () => !done && (done = true, setReady(true));
+    const timeout = window.setTimeout(finish, 2500);
+    Promise.all(
+      MOCKUPS.map(m => {
+        const img = new window.Image();
+        img.src = mockupSrc(m.name, theme);
+        return img.decode().catch(() => undefined);
+      }),
+    ).then(finish);
+    return () => window.clearTimeout(timeout);
+    // Only the first theme gates the entrance; a later toggle just swaps images.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return ready;
+}
+
 const Hero = ({ theme }: { theme: Theme }) => {
   const canvasRef = useMeshCanvas();
+  const mockupsReady = useMockupsReady(theme);
 
   return (
-    <section id="top" className="relative overflow-hidden px-5 pt-[132px] sm:px-6 md:pt-[150px]">
+    // The hero fills the first screen. Layering, back to front: mesh, phones,
+    // crowd, text — so people walk in front of the phones but never over the
+    // headline or the store badges. Only the columns set a z-index; the grid
+    // itself stays out of the stacking order so the crowd can sit between them.
+    <section
+      id="top"
+      className="relative flex h-[100svh] min-h-[640px] flex-col overflow-hidden lg:max-h-[1080px] lg:min-h-[680px]"
+    >
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 block h-full w-full" />
+      {/* Softens the mesh behind the text: centred when stacked, left beside the phones. */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 lg:hidden"
         style={{
           background:
-            'radial-gradient(ellipse 60% 42% at 50% 30%, color-mix(in oklab, var(--color-background) 94%, transparent) 0%, transparent 78%)',
+            'radial-gradient(ellipse 70% 40% at 50% 28%, color-mix(in oklab, var(--color-background) 94%, transparent) 0%, transparent 78%)',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        style={{
+          background:
+            'radial-gradient(ellipse 42% 50% at 28% 44%, color-mix(in oklab, var(--color-background) 94%, transparent) 0%, transparent 78%)',
         }}
       />
 
-      <div className="relative mx-auto flex max-w-[980px] flex-col items-center gap-7 text-center">
-        <span className="animate-[hopFade_900ms_ease_160ms_both]">
-          <Eyebrow>No signal? No problem.</Eyebrow>
-        </span>
-
-        <h1 className="m-0 font-display text-[clamp(42px,7.4vw,112px)] font-semibold leading-[1.02] tracking-[-0.05em]">
-          <span className="block overflow-hidden pb-[0.1em]">
-            <span className="block animate-[hopReveal_1100ms_cubic-bezier(0.16,1,0.3,1)_240ms_both]">
-              Connects communities,
-            </span>
+      <div className="mx-auto grid w-full max-w-[1240px] flex-1 grid-rows-[auto_1fr] gap-6 px-5 pt-[96px] sm:gap-8 sm:px-8 sm:pt-[112px] lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:grid-rows-1 lg:gap-8 lg:px-12 lg:pt-[96px]">
+        <div className="relative z-20 flex flex-col items-center gap-4 text-center sm:gap-5 lg:items-start lg:gap-7 lg:self-center lg:pb-[110px] lg:text-left">
+          <span className="animate-[hopFade_900ms_ease_160ms_both]">
+            <Eyebrow>No signal? No problem.</Eyebrow>
           </span>
-          <span className="mt-[0.06em] flex flex-wrap items-center justify-center gap-x-[0.22em] gap-y-[0.1em]">
-            <span className="inline-block animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_400ms_both]">
-              <Pill>one hop</Pill>
+
+          <h1 className="m-0 font-display text-[clamp(34px,9.4vw,58px)] font-semibold leading-[1.02] tracking-[-0.05em] lg:text-[clamp(50px,4.4vw,68px)]">
+            <span className="block overflow-hidden pb-[0.1em]">
+              <span className="block animate-[hopReveal_1100ms_cubic-bezier(0.16,1,0.3,1)_240ms_both]">
+                Connects communities,
+              </span>
             </span>
-            <span className="animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_500ms_both]">at a time.</span>
-          </span>
-        </h1>
+            <span className="mt-[0.06em] flex flex-wrap items-center justify-center gap-x-[0.22em] gap-y-[0.1em] lg:justify-start">
+              <span className="inline-block animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_400ms_both]">
+                <Pill>one hop</Pill>
+              </span>
+              <span className="animate-[hopRise_1100ms_cubic-bezier(0.16,1,0.3,1)_500ms_both]">at a time.</span>
+            </span>
+          </h1>
 
-        <p className="m-0 max-w-[470px] animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_560ms_both] text-[17px] leading-[1.6] text-[var(--color-muted)] sm:text-lg">
-          Your message hops phone to phone until it arrives. No SIM, no Wi-Fi, no towers.
-        </p>
+          <p className="m-0 max-w-[400px] animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_560ms_both] text-[15px] leading-[1.55] text-[var(--color-muted)] sm:max-w-[460px] sm:text-lg sm:leading-[1.6]">
+            <strong className="font-semibold text-[var(--color-foreground)]">The offline chat app.</strong>{' '}
+            Your message hops phone to phone until it arrives. No SIM, no Wi-Fi, no towers.
+          </p>
 
-        <div className="flex animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_680ms_both] flex-wrap justify-center gap-3">
-          <StoreBadges height={48} />
+          <div className="flex animate-[hopRise_1000ms_cubic-bezier(0.16,1,0.3,1)_680ms_both] flex-wrap justify-center gap-3 lg:justify-start">
+            <StoreBadges imgClassName="h-[40px] sm:h-[46px] lg:h-[48px]" />
+          </div>
+        </div>
+
+        {/* Phones rise from the bottom edge and crop there. The light page
+            shows the dark app screens and vice versa, so they always contrast
+            the background. */}
+        {/* Stacked, the fan is sized by the height left under the text (cqh)
+            as well as the width, so most of each phone stays visible above
+            the crowd on short and tall phones alike. */}
+        <div className="relative z-0 min-h-[200px] [container-type:size] lg:min-h-0">
+          <div className="group absolute inset-y-0 left-1/2 w-[min(100%,440px,92cqh)] -translate-x-1/2 lg:top-[3%] lg:w-[min(100%,580px)]">
+            {MOCKUPS.map(m => (
+              <div key={m.name} className={`absolute [perspective:1800px] ${m.place}`}>
+                {/* Hovering the fan lifts all three and spreads them apart. */}
+                <div className={`transition-[translate,scale] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${m.hoverMove}`}>
+                  {/* One entrance once all three screens are ready: the centre
+                      phone rises, then the side phones slide out from behind it. */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 40, x: m.enter.x }}
+                    animate={mockupsReady ? { opacity: 1, y: 0, x: '0%' } : undefined}
+                    transition={{
+                      opacity: { duration: 0.6, delay: m.enter.delay, ease: 'easeOut' },
+                      default: { duration: 1.1, delay: m.enter.delay, ease: EASE },
+                    }}
+                  >
+                    <PhoneFrame
+                      src={mockupSrc(m.name, theme)}
+                      tilt={m.tilt}
+                      hoverTilt={m.hoverTilt}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Phones crop at the bottom edge. The light page shows the dark app
-          screens and vice versa, so the phones always contrast the canvas.
-          On phones the row bleeds to the screen edges (-mx-5 cancels the
-          section's px-5) so the screenshots get the full width. */}
-      <div className="relative -mx-5 mt-10 flex h-[min(640px,64vw)] items-start justify-center gap-2 overflow-hidden sm:mx-auto sm:max-w-[1000px] sm:gap-5">
-        {MOCKUPS.map(m => (
-          <motion.div
-            key={m.name}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: m.delay, ease: EASE }}
-            className={`min-w-0 flex-[0_1_300px] ${m.offset}`}
-          >
-            <img
-              src={theme === 'light' ? `/mockups/${m.name}.webp` : `/mockups/light/${m.name}.png`}
-              alt=""
-              width={804}
-              height={1748}
-              className={`block h-auto w-full ${m.tilt}`}
-            />
-          </motion.div>
-        ))}
-      </div>
+      {/* The crowd walks along the bottom across the full width: the people
+          the mesh above connects. */}
+      <CrowdCanvas
+        src="/images/crowd-peeps.png"
+        density={3}
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 block h-[min(130px,30vw)] w-full animate-[hopFade_1200ms_ease_900ms_both] lg:h-[clamp(180px,26.4vh,252px)]"
+      />
     </section>
   );
 };
