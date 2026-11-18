@@ -13,6 +13,7 @@ import { DemoVideo } from './components/DemoVideo';
 import { Eyebrow, Pill } from './components/ui/Pill';
 import { useMeshCanvas } from './hooks/useMeshCanvas';
 import { useTheme, Theme } from './hooks/useTheme';
+import { splashDone } from './lib/splash';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -23,7 +24,11 @@ const MOCKUPS = [
     place: 'left-0 top-[9%] w-[40%]',
     tilt: 'rotateY(24deg) rotateZ(-5deg)',
     hoverTilt: 'rotateY(16deg) rotateZ(-9deg)',
-    hoverMove: 'motion-safe:group-hover:-translate-x-[22%] motion-safe:group-hover:-translate-y-[5%]',
+    // Spreads sideways here (the shadow follows); the lift is inside PhoneFrame
+    // so the shadow stays on the floor.
+    hoverMove: 'motion-safe:group-hover:-translate-x-[22%]',
+    hoverLift: '11cqw',
+    hoverScale: 1,
     // Starts tucked behind the centre phone and slides out.
     enter: { x: '30%', delay: 0.14 },
   },
@@ -32,7 +37,9 @@ const MOCKUPS = [
     place: 'right-0 top-[9%] w-[40%]',
     tilt: 'rotateY(-24deg) rotateZ(5deg)',
     hoverTilt: 'rotateY(-16deg) rotateZ(9deg)',
-    hoverMove: 'motion-safe:group-hover:translate-x-[22%] motion-safe:group-hover:-translate-y-[5%]',
+    hoverMove: 'motion-safe:group-hover:translate-x-[22%]',
+    hoverLift: '11cqw',
+    hoverScale: 1,
     enter: { x: '-30%', delay: 0.14 },
   },
   {
@@ -40,7 +47,9 @@ const MOCKUPS = [
     place: 'left-1/2 top-0 w-[48%] -translate-x-1/2',
     tilt: 'rotateX(8deg) rotateY(-12deg) rotateZ(-2deg)',
     hoverTilt: 'rotateX(3deg) rotateY(-4deg) rotateZ(0deg)',
-    hoverMove: 'motion-safe:group-hover:-translate-y-[7%] motion-safe:group-hover:scale-[1.03]',
+    hoverMove: '',
+    hoverLift: '15cqw',
+    hoverScale: 1.03,
     enter: { x: '0%', delay: 0 },
   },
 ];
@@ -84,27 +93,43 @@ const USE_CASES = [
 ];
 
 const mockupSrc = (name: string, theme: Theme) =>
-  theme === 'light' ? `/mockups/${name}.webp` : `/mockups/light/${name}.png`;
+  theme === 'light' ? `/mockups/${name}.webp` : `/mockups/light/${name}.webp`;
 
 /**
  * True once every hero screenshot has downloaded and decoded, so the phones
  * enter with their screens already painted instead of as empty frames that
  * fill in mid-fade. Gives up after 2.5s so a slow connection still sees them.
+ * Also waits for the loading screen to lift, so the entrance is seen.
  */
 function useMockupsReady(theme: Theme) {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let done = false;
     const finish = () => !done && (done = true, setReady(true));
-    const timeout = window.setTimeout(finish, 2500);
-    Promise.all(
-      MOCKUPS.map(m => {
-        const img = new window.Image();
-        img.src = mockupSrc(m.name, theme);
-        return img.decode().catch(() => undefined);
-      }),
-    ).then(finish);
-    return () => window.clearTimeout(timeout);
+    let timeout = 0;
+    const screens = Promise.race([
+      Promise.all(
+        MOCKUPS.map(m => {
+          const img = new window.Image();
+          img.src = mockupSrc(m.name, theme);
+          return img.decode().catch(() => undefined);
+        }),
+      ),
+      new Promise<void>(resolve => (timeout = window.setTimeout(resolve, 2500))),
+    ]);
+    Promise.all([screens, splashDone()]).then(finish);
+    // Warm the other theme's screens once the page is idle, so a toggle swaps
+    // them instantly instead of loading them then.
+    const other: Theme = theme === 'light' ? 'dark' : 'light';
+    const warm = () => MOCKUPS.forEach(m => (new window.Image().src = mockupSrc(m.name, other)));
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(warm, { timeout: 4000 })
+      : window.setTimeout(warm, 3000);
+    return () => {
+      window.clearTimeout(timeout);
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
     // Only the first theme gates the entrance; a later toggle just swaps images.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -197,6 +222,8 @@ const Hero = ({ theme }: { theme: Theme }) => {
                       src={mockupSrc(m.name, theme)}
                       tilt={m.tilt}
                       hoverTilt={m.hoverTilt}
+                      hoverLift={m.hoverLift}
+                      hoverScale={m.hoverScale}
                     />
                   </motion.div>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { ArrowLeft } from 'lucide-react';
 import { Footer } from './Footer';
 import { TopScrollProgress } from './TopScrollProgress';
@@ -82,8 +83,8 @@ export const UseCasePage = ({
 
       {/* Hero image */}
       <section className="px-6 md:px-12 lg:px-24 max-w-6xl mx-auto mb-24">
-        <div className={`w-full h-[420px] md:h-[520px] rounded-[28px] overflow-hidden border ${cardBorder}`}>
-          <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
+        <div className={`relative w-full h-[420px] md:h-[520px] rounded-[28px] overflow-hidden border ${cardBorder}`}>
+          <Image src={image} alt={imageAlt} fill priority sizes="(min-width: 1152px) 1056px, 100vw" className="object-cover" />
         </div>
       </section>
 

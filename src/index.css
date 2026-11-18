@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Sora", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   --color-brand-blue: #0171e3;
   --header-height: 80px;
 
@@ -101,7 +101,7 @@
 
 body {
   margin: 0;
-  font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
@@ -110,7 +110,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Sora", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sora), var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 h1.font-bold, h2.font-bold, h3.font-bold,
@@ -157,3 +157,13 @@ html {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
+
+/* While the loading screen (components/Splash.tsx) is up: no scrolling, and
+   the hero's entrance animations wait so they play as it lifts. */
+html[data-splash="on"] {
+  overflow: hidden;
+}
+html[data-splash="on"] #top,
+html[data-splash="on"] #top * {
+  animation-play-state: paused !important;
+}

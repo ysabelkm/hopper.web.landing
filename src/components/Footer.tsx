@@ -233,18 +233,18 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
                 href={APP_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-4 rounded-xl border border-black/10 bg-white px-6 py-[9px] text-black transition-opacity hover:opacity-[0.88]"
+                className={`${storeButton} border-black/10 bg-white text-black hover:border-black/25`}
               >
-                <img src="/icons/appstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
+                <img src="/icons/appstoreicon.png" alt="" className={storeIcon} />
                 <span className="text-sm font-medium tracking-[-0.01em]">Download on the App Store</span>
               </a>
               <a
                 href={PLAY_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-4 rounded-xl border border-[var(--color-surface-border)] bg-[var(--color-background)] px-6 py-[9px] text-[var(--color-foreground)] transition-opacity hover:opacity-[0.88]"
+                className={`${storeButton} border-[var(--color-surface-border)] bg-[var(--color-background)] text-[var(--color-foreground)] hover:border-[color-mix(in_oklab,var(--color-foreground)_28%,transparent)]`}
               >
-                <img src="/icons/playstoreicon.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
+                <img src="/icons/playstoreicon.png" alt="" className={storeIcon} />
                 <span className="text-sm font-medium tracking-[-0.01em]">Get it on Google Play</span>
               </a>
             </div>
@@ -255,3 +255,17 @@ export const Footer = ({ theme }: { theme: 'dark' | 'light' }) => {
     </footer>
   );
 };
+
+/* Store buttons: on hover they lift with a soft shadow, the border firms up
+   and the icon nudges; pressing sinks them back down. Motion is skipped for
+   people who prefer reduced motion, leaving the border and shadow change. */
+const storeButton =
+  'group flex items-center justify-center gap-4 rounded-xl border px-6 py-[9px] ' +
+  'transition-[translate,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
+  'hover:shadow-[0_10px_24px_-12px_rgb(0_0_0/0.35)] motion-safe:hover:-translate-y-0.5 ' +
+  'motion-safe:active:translate-y-0 active:shadow-none active:duration-100 ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-brand-blue)]';
+
+const storeIcon =
+  'h-7 w-7 shrink-0 object-contain transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ' +
+  'motion-safe:group-hover:-rotate-6 motion-safe:group-hover:scale-110';
