@@ -40,6 +40,9 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* The splash draws the wordmark from this; without the hint it's only
+            requested once the splash script runs, behind everything else. */}
+        <link rel="preload" as="image" href="/splash-lockup.webp" type="image/webp" fetchPriority="high" />
         <link rel="icon" href="/hopper_icon_black.png" type="image/png" sizes="any" media="(prefers-color-scheme: light)" />
         <link rel="icon" href="/hopper_icon_white.png" type="image/png" sizes="any" media="(prefers-color-scheme: dark)" />
         <link rel="shortcut icon" href="/hopper_icon_black.png" type="image/png" />

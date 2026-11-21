@@ -183,8 +183,9 @@ const SPLASH_JS = /* js */ `(function () {
   if (!loaded) addEventListener('load', function () { loaded = true; maybeFinish(); });
   // Never hold the page longer than this, however slow the load.
   setTimeout(finish, 5000);
-  // If the lockup image is slow, start with the mark anyway.
-  setTimeout(begin, 700);
+  // Wait for the lockup image (preloaded in layout.tsx) so the wordmark is
+  // there when it wipes in; if it's very slow, start with the mark anyway.
+  setTimeout(begin, 1500);
 
   function begin() {
     if (started) return;
