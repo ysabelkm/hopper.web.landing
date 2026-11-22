@@ -136,18 +136,8 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
             spans only the top 78% of the canvas, putting the visible centroid
             ~10% of the height above centre. Centring the box therefore makes
             the mark ride high, so it is nudged down by that measured amount. */}
-        <a href="/" aria-label="Hopper home" className="group flex items-center">
-          {scrolled ? (
-            <img
-              src={theme === 'light' ? '/hopper_icon_black.png' : '/hopper_icon_white.png'}
-              alt="Hopper"
-              draggable={false}
-              // A quick spin-and-grow on hover; springs back when the pointer leaves.
-              className="h-[22px] w-auto transition-[rotate,scale] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-safe:group-hover:rotate-[360deg] motion-safe:group-hover:scale-125"
-            />
-          ) : (
-            <HopperLogo theme={theme} className="h-[22px] w-auto translate-y-[2px]" />
-          )}
+        <a href="/" aria-label="Hopper home" className="flex shrink-0 items-center">
+          <HopperLogo theme={theme} className="h-[26px] w-auto translate-y-[2.5px] sm:h-[30px] sm:translate-y-[3px]" />
         </a>
 
         <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--color-muted)] md:gap-[26px]">
